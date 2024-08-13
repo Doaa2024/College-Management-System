@@ -1,0 +1,47 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1" # You can specify the PHP version your project requires
+          extensions: mbstring, intl, gd, pdo, pdo_mysql, pdo_sqlite, sqlite3
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      - name: Run build script
+        run: |
+          # Place any commands here to build your project, if needed
+          # e.g., compiling assets or running build tasks
+          npm install
+          npm run build
+
+      - name: Run tests
+        run: |
+          # Replace with the actual test commands
+          # e.g., PHPUnit for PHP or any JavaScript tests
+          composer test
+          npm run test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: path-to-test-results # Specify the correct path to your test results
