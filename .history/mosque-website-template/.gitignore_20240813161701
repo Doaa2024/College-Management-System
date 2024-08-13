@@ -1,0 +1,64 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+
+# Logs
+logs/
+*.log
+.log.
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE or Editor directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# PHP specific
+vendor/
+composer.lock
+composer.phar
+
+# Cache directories for PHP frameworks
+cache/
+tmp/
+
+# Environment variables file
+.env
+
+# Uploads and file storage (if not versioned)
+uploads/
+storage/
+
+# Backup files
+*.bak
+*.swp
+*.swo
+
+# SASS or SCSS generated files
+*.css.map
+
+# Minified JavaScript files (if you minify them as part of your build process)
+*.min.js
+*.min.css
+
+# PHPStorm specific
+/.phpstorm.meta.php
+
+# Other sensitive or unnecessary files
+config.php
+.env.local
+*.secret
+
+# Composer vendor directory
+/vendor/
+
+# Logs
+error_log
