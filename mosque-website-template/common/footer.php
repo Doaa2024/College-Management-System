@@ -1,3 +1,8 @@
+<?php
+require_once("class/main.class.php");
+$info = new Main();
+$allInfo = $info->getAllInfo();
+?>
 <!-- Footer Start -->
 <div class="container-fluid footer pt-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -19,24 +24,34 @@
         <div class="row g-4 footer-inner">
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item mt-5">
-                    <h4 class="text-light mb-4">THE<span class="text-primary">Mosque</span></h4>
+                    <?php
+                    // Assuming $allInfo[0]['Name'] contains the full name
+                    $name = $allInfo[0]['Name'];
+                    $lastLetter = substr($name, -1); // Get the last letter
+                    $nameWithoutLastLetter = substr($name, 0, -1); // Get the name without the last letter
+                    ?>
+
+                    <h4 class="text-light mb-4">
+                        <?= $nameWithoutLastLetter ?><span class="text-primary"><?= $lastLetter ?></span>
+                    </h4>
+
                     <p class="mb-4 text-secondary">Nostrud exertation ullamco labor nisi aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
                     <a href="" class="btn btn-primary py-2 px-4">Donate Now</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item mt-5">
-                    <h4 class="text-light mb-4">Our Mosque</h4>
+                    <h4 class="text-light mb-4">Our University</h4>
                     <div class="d-flex flex-column">
                         <h6 class="text-secondary mb-0">Our Address</h6>
                         <div class="d-flex align-items-center border-bottom py-4">
                             <span class="flex-shrink-0 btn-square bg-primary me-3 p-4"><i class="fa fa-map-marker-alt text-dark"></i></span>
-                            <a href="" class="text-body">123 Street, New York, USA</a>
+                            <a href="" class="text-body"><?= $allInfo[0]['Location'] ?></a>
                         </div>
                         <h6 class="text-secondary mt-4 mb-0">Our Mobile</h6>
                         <div class="d-flex align-items-center py-4">
                             <span class="flex-shrink-0 btn-square bg-primary me-3 p-4"><i class="fa fa-phone-alt text-dark"></i></span>
-                            <a href="" class="text-body">+012 345 67890</a>
+                            <a href="" class="text-body"><?= $allInfo[0]['PhoneNumber'] ?></a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +96,7 @@
         <div class="border-top border-secondary pb-4"></div>
         <div class="row">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                &copy; <a class="border-bottom" href="www.<?= $allInfo[0]['Name'] ?>.com">www.<?= $allInfo[0]['Name'] ?>.com</a>, All Right Reserved.
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
