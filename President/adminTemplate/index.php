@@ -61,16 +61,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Current Semester Enrollments
                             </div>
                             <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar"
-                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                            aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">215,000</div>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -173,72 +164,73 @@
 
     <!-- Content Row -->
     <div class="row">
-    <!-- Content Column -->
-    <div class="col-lg-5 mb-4 d-flex align-items-stretch">
-        <!-- Project Card Example -->
-        <div class="card shadow w-100">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Revenue Distribution by Top 5 Branches</h6>
+        <!-- Content Column -->
+        <div class="col-lg-5 mb-4 d-flex align-items-stretch">
+            <!-- Project Card Example -->
+            <div class="card shadow w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Distribution by Top 5 Branches</h6>
+                </div>
+                <div class="card-body pb-3">
+                    <h4 class="small font-weight-bold">Tripoli<span class="float-right">40%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Tyre<span class="float-right">10%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Khiara<span class="float-right">10%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Saida<span class="float-right">15%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Beirut<span class="float-right">5%</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body pb-3">
-                <h4 class="small font-weight-bold">Tripoli<span class="float-right">40%</span></h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <div class="col-lg-7 d-flex align-items-stretch">
+            <div class="card shadow w-100">
+                <div class="card-header py-3 text-primary">
+                    <strong> NewsLetter</strong>
+                    <i class="fa fa-calendar-check text-primary ml-2"></i>
                 </div>
-                <h4 class="small font-weight-bold">Tyre<span class="float-right">10%</span></h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <h4 class="small font-weight-bold">Khiara<span class="float-right">10%</span></h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <h4 class="small font-weight-bold">Saida<span class="float-right">15%</span></h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <h4 class="small font-weight-bold">Beirut<span class="float-right">5%</span></h4>
-                <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">New Campus Initiatives</h5>
+                                <small class=" text-primary">1 day ago</small>
+                            </div>
+                            <p class="mb-1" style="font-size: 0.875rem;">We are excited to announce several new initiatives aimed at enhancing student life and academic excellence. Our new research center is now open, and we’ve introduced a series of workshops to support professional development.</p>
+                        </a>
+                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">Faculty Achievements</h5>
+                                <small class="text-primary">3 days ago</small>
+                            </div>
+                            <p class="mb-1" style="font-size: 0.875rem;">Congratulations to Dr. Jane Smith for receiving the prestigious National Teaching Award! Additionally, our Computer Science department has launched a new collaborative project with industry leaders.</p>
+                        </a>
+                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">Campus Facilities Upgrades</h5>
+                                <small class=" text-primary">3 days ago</small>
+                            </div>
+                            <p class="mb-1" style="font-size: 0.875rem;">We’ve completed major renovations in the library and student center to provide a more modern and comfortable environment. The new study rooms and lounge areas are now available for student use.</p>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="col-lg-7 d-flex align-items-stretch">
-        <div class="card shadow w-100">
-            <div class="card-header py-3">
-                NewsLetter
-                <i class="fa fa-calendar-check text-muted ml-2"></i>
-            </div>
-            <div class="card-body">
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1" style="font-size: 0.875rem;">New Campus Initiatives</h5>
-                            <small>1 day ago</small>
-                        </div>
-                        <p class="mb-1" style="font-size: 0.875rem;">We are excited to announce several new initiatives aimed at enhancing student life and academic excellence. Our new research center is now open, and we’ve introduced a series of workshops to support professional development.</p>
-                    </a>
-                    <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1" style="font-size: 0.875rem;">Faculty Achievements</h5>
-                            <small class="text-muted">3 days ago</small>
-                        </div>
-                        <p class="mb-1" style="font-size: 0.875rem;">Congratulations to Dr. Jane Smith for receiving the prestigious National Teaching Award! Additionally, our Computer Science department has launched a new collaborative project with industry leaders.</p>
-                    </a>
-                    <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1" style="font-size: 0.875rem;">Campus Facilities Upgrades</h5>
-                            <small class="text-muted">3 days ago</small>
-                        </div>
-                        <p class="mb-1" style="font-size: 0.875rem;">We’ve completed major renovations in the library and student center to provide a more modern and comfortable environment. The new study rooms and lounge areas are now available for student use.</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 </div>
