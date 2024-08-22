@@ -15,7 +15,7 @@ function formatFacultyInfo($facultyInfo)
     $formattedInfo = [];
 
     if (!empty($facultyInfo)) {
-        $formattedInfo['FacultyName'] = htmlspecialchars($facultyInfo[0]['FacultyName']);
+        $formattedInfo['FacultyName'] = htmlspecialchars($facultyInfo[0]['FaculityName']);
         $formattedInfo['CreditFee'] = htmlspecialchars($facultyInfo[0]['CreditFee']);
         $formattedInfo['FacultyHead'] = htmlspecialchars($facultyInfo[0]['FacultyHeadName']);
         $formattedInfo['StudentCount'] = htmlspecialchars($facultyInfo[0]['StudentCount']);
@@ -71,7 +71,7 @@ $facultyID = getFacultyID();
 
 $facultyRetrieval = new UniversityDataRetrieval();
 $facultyInfo = $facultyRetrieval->getFacultyCompleteInfo($facultyID);
-echo var_dump($facultyInfo);
+
 $formattedInfo = formatFacultyInfo($facultyInfo);
 ?>
 
@@ -153,14 +153,13 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
                 <a class="nav-link" id="departments-tab" data-toggle="tab" href="#departments" role="tab" aria-controls="departments" aria-selected="false">Departments and Courses</a>
             </li>
         </ul>
-        <?php echo var_dump($formattedInfo);?>
         <!-- Tab panes -->
         <div class="tab-content mt-3">
             <!-- Faculty Info -->
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
                 <div class="list-group">
                     <div class="list-group-item border-left-primary " style="   background: linear-gradient(135deg, #007bff, #0056b3); ">
-                    <h5 class="mb-1"><?php echo $formattedInfo['FacultyName']; ?></h5>
+                        <h5 class="mb-1"><?php echo $formattedInfo['FacultyName']; ?></h5>
 
                     </div>
                     <div class="list-group-item border-left-primary">
@@ -195,6 +194,11 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
             <!-- Branches -->
             <div class="tab-pane fade" id="branches" role="tabpanel" aria-labelledby="branches-tab">
                 <h4>Branches</h4>
+                <?php
+                $retrieveInfo = new UniversityDataRetrieval();
+                $facInfo = $retrieveInfo->getFacultyInfo($id);
+
+                ?>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -212,22 +216,51 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end gap-2" style="gap:10px">
-                    <button class="btn btn-primary" data-branch-id="<?php echo htmlspecialchars($id); ?>" onclick="manageBranches(<?php echo intval($id); ?>)">
+
+                    <button class="btn btn-primary"
+                        data-facid="<?= $_GET['facultyID'] ?>"
+                        data-branch_id="<?php echo htmlspecialchars($id); ?>"
+                        data-facname="<?= ($facInfo[0]['FaculityName']); ?>"
+                        data-creditfee="<?= ($facInfo[0]['CreditFee']) ?>"
+                        data-toggle="modal"
+                        data-target="#branchesModal">
                         <i class="fas fa-edit mr-1"></i> Manage Branches
                     </button>
-
-
                 </div>
             </div>
             <!-- Departments and Courses -->
+            <?php
+            $facInfo = $retrieveInfo->getCoursesGroupedByDepartmentAndFaculty($id);
+
+            // Process the data to group courses by department
+            $departments = [];
+            foreach ($facInfo as $course) {
+                $departmentID = $course['DepartmentID'];
+                if (!isset($departments[$departmentID])) {
+                    $departments[$departmentID] = [
+                        'DepartmentID' => $departmentID, // Include the department ID
+                        'DepartmentName' => $course['DepartmentName'],
+                        'DepartmentHead' => $course['Username'],
+                        'Courses' => []
+                    ];
+                   
+                }
+                $departments[$departmentID]['Courses'][] = [
+                    'CourseName' => $course['CourseName'],
+                    'CourseCode' => $course['CourseCode'],
+                    'Credits' => $course['Credits']
+                ];
+            }
+            ?>
+
+
             <div class="tab-pane fade" id="departments" role="tabpanel" aria-labelledby="departments-tab">
                 <h4 class="mb-3">Departments and Courses</h4>
-                <?php foreach ($formattedInfo['Departments'] as $department): ?>
-                    <div class="mb-4 p-3  border-left-primary">
-                        <!-- <div class="d-flex gap-5"> -->
-                        <h5>Department Name: <?php echo $department['DepartmentName']; ?></h5>
-                        <p><strong>Department Head:</strong> <?php echo $department['DepartmentHead']; ?></p>
-                        <!-- </div> -->
+
+                <?php foreach ($departments as $department): ?>
+                    <div class="mb-4 p-3 border-left-primary">
+                        <h5>Department Name: <?php echo htmlspecialchars($department['DepartmentName']); ?></h5>
+                        <h6>Department Head: <?php echo htmlspecialchars($department['DepartmentHead']); ?></h6>
                         <h6>Courses:</h6>
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -240,9 +273,9 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
                             <tbody>
                                 <?php foreach ($department['Courses'] as $course): ?>
                                     <tr>
-                                        <td><?php echo $course['CourseName']; ?></td>
-                                        <td><?php echo $course['CourseCode']; ?></td>
-                                        <td><?php echo $course['Credits']; ?></td>
+                                        <td><?php echo htmlspecialchars($course['CourseName']); ?></td>
+                                        <td><?php echo htmlspecialchars($course['CourseCode']); ?></td>
+                                        <td><?php echo htmlspecialchars($course['Credits']); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -250,15 +283,41 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
                     </div>
                     <div class="d-flex justify-content-end gap-2" style="gap:10px">
 
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="editDepartmentHead(<?php echo intval($department['DepartmentID']); ?>)">
                             <i class="fas fa-user mr-1"></i> Edit Department Head
                         </button>
-                        <button class="btn btn-primary" data-id="<?php echo isset($_GET['facultyID']) ? intval($_GET['facultyID']) : 0; ?>" data-fee="<?php echo $formattedInfo['CreditFee']; ?>">
+                        <button class="btn btn-primary" onclick="editDepartmentName(<?php echo intval($department['DepartmentID']); ?>)">
                             <i class="fas fa-edit mr-1"></i> Edit Department Name
                         </button>
 
                     </div>
                 <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="branchesModal" tabindex="-1" role="dialog" aria-labelledby="branchesModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="branchesModalLabel">Branch Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="branchesForm" action="submitBranches.php" method="POST">
+                    <div class="modal-body">
+                        <div id="branchesTableContainer">
+                            <!-- Branches table will be loaded here via AJAX -->
+                        </div>
+                        <input type="hidden" id="initialBranches" value='[]'>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Selected Branches</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -376,106 +435,209 @@ $formattedInfo = formatFacultyInfo($facultyInfo);
                 }
             });
         }
+        $(document).ready(function() {
+            // Handle button click to open modal and load branches
+            $('button[data-toggle="modal"]').on('click', function() {
+                var branchId = $(this).data('branch_id');
+                var facName = $(this).data('facname'); // Use 'facname'
+                var creditFee = $(this).data('creditfee'); // Use 'creditfee'
 
-        function manageBranches(facultyID) {
-          
-            $.ajax({
-                url: 'actions/get_branches_for_faculty.php',
-                type: 'GET',
-                data: {
-                    facultyID: facultyID
-                },
-                dataType: 'json',
-                success: function(currentBranches) {
-                    console.log('Current branches:', currentBranches); // Debugging line
+                $('#branchesModalLabel').text('Branches for Faculty: ' + facName);
 
-                    $.ajax({
-                        url: 'actions/get_all_branches.php',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(allBranches) {
-                            console.log('All branches:', allBranches); // Debugging line
+                $.ajax({
+                    url: 'actions/getBranchesForFaculty.php', // PHP file to handle the request
+                    type: 'POST',
+                    data: {
+                        facultyID: branchId
+                    },
+                    success: function(response) {
+                        $('#branchesTableContainer').html(response);
 
-                            // Check if data is received correctly
-                            if (!Array.isArray(currentBranches) || !Array.isArray(allBranches)) {
-                                Swal.fire('Error!', 'Received data is not in expected format.', 'error');
-                                return;
-                            }
+                        // Store initially selected branches in hidden input
+                        var initialBranches = [];
+                        $('.branch-checkbox:checked').each(function() {
+                            initialBranches.push($(this).val());
+                        });
+                        $('#initialBranches').val(JSON.stringify(initialBranches));
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', status, error);
+                        $('#branchesTableContainer').html('<p>An error occurred while fetching branch data.</p>');
+                    }
+                });
+            });
 
-                            // Validate that the branches contain the expected fields
-                            if (currentBranches.some(branch => !branch.BranchID) ||
-                                allBranches.some(branch => !branch.BranchID)) {
-                                Swal.fire('Error!', 'Data format is incorrect. Missing BranchID.', 'error');
-                                return;
-                            }
+            // Handle form submission with AJAX
+            $('#branchesForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
 
-                            let currentBranchIDs = currentBranches.map(branch => branch.BranchID);
-                            let branchOptions = allBranches.map(branch => {
-                                const isChecked = currentBranchIDs.includes(branch.BranchID) ? 'checked' : '';
-                                return `
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="${branch.BranchID}" id="branch_${branch.BranchID}" ${isChecked}>
-                                <label class="form-check-label" for="branch_${branch.BranchID}">
-                                    ${branch.BranchName} - ${branch.Location}
-                                </label>
-                            </div>
-                        `;
-                            }).join('');
+                // Fetch values
+                var facid = $('button[data-toggle="modal"]').data('branch_id');
+                var facName = $('button[data-toggle="modal"]').data('facname');
+                var creditFee = $('button[data-toggle="modal"]').data('creditfee');
 
+                // Ensure that values are properly fetched
+                if (!facid || !facName || !creditFee) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Required parameters are missing.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+
+                var selectedBranches = [];
+                $('.branch-checkbox:checked').each(function() {
+                    selectedBranches.push($(this).val());
+                });
+
+                var formData = {
+                    id: facid,
+                    facName: facName,
+                    creditFee: creditFee,
+                    branches: JSON.stringify(selectedBranches) // Send only checked branches
+                };
+
+                $.ajax({
+                    url: 'actions/submitBranches.php',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json', // Explicitly tell jQuery to expect JSON response
+                    success: function(response) {
+                        if (response.status === 'success') {
                             Swal.fire({
-                                title: 'Manage Branches',
-                                html: `
-                            <form id="manageBranchesForm">
-                                <div class="form-group">
-                                    <label for="branches">Select Branches</label>
-                                    ${branchOptions}
-                                </div>
-                            </form>
-                        `,
-                                showCancelButton: true,
-                                confirmButtonText: 'Update',
-                                preConfirm: () => {
-                                    let selectedBranches = [];
-                                    $('#manageBranchesForm input:checked').each(function() {
-                                        selectedBranches.push($(this).val());
-                                    });
-                                    if (selectedBranches.length === 0) {
-                                        Swal.showValidationMessage('Please select at least one branch.');
-                                        return false;
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while updating branches.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        });
+
+        function editDepartmentHead(departmentID) {
+            $.ajax({
+                url: 'actions/get_current_employers.php', // Adjust the URL as needed
+                type: 'GET',
+                dataType: 'json',
+                success: function(employers) {
+                    let employerOptions = employers.map(emp =>
+                        `<option value="${emp.UserID}">${emp.Username} (${emp.Email})</option>`
+                    ).join('');
+
+                    Swal.fire({
+                        title: 'Edit Department Head',
+                        html: `
+                    <form id="editDepartmentHeadForm">
+                        <div class="form-group">
+                            <label for="newDepartmentHead">Select New Department Head</label>
+                            <select id="newDepartmentHead" class="form-control" required>
+                                <option value="">Select a new department head</option>
+                                ${employerOptions}
+                            </select>
+                        </div>
+                    </form>
+                `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Update',
+                        preConfirm: () => {
+                            const newDepartmentHead = $('#newDepartmentHead').val();
+                            if (!newDepartmentHead) {
+                                Swal.showValidationMessage('Please select a new department head.');
+                                return false;
+                            }
+                            return newDepartmentHead;
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: 'actions/update_department_head.php', // Adjust the URL as needed
+                                type: 'POST',
+                                data: {
+                                    departmentID: departmentID,
+                                    newHeadUserID: result.value
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        Swal.fire('Updated!', 'Department head has been updated.', 'success').then(() => {
+                                            location.reload(); // Reload page after confirmation
+                                        });
+                                    } else {
+                                        Swal.fire('Failed!', response.message, 'error');
                                     }
-                                    return selectedBranches;
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $.ajax({
-                                        url: 'actions/update_faculty_branches.php',
-                                        type: 'POST',
-                                        data: {
-                                            facultyID: facultyID,
-                                            branches: result.value
-                                        },
-                                        success: function(response) {
-                                            if (response.success) {
-                                                Swal.fire('Updated!', 'Branches have been updated.', 'success');
-                                                location.reload(); // Reload page to reflect the changes
-                                            } else {
-                                                Swal.fire('Failed!', response.message, 'error');
-                                            }
-                                        },
-                                        error: function() {
-                                            Swal.fire('Error!', 'An error occurred while updating branches.', 'error');
-                                        }
-                                    });
+                                },
+                                error: function() {
+                                    Swal.fire('Error!', 'An error occurred while updating the department head.', 'error');
                                 }
                             });
-                        },
-                        error: function() {
-                            Swal.fire('Error!', 'An error occurred while fetching all branches.', 'error');
                         }
                     });
                 },
                 error: function() {
-                    Swal.fire('Error!', 'An error occurred while fetching branches for the faculty.', 'error');
+                    Swal.fire('Error!', 'An error occurred while fetching current employers.', 'error');
+                }
+            });
+        }
+
+        function editDepartmentName(departmentID) {
+            Swal.fire({
+                title: 'Edit Department Name',
+                input: 'text',
+                inputLabel: 'New Department Name',
+                inputValue: '', // You can set this to the current name if needed
+                inputPlaceholder: 'Enter new department name',
+                showCancelButton: true,
+                confirmButtonText: 'Update',
+                cancelButtonText: 'Cancel',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Please enter a department name!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'actions/update_department_name.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            departmentID: departmentID,
+                            newDepartmentName: result.value
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Updated!', 'Department name has been updated.', 'success').then(() => {
+                                    location.reload(); // Reload page after confirmation
+                                });
+                            } else {
+                                Swal.fire('Failed!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'An error occurred while updating the department name.', 'error');
+                        }
+                    });
                 }
             });
         }

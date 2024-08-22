@@ -1,8 +1,23 @@
-<?php require_once('components/header.php'); ?>
+<?php
+require_once('DAL/retrieve.class.php');
+require_once('components/header.php');
+require_once('components/sidebar.php');
+require_once('components/navbar.php');
+$dataRetrieval = new UniversityDataRetrieval();
+
+// Fetch data
+$avgEarningsSemester = $dataRetrieval->getAverageEarningsPerSemester();
+$avgEarningsYear = $dataRetrieval->getAverageEarningsPerYear();
+$currentEnrollments = $dataRetrieval->getCurrentSemesterEnrollments();
+
+$enrollmentTrends = $dataRetrieval->getMonthlyEnrollments();
+
+$studentCountByBranch = $dataRetrieval->getStudentCountByBranch();
 
 
-<?php require_once('components/sidebar.php'); ?>
-<?php require_once('components/navbar.php'); ?>
+$recentNewsletters = $dataRetrieval->getRecentNewsletters();
+$openFacultyPositions = $dataRetrieval->getOpenFacultyPositions();
+?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -24,7 +39,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Average Earnings/Semester</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> $<?php echo number_format($avgEarningsSemester[0]['AverageEarningsPerSemester'], 2); ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -42,7 +57,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Average Earnings/Year</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> $<?php echo number_format($avgEarningsYear[0]['AverageEarningsPerYear'], 2); ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -61,7 +76,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Current Semester Enrollments
                             </div>
                             <div class="row no-gutters align-items-center">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">215,000</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"> <?php echo number_format($currentEnrollments[0]['CurrentSemesterEnrollments']); ?></div>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -81,7 +96,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Open Faculty Positions</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?php echo number_format($openFacultyPositions[0]['OpenFacultyPositions']); ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-business-time fa-2x text-gray-300"></i> <!-- Business time for open positions -->
@@ -104,18 +119,11 @@
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary"> Student Enrollment Trends</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-
-                    </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
+                        <canvas id="myAreaCharto"></canvas>
                     </div>
                 </div>
             </div>
@@ -127,21 +135,15 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary"> Student Enrollment Distribution by Branch</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
+                    <h6 class="m-0 font-weight-bold text-primary"> Student Count by Branch</h6>
 
-                    </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
+                        <canvas id="myPieCharto"></canvas>
                     </div>
-                    <div class="mt-4 text-center small">
+                    <!-- <div class="mt-4 text-center small">
                         <span class="mr-2">
                             <i class="fas fa-circle text-primary"></i> Direct
                         </span>
@@ -151,7 +153,7 @@
                         <span class="mr-2">
                             <i class="fas fa-circle text-info"></i> Referral
                         </span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -165,33 +167,30 @@
     <!-- Content Row -->
     <div class="row">
         <!-- Content Column -->
+        <?php
+        $topRevenueBranches = $dataRetrieval->getTotalRevenueByBranch();
+        $totalRevenue = array_sum(array_column($topRevenueBranches, 'TotalRevenue'));
+     
+        ?>
         <div class="col-lg-5 mb-4 d-flex align-items-stretch">
             <!-- Project Card Example -->
             <div class="card shadow w-100">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Revenue Distribution by Top 5 Branches</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Distribution by Top Branches</h6>
                 </div>
                 <div class="card-body pb-3">
-                    <h4 class="small font-weight-bold">Tripoli<span class="float-right">40%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Tyre<span class="float-right">10%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Khiara<span class="float-right">10%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Saida<span class="float-right">15%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Beirut<span class="float-right">5%</span></h4>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    <?php foreach ($topRevenueBranches as $branch) :
+                        // Calculate percentage of total revenue
+                        $percentage = ($branch['TotalRevenue'] / $totalRevenue) * 100;
+                    ?>
+                        <h4 class="small font-weight-bold">
+                            <?= $branch['BranchName']; ?>
+                            <span class="float-right"><?= round($percentage, 2); ?>%</span>
+                        </h4>
+                        <div class="progress mb-4">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: <?= $percentage; ?>%" aria-valuenow="<?= $percentage; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -204,27 +203,15 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">New Campus Initiatives</h5>
-                                <small class=" text-primary">1 day ago</small>
-                            </div>
-                            <p class="mb-1" style="font-size: 0.875rem;">We are excited to announce several new initiatives aimed at enhancing student life and academic excellence. Our new research center is now open, and we’ve introduced a series of workshops to support professional development.</p>
-                        </a>
-                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">Faculty Achievements</h5>
-                                <small class="text-primary">3 days ago</small>
-                            </div>
-                            <p class="mb-1" style="font-size: 0.875rem;">Congratulations to Dr. Jane Smith for receiving the prestigious National Teaching Award! Additionally, our Computer Science department has launched a new collaborative project with industry leaders.</p>
-                        </a>
-                        <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1 text-primary" style="font-size: 0.875rem;">Campus Facilities Upgrades</h5>
-                                <small class=" text-primary">3 days ago</small>
-                            </div>
-                            <p class="mb-1" style="font-size: 0.875rem;">We’ve completed major renovations in the library and student center to provide a more modern and comfortable environment. The new study rooms and lounge areas are now available for student use.</p>
-                        </a>
+                        <?php foreach ($recentNewsletters as $newsletter): ?>
+                            <a class="list-group-item list-group-item-action flex-column align-items-start border border-left-primary">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1 text-primary"><?php echo htmlspecialchars($newsletter['Title']); ?></h5>
+                                    <small class=" text-primary"><?php echo date('F j, Y', strtotime($newsletter['CreatedAt'])); ?></small>
+                                </div>
+                                <p class="mb-1"><?php echo htmlspecialchars($newsletter['Content']); ?></p>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
 
                 </div>
@@ -269,6 +256,134 @@
 
 
 <?php require_once("components/scripts.php"); ?>
+<script>
+    // Convert PHP data to JavaScript array
+    const enrollmentTrends = <?php echo json_encode($enrollmentTrends); ?>;
+
+    // Prepare the data for Chart.js
+    const years = enrollmentTrends.map(item => item.Year);
+    const enrollmentCounts = enrollmentTrends.map(item => parseInt(item.EnrollmentCount));
+    const cumulativeEnrollments = enrollmentTrends.map(item => parseInt(item.CumulativeEnrollment));
+
+    // Create the chart
+    const vtx = document.getElementById("myAreaCharto").getContext('2d');
+    const myAreaChart = new Chart(vtx, {
+        type: 'line', // Type 'line' for area chart with a filled area
+        data: {
+            labels: years, // X-axis labels
+            datasets: [{
+                label: "Enrollment Count",
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                hoverRadius: 0, // Disabling hover effects
+                hoverBackgroundColor: 'transparent',
+                hoverBorderColor: 'transparent',
+                data: enrollmentCounts, // Y-axis data for enrollment count
+            }, {
+                label: "Cumulative Enrollment",
+                lineTension: 0.3,
+                backgroundColor: "rgba(28, 200, 138, 0.05)",
+                borderColor: "rgba(28, 200, 138, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(28, 200, 138, 1)",
+                pointBorderColor: "rgba(28, 200, 138, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                hoverRadius: 0, // Disabling hover effects
+                hoverBackgroundColor: 'transparent',
+                hoverBorderColor: 'transparent',
+                data: cumulativeEnrollments, // Y-axis data for cumulative enrollment
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    time: {
+                        unit: 'year'
+                    },
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 7
+                    }
+                },
+                y: {
+                    ticks: {
+                        maxTicksLimit: 5,
+                        padding: 10,
+                        callback: function(value) {
+                            return value;
+                        }
+                    },
+                    grid: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }
+            },
+            legend: {
+                display: true // Show the legend
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: 'blue',
+                bodyColor: "#858796",
+                titleColor: '#6e707e',
+                borderColor: 'blue',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+
+                mode: 'index',
+                intersect: false,
+                caretPadding: 10
+            }
+        }
+    });
+
+    // Example for the pie chart
+    var ctx = document.getElementById("myPieCharto");
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: <?php echo json_encode(array_column($studentCountByBranch, 'BranchName')); ?>,
+            datasets: [{
+                data: <?php echo json_encode(array_column($studentCountByBranch, 'StudentCount')); ?>,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#e74a3b', '#f6c23e'],
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            legend: {
+                position: 'top'
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+            },
+        }
+    });
+</script>
+
+
 </body>
 
 </html>

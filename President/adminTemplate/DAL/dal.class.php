@@ -73,7 +73,7 @@ class DAL
         }
 
         // Execute the statement
-        $result = $stmt->execute();
+         $stmt->execute();
 
         // Check for errors
         if ($stmt->error) {
@@ -90,4 +90,5 @@ class DAL
         // Return the result for INSERT queries or the number of affected rows for UPDATE/DELETE
         return $affected_rows > 0;
     }
+    
 }

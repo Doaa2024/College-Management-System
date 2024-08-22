@@ -27,11 +27,13 @@ class UserManagement extends DAL
         return $this->execute($sql, [$newDepartmentHeadID, $departmentID]);
     }
 
-    public function add_faculty($facultyName, $creditFee)
+    public function add_faculty_branch($facultyID, $branchID)
     {
-        $sql = "INSERT INTO faculties (FacultyName, CreditFee) VALUES (?, ?)";
-        return $this->execute($sql, [$facultyName, $creditFee]);
+
+        $sql = "INSERT INTO faculty_branches (FacultyID, BranchID) VALUES (?, ?)";
+        $this->execute($sql, [$facultyID, $branchID]);
     }
+
 
     public function remove_faculty($facultyID)
     {
@@ -123,5 +125,83 @@ class UserManagement extends DAL
 
         // Execute the query with the provided faculty ID
         return $this->execute($sql, [$facultyID]);
+    }
+
+    function removeBranches($facultyID)
+    {
+        // Prepare the SQL statement to delete branches
+        $sql = "DELETE FROM faculty_branches WHERE facultyID = ?";
+        return $this->execute($sql, [$facultyID]);
+    }
+    public function getBranchesForFaculty($facultyID)
+    {
+        $sql = "
+        SELECT BranchID FROM faculty_branches WHERE FacultyID = ?
+    ";
+
+        $results = $this->getdata($sql, [$facultyID]);
+
+        // Extract branch IDs from the results
+        return array_map(function ($row) {
+            return $row['BranchID'];
+        }, $results);
+    }
+    public function updateHomeInfo($type, $title1, $title2, $description, $details, $id)
+    {
+        // Define the SQL query for updating data with `?` placeholders
+        $sql = "UPDATE home SET Type = ?, Title1 = ?, Title2 = ?, Description = ?, Details = ? WHERE temp_id = ?";
+
+        // Prepare parameters
+        $params = [$type, $title1, $title2, $description, $details, $id];
+
+        // Execute the query
+        return $this->execute($sql, $params);
+    }
+    public function updateAboutInfo($welcomeStatement, $presidentMessage, $history, $schoolsList, $curriculum, $id)
+    {
+        // Define the SQL query for updating data with `?` placeholders
+        $sql = "UPDATE about
+                SET WelcomeStatement = ?,
+                    PresidentMessage = ?,
+                    History = ?,
+                    SchoolsList = ?,
+                    Curriculum = ?
+                WHERE id = ?";
+
+        // Prepare parameters
+        $params = [$welcomeStatement, $presidentMessage, $history, $schoolsList, $curriculum, $id];
+
+        // Execute the query
+        return $this->execute($sql, $params);
+    }
+    public function updateMoreInfo($name, $welcomeStatement, $phoneNumber, $instagram, $facebook, $twitter, $linkedin, $email, $location)
+    {
+        // Define the SQL query for updating data with `?` placeholders
+        $sql = "UPDATE moreinfo 
+                SET welcomeStatement = ?, 
+                    PhoneNumber = ?, 
+                    Instagram = ?, 
+                    Facebook = ?, 
+                    Twitter = ?, 
+                    Linkedin = ?, 
+                    Email = ?, 
+                    Location = ? 
+                WHERE Name = ?";
+
+        // Prepare parameters
+        $params = [
+            $welcomeStatement,
+            $phoneNumber,
+            $instagram,
+            $facebook,
+            $twitter,
+            $linkedin,
+            $email,
+            $location,
+            $name
+        ];
+
+        // Execute the query
+        return $this->execute($sql, $params);
     }
 }

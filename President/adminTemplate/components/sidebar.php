@@ -23,11 +23,21 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="HomeDesign.php">
-                    <i class="fas fa-city"></i>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                   
+                    <i class="fas fa-palette"></i>
                     <span>Main Page Design</span>
                 </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="HomeDesign.php">  <i class="fas fa-fw fa-folder"></i> Home</a>
+                        <a class="collapse-item" href="aboutDesign.php">  <i class="fas fa-fw fa-folder"></i> About</a>
+                
+                        <a class="collapse-item" href="moreInfoDesign.php">  <i class="fas fa-fw fa-folder"></i> More Info</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -107,13 +117,13 @@
                 Human Resources
             </div>
             <li class="nav-item active">
-                <a class="nav-link" href="subPages/Students.php">
+                <a class="nav-link" href="Student.php">
                     <i class="fas fa-fw fa-user-graduate"></i>
                     <span>Students</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="subPages/Employees.php">
+                <a class="nav-link" href="employee.php">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Employees</span>
                 </a>
