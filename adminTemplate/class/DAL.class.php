@@ -108,27 +108,25 @@ class DAL
 
         return $results;
     }
-    public function movemultiplefiles($file, $i)
+    public function movemultiplefiles($image, $i)
     {
         $target_dir = "../assets/img/";
-        $target_file = $target_dir . basename($file["name"][$i]);
-        $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $img_name = str_replace("." . $extension, "", basename($file["name"][$i]));
+        $target_file = $target_dir . basename($image["name"][$i]); //p1.png
+        // var_dump($target_file);exit;
+        $extension = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); //png
+        // var_dump($extension);exit;
+        $img_name = str_replace("." . $extension, "", basename($image["name"][$i])); //p1
+        // var_dump($img_name);exit;
         $count = 0;
-        $image_name = $file["name"][$i];
-
+        $image_name = $image["name"][$i];
         while (file_exists($target_file)) {
-            $new_image = $img_name . "-" . $count . "." . $extension;
+            $new_image = $img_name . "-" . $count . "." . $extension; //p1-0.png
             $image_name = $new_image;
-            $target_file = $target_dir . $new_image;
+            $target_file = $target_dir . $new_image; //uploads/p1-0.png
+
             $count++;
         }
-
-        if (move_uploaded_file($file["tmp_name"][$i], $target_file)) {
-            return $image_name;
-        } else {
-            echo '<p>Failed to move file: ' . $file["name"][$i] . '</p>';
-            return false;
-        }
+        $res = move_uploaded_file($image["tmp_name"][$i], $target_file);
+        return $image_name;
     }
 }
