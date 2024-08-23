@@ -1,0 +1,71 @@
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 12
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 10
+            [1] => 11
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 10
+            [1] => 12
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 10
+            [1] => 12
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 2
+            [1] => 10
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)
+Received POST data: Array
+(
+    [facultyID] => 3
+    [branches] => Array
+        (
+            [0] => 1
+            [1] => 10
+        )
+
+    [facultyName] => Faculty of Health Sciences
+    [creditFee] => 300.00
+)

@@ -72,7 +72,7 @@ require_once('components/navbar.php');
                             <div class="card bg-primary text-white">
                                 <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                                     <h4>Employee Information</h4>
-                                    <a href="" id="visitEmployeePage" class="btn btn-light">Visit Employee Page</a>
+                                 
                                 </div>
                                 <div class="card-body">
                                     <p><strong>ID:</strong> ${employee.UserID}</p>
