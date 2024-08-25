@@ -9,11 +9,11 @@ $allInfo = $info->getAllInfo();
         <div class="row py-5">
             <div class="col-lg-7">
                 <h1 class="text-light mb-0">Subscribe our newsletter</h1>
-                <p class="text-secondary">Get the latest news and other tips</p>
+                <p class="text-secondary">Get the latest news of our university</p>
             </div>
             <div class="col-lg-5">
                 <div class="position-relative mx-auto">
-                    <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                    <input style="border-radius: 30px;" class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                     <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Subcribe</button>
                 </div>
             </div>
@@ -35,8 +35,8 @@ $allInfo = $info->getAllInfo();
                         <?= $nameWithoutLastLetter ?><span class="text-primary"><?= $lastLetter ?></span>
                     </h4>
 
-                    <p class="mb-4 text-secondary">Nostrud exertation ullamco labor nisi aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
-                    <a href="" class="btn btn-primary py-2 px-4">Donate Now</a>
+                    <p class="mb-4 text-secondary">Universities offer a broad range of academic program, aimed at equipping students with in-depth knowledge and critical thinking skills.</p>
+                    <a href="" class="btn btn-primary py-2 px-4">Login Now</a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
@@ -62,30 +62,30 @@ $allInfo = $info->getAllInfo();
                     <div class="d-flex flex-column align-items-start">
                         <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Home</a>
                         <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>About Us</a>
-                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Our Features</a>
+                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Transfer</a>
                         <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Contact us</a>
-                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Our Blog</a>
-                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Our Events</a>
-                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Donations</a>
-                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Sermons</a>
+                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Requirements</a>
+                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Freshman</a>
+                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>School</a>
+                        <a class="text-body mb-2" href=""><i class="fa fa-check text-primary me-2"></i>Calender</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="footer-item mt-5">
-                    <h4 class="text-light mb-4">Latest Post</h4>
+                    <h4 class="text-light mb-4">Success is our goal</h4>
                     <div class="d-flex border-bottom border-secondary py-4">
-                        <img src="img/blog-mini-1.jpg" class="img-fluid flex-shrink-0" alt="">
+                        <img src="img/college33.webp" class="img-fluid flex-shrink-0" alt="" style="height: 100px; width:100px">
                         <div class="ps-3">
-                            <p class="mb-0 text-muted">01 Jan 2045</p>
-                            <a href="" class="text-body">Lorem ipsum dolor sit amet elit eros vel</a>
+                            <p class="mb-0 text-muted">You born to shine</p>
+                            <p href="" class="text-body">We will lead you to always bright</p>
                         </div>
                     </div>
                     <div class="d-flex py-4">
-                        <img src="img/blog-mini-2.jpg" class="img-fluid flex-shrink-0" alt="">
+                        <img src="img/college32.jpg" class="img-fluid flex-shrink-0" alt="" style="height: 100px; width:100px">
                         <div class="ps-3">
-                            <p class="mb-0 text-muted">01 Jan 2045</p>
-                            <a href="" class="text-body">Lorem ipsum dolor sit amet elit eros vel</a>
+                            <p class="mb-0 text-muted">Our endless mission</p>
+                            <p href="" class="text-body">To make you a successful person</p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ $allInfo = $info->getAllInfo();
                 <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                 <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                 <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                Designed By <span class="border-bottom" style="color:orange;">doaa&ali</span>
             </div>
         </div>
     </div>
