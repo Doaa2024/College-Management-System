@@ -36,7 +36,19 @@
                                 <td><?php echo $FA['created_at']; ?></td>
                                 <td><?php echo $FA['updated_at']; ?></td>
                                 <td><?php echo $FA['FacultyName']; ?></td>
-                                <td><button class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
+                                <td>
+                                    <div style="display:flex; gap:10px">
+                                        <button class="btn btn-primary edit-btn"
+                                            data-id="<?php echo htmlspecialchars($FA['id']); ?>"
+                                            data-amount="<?php echo htmlspecialchars($FA['aid_amount']); ?>">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger delete-btn"
+                                            data-id="<?php echo htmlspecialchars($FA['id']); ?>">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </diV>
+                                </td>
                             </tr>
                         <?php
                         }
@@ -77,6 +89,98 @@
 </div>
 
 <?php require_once("components/scripts.php"); ?>
+<script>
+    $(document).ready(function() {
+        // Click event for the edit button
+        $(document).ready(function() {
+            // Click event for the edit button
+            $('#dataTable').on('click', '.edit-btn', function() {
+                var row = $(this).closest('tr');
+                var id = $(this).data('id');
+               
+                var amount = $(this).data('amount');
+              
+                Swal.fire({
+                    title: 'Update Aid Amount',
+                    input: 'number',
+                    inputValue: amount,
+                    showCancelButton: true,
+                    confirmButtonText: 'Update',
+                    cancelButtonText: 'Cancel',
+                    inputValidator: (value) => {
+                        if (!value || isNaN(value)) {
+                            return 'You need to enter a valid number!';
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'actions/update_status_FA.php', // Updated URL for clarity
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                id: id,
+                                aid_amount: result.value // Updated key for better understanding
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire('Updated!', 'The Aid Amount has been updated.', 'success');
+                                    // Optionally, update the aid amount on the page
+                                    row.find('td').eq(1).text(result.value); // Make sure this index is correct
+                                    window.location.reload();
+
+                                } else {
+                                    Swal.fire('Error!', response.message, 'error');
+                                }
+                            },
+                            error: function() {
+                                Swal.fire('Error!', 'An error occurred while updating the Aid Amount.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        $('#dataTable').on('click', '.delete-btn', function() {
+            var row = $(this).closest('tr');
+            var id = $(this).data('id');
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'actions/delete_FA.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Deleted!', 'The record has been deleted.', 'success');
+                                row.remove(); // Remove the row from the table
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'An error occurred while deleting the record.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+    });
+</script>
 </body>
 
 </html>

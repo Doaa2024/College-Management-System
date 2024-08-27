@@ -90,5 +90,5 @@ class DAL
         // Return the result for INSERT queries or the number of affected rows for UPDATE/DELETE
         return $affected_rows > 0;
     }
-    
+   
 }

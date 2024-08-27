@@ -3,16 +3,16 @@ require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
 ?>
-
+<?php $branchId = isset($_GET['branchId']) ? intval($_GET['branchId']) : 1; ?>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height:65vh">
     <div class="w-100">
         <form id="employeeSearchForm" class="mx-auto" style="max-width: 400px;">
             <h2 class="mb-4 text-center">Enter Employee ID</h2>
             <div class="form-group">
                 <input type="text" name="employee_id" id="employee_id" class="form-control" placeholder="Employee ID" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <button type="submit" data-id="<?=$branchId?>" class="btn btn-primary btn-block submitbtn">Submit</button>
         </form>
         <!-- Results will be displayed here -->
         <div id="EmployeeShownhere" class="mt-4 w-100"></div>
@@ -52,7 +52,7 @@ require_once('components/navbar.php');
     $(document).ready(function() {
         $('#employeeSearchForm').on('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
-
+            let branchId = $(".submitbtn").data('id');
             // Get the employee ID value
             var employeeId = $('#employee_id').val();
 
@@ -60,7 +60,8 @@ require_once('components/navbar.php');
                 url: 'actions/search_employee.php', // URL to the PHP script
                 type: 'POST',
                 data: {
-                    employee_id: employeeId
+                    employee_id: employeeId,
+                    branch_id :branchId
                 },
                 dataType: 'json',
                 success: function(response) {

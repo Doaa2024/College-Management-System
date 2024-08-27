@@ -50,16 +50,43 @@ class UniversityDataRetrieval extends DAL
         return $this->getdata($sql, []);
     }
 
-    public function getDepartments($facultyId = null)
+    public function getDepartmentsInBranch($branchID = null)
     {
-        $sql = "SELECT * FROM departments";
-        $params = [];
-        if ($facultyId) {
-            $sql .= " WHERE FacultyID = ?";
-            $params[] = $facultyId;
-        }
+        // Define the SQL query with JOINs to fetch departments based on the branchID
+        $sql = "
+            SELECT d.*, f.FaculityName
+            FROM departments d
+            INNER JOIN faculties f ON d.FacultyID = f.FacultyID
+            INNER JOIN faculty_branches fb ON f.FacultyID = fb.FacultyID
+            WHERE fb.BranchID = ? order by d.DepartmentID
+        ";
+
+        // Define the parameter for the branchID
+        $params = [$branchID];
+
+        // Fetch the data using the getdata method
         return $this->getdata($sql, $params);
     }
+    public function getFacInBranch($branchID = null)
+    {
+        // Define the SQL query with JOINs to fetch departments based on the branchID
+        $sql = " Select
+            fb.FacultyID, f.FaculityName
+            FROM faculty_branches fb
+            left JOIN faculties f ON fb.FacultyID = f.FacultyID
+            WHERE fb.BranchID = ?
+           
+
+        ";
+
+        // Define the parameter for the branchID
+        $params = [$branchID];
+
+        // Fetch the data using the getdata method
+        return $this->getdata($sql, $params);
+    }
+
+
     public function getDepartmentInfo($departmentId)
     {
         $sql = "SELECT d.*, 
@@ -105,14 +132,14 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT * FROM obligatorynewsletter ORDER BY IssueDate DESC LIMIT ? OFFSET ?";
         return $this->getdata($sql, [$limit, $offset]);
     }
-    
+
     public function getOptionalNewsletters($limit, $offset)
     {
         $sql = "SELECT * FROM optionalnewsletter ORDER BY IssueDate DESC LIMIT ? OFFSET ?";
         return $this->getdata($sql, [$limit, $offset]);
     }
-    
-    
+
+
 
     public function countObligatoryNewsletters()
     {
@@ -298,5 +325,17 @@ class UniversityDataRetrieval extends DAL
             LIMIT 5";
         $params = [$branchId];
         return $this->getdata($sql, $params);
+    }
+
+    public function getDepartment($departmentID)
+    {
+        $sql = "SELECT * FROM departments WHERE DepartmentID = ?";
+        $params = [$departmentID];
+        return $this->getdata($sql, $params);
+    }
+    public function getBranchHeadByBranchId($branchId)
+    {
+        $sql = "SELECT UserID FROM branches_heads WHERE BranchID = ?";
+        return $this->getData($sql, [$branchId]);
     }
 }
