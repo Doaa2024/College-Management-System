@@ -1,8 +1,8 @@
 <?php require_once('common/header.php'); ?>
 <?php
-require_once("class/academic.class.php");
-$academic = new Academic();
-$allFreshman = $academic->getFreshman();
+require_once("class/schools.class.php");
+$schools = new School();
+$allSchools = $schools->getSchools();
 ?>
 <style>
     /* Initially hide sections */
@@ -146,37 +146,16 @@ $allFreshman = $academic->getFreshman();
     <!-- Hero End -->
 
 
+    <?php foreach ($allSchools as $schools) { ?>
+        <section class="intro fade-in-section">
+            <div class="container">
+                <h2><?= nl2br(htmlspecialchars($schools['Schools'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></h2>
+                <p><?= nl2br(htmlspecialchars($schools['Description'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
+            </div>
+        </section>
 
-    <section class="intro fade-in-section">
-        <div class="container">
-            <h2>Welcome to Freshmen Program</h2>
-            <p><?= nl2br(htmlspecialchars($allFreshman[0]['FirstParagraph'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
-        </div>
-    </section>
+    <?php } ?>
 
-    <section class="requirements fade-in-section">
-        <div class="container">
-            <h2>Requirements</h2>
-            <ul>
-                <?php
-                // Assuming $allFreshman[0]['RequirementsList'] contains a string with requirements separated by new lines
-                $requirementsList = $allFreshman[0]['RequirementsList']; // Example: "High School Diploma\nSAT/ACT Scores\n..."
-                $requirementsArray = explode("\n", $requirementsList); // Split string into an array based on new lines
-                ?>
-
-                <?php foreach ($requirementsArray as $requirement): ?>
-                    <li><?php echo htmlspecialchars($requirement); ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </section>
-
-    <section class="conclusion fade-in-section">
-        <div class="container">
-            <p><?= nl2br(htmlspecialchars($allFreshman[0]['LastParagraph'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
-            <a href="#apply" class="btn-primary1">Apply Now</a>
-        </div>
-    </section>
 
 
     <?php require_once('common/footer.php'); ?>
