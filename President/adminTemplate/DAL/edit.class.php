@@ -204,4 +204,37 @@ class UserManagement extends DAL
         // Execute the query
         return $this->execute($sql, $params);
     }
+
+
+    public function lastInsertedFacID()
+    {
+        // Define the SQL query to get the last inserted FacultyID
+        $sql = "SELECT MAX(FacultyID) AS last_id FROM faculties";
+
+        // Execute the query and fetch the result
+        $result = $this->execute($sql, []);
+
+        // Assuming the result is an associative array, return the last inserted ID
+        return $result['last_id'];
+    }
+
+    public function insertFaculty($faculityName, $creditFee)
+    {
+        // Define the SQL query for inserting a new faculty
+        $sql = "INSERT INTO faculties (FaculityName, CreditFee) VALUES (?, ?)";
+        $params = [$faculityName, $creditFee];
+
+        // Execute the query
+        return $this->execute($sql, $params);
+    }
+
+    public function insertFacultyHead($facultyHead, $facultyID)
+    {
+        // Define the SQL query for inserting a faculty head
+        $sql = "INSERT INTO facultyheads (FacultyHeadID, FacultyID) VALUES (?, ?)";
+        $params = [$facultyHead, $facultyID];
+
+        // Execute the query
+        return $this->execute($sql, $params);
+    }
 }

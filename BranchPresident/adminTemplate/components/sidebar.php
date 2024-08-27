@@ -1,5 +1,5 @@
 <body id="page-top">
-
+<?php $branchId = isset($_GET['branchId']) ? intval($_GET['branchId']) : 1;?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -7,7 +7,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php?branchId=<?php echo $branchId; ?>">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-school"></i>
                 </div>
@@ -19,7 +19,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="index.php?branchId=<?php echo $branchId; ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -34,9 +34,12 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="attensations.php"> <i class="fas fa-certificate"></i> Attestations</a>
-                        <a class="collapse-item" href="petition.php"> <i class="fas fa-file-alt"></i> Petitions</a>
-                        <a class="collapse-item" href="financial.php"> <i class="fas fa-dollar-sign"></i> Financial Aids</a>
+                        <a class="collapse-item" href="attensations.php?branchId=<?php echo $branchId; ?>">
+                            <i class="fas fa-certificate"></i> Attestations</a>
+                        <a class="collapse-item" href="petition.php?branchId=<?php echo $branchId; ?>">
+                            <i class="fas fa-file-alt"></i> Petitions</a>
+                        <a class="collapse-item" href="financial.php?branchId=<?php echo $branchId; ?>">
+                            <i class="fas fa-dollar-sign"></i> Financial Aids</a>
                     </div>
                 </div>
             </li>
@@ -49,13 +52,13 @@
                 Structure
             </div>
             <li class="nav-item active">
-                <a class="nav-link" href="Faculties.php">
+                <a class="nav-link" href="Faculties.php?branchId=<?php echo $branchId; ?>">
                     <i class="fas fa-building"></i>
                     <span>Faculties</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="departments.php">
+                <a class="nav-link" href="departments.php?branchId=<?php echo $branchId; ?>">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Departments</span>
                 </a>
@@ -69,13 +72,13 @@
                 Human Resources
             </div>
             <li class="nav-item active">
-                <a class="nav-link" href="Student.php">
+                <a class="nav-link" href="Student.php?branchId=<?php echo $branchId; ?>">
                     <i class="fas fa-search"></i>
                     <span>Search Students</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="employee.php">
+                <a class="nav-link" href="employee.php?branchId=<?php echo $branchId; ?>">
                     <i class="fas fa-search"></i>
                     <span>Search Employees</span>
                 </a>
@@ -96,8 +99,10 @@
                 </a>
                 <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="pnl.php"> <i class="fas fa-share-square"></i> Publish News Letter</a>
-                        <a class="collapse-item" href="vnl.php"> <i class="fas fa-eye"></i> View News Letters</a>
+                        <a class="collapse-item" href="pnl.php?branchId=<?php echo $branchId; ?>">
+                            <i class="fas fa-share-square"></i> Publish News Letter</a>
+                        <a class="collapse-item" href="vnl.php?branchId=<?php echo $branchId; ?>">
+                            <i class="fas fa-eye"></i> View News Letters</a>
                     </div>
                 </div>
             </li>

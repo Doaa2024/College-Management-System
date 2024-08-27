@@ -57,12 +57,14 @@ class DAL
 
         // Check if the connection was successful
         if ($conn->connect_error) {
+            error_log('Connection failed: ' . $conn->connect_error);
             throw new Exception('Connection failed: ' . $conn->connect_error);
         }
 
         // Prepare the SQL statement
         $stmt = $conn->prepare($sql);
         if ($stmt === false) {
+            error_log('Prepare failed: ' . $conn->error);
             throw new Exception('Prepare failed: ' . $conn->error);
         }
 
@@ -73,10 +75,11 @@ class DAL
         }
 
         // Execute the statement
-         $stmt->execute();
+        $stmt->execute();
 
         // Check for errors
         if ($stmt->error) {
+            error_log('Execute failed: ' . $stmt->error);
             throw new Exception('Execute failed: ' . $stmt->error);
         }
 
@@ -90,5 +93,4 @@ class DAL
         // Return the result for INSERT queries or the number of affected rows for UPDATE/DELETE
         return $affected_rows > 0;
     }
-    
 }
