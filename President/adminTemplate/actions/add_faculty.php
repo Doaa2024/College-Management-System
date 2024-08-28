@@ -44,7 +44,7 @@ try {
 
     // Insert into facultyheads table
  
-    $dataRetrieval->insertFacultyHead($facultyHead, $facultyID);
+    $dataRetrieval->insertFacultyHead($facultyHead, $facultyID[0]['last_id']);
 
     // If everything is successful
     $response['success'] = true;
