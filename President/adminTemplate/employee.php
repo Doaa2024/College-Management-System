@@ -3,24 +3,28 @@ require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
 ?>
-
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column justify-content-center align-items-center">
-    <div class="w-100">
-        <form id="employeeSearchForm" class="mx-auto" style="max-width: 400px;">
-            <h2 class="mb-4 text-center">Enter Employee ID</h2>
-            <div class="form-group">
-                <input type="text" name="employee_id" id="employee_id" class="form-control" placeholder="Employee ID" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-        <!-- Results will be displayed here -->
-        <div id="EmployeeShownhere" class="mt-4 w-100"></div>
+<div class="container-fluid d-flex flex-column" style="min-height: 80vh;">
+    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100">
+        <div class="w-100">
+            <form id="employeeSearchForm" class="mx-auto" style="max-width: 400px;">
+                <h2 class="mb-4 text-center">Enter Employee ID</h2>
+                <div class="form-group">
+                    <input type="text" name="employee_id" id="employee_id" class="form-control" placeholder="Employee ID" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <!-- Results will be displayed here -->
+            <div id="EmployeeShownhere" class="mt-4 w-100"></div>
+        </div>
     </div>
 </div>
 <!-- End Page Content -->
 
-<?php require_once("components/footer.php"); ?>
+<!-- Footer -->
+<div class="w-100 mt-auto">
+    <?php require_once("components/footer.php"); ?>
+</div>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
@@ -45,6 +49,7 @@ require_once('components/navbar.php');
         </div>
     </div>
 </div>
+
 
 <?php require_once("components/scripts.php"); ?>
 
