@@ -212,10 +212,10 @@ class UserManagement extends DAL
         $sql = "SELECT MAX(FacultyID) AS last_id FROM faculties";
 
         // Execute the query and fetch the result
-        $result = $this->execute($sql, []);
+        $result = $this->getdata($sql, []);
 
         // Assuming the result is an associative array, return the last inserted ID
-        return $result['last_id'];
+        return $result;
     }
 
     public function insertFaculty($faculityName, $creditFee)

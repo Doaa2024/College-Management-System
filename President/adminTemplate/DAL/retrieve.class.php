@@ -290,4 +290,5 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT * FROM `moreinfo`";
         return $this->getData($sql);
     }
+
 }

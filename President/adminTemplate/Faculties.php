@@ -7,6 +7,8 @@ require_once('DAL/retrieve.class.php');
 $universityData = new UniversityDataRetrieval();
 $faculties = $universityData->getAllFaculties();
 $employees = $universityData->getAllOtherEmployees();
+
+
 ?>
 <!-- Add Faculty Modal -->
 <!-- Add Faculty Modal -->
@@ -169,6 +171,9 @@ $employees = $universityData->getAllOtherEmployees();
             var creditFee = $('#creditFee').val();
             var facultyHead = $('#facultyHead').val();
 
+            console.log(faculityName);
+            console.log(creditFee);
+            console.log(facultyHead);
             // Create data object
             var data = {
                 faculityName: faculityName,
