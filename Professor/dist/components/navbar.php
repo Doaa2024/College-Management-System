@@ -8,10 +8,9 @@
                             <img src="./demo/brand/tabler.svg" class="header-brand-img" alt="tabler logo">
                         </a>
                         <div class="d-flex order-lg-2 ml-auto">
-
                             <div class="dropdown d-none d-md-flex">
                                 <a class="nav-link icon" data-toggle="dropdown">
-                                    <i class="fe fe-bell"></i>
+                                    <i class="fe fe-bell"></i>                                                                    
                                     <span class="nav-unread"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -22,9 +21,7 @@
                                             <div class="small text-muted">10 minutes ago</div>
                                         </div>
                                     </a>
-
                                     <div class="dropdown-divider"></div>
-
                                 </div>
                             </div>
                             <div class="dropdown">
@@ -66,57 +63,24 @@
                                 <li class="nav-item">
                                     <a href="./index.html" class="nav-link active"><i class="fe fe-home"></i> Home</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i> Classes</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./cards.html" class="dropdown-item ">Cards design</a>
-                                        <a href="./charts.html" class="dropdown-item ">Charts</a>
-                                        <a href="docs/charts.html" class="dropdown-item ">Charts++</a>
-                                        <a href="docs/avatars.html" class="dropdown-item ">Avatars</a>
-
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fa fa-credit-card"></i>
-                                    Payments</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                        <a href="./store.html" class="dropdown-item ">Store</a>
-                                        <a href="./blog.html" class="dropdown-item ">Blog</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-file-text"></i> Plan of Study</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-calendar"></i>Registration</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./docs/index.html" class="nav-link"><i class="fe fe-file-text"></i> Online Services</a>
-                                </li>
 
                                 <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-file"></i> Pages</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./profile.html" class="dropdown-item ">Profile</a>
-
-                                        <a href="./empty.html" class="dropdown-item ">Empty page</a>
-
-                                    </div>
+                                    <a href="./Courses.php" class="nav-link"><i class="fe fe-book"></i> Courses</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a href="./form-elements.html" class="nav-link"><i class="fe fe-check-square"></i> Forms</a>
+                                    <a href="./OA.php" class="nav-link"><i class="fe fe-check-square"></i> Office Hours</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="./gallery.html" class="nav-link"><i class="fe fe-image"></i> Gallery</a>
+                                <li class="nav-item dropdown">
+                                    <a href="./Schedule.php" class="nav-link"><i class="fe fe-check-square"></i> Schedule</a>
                                 </li>
-                               
+                                <li class="nav-item dropdown">
+                                    <a href="./RC.php" class="nav-link"><i class="fe fe-check-square"></i> Register Courses</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="./Salary.php" class="nav-link"><i class="fe fe-check-square"></i> Salary</a>
+                                </li>
+                              
+
                             </ul>
                         </div>
                     </div>
