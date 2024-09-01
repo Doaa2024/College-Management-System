@@ -12,13 +12,13 @@ class UniversityDataRetrieval extends DAL
 
     public function getAllProfessors()
     {
-        $sql = "SELECT * FROM users WHERE Role = 'Professor' AND Status = 'Active'";
+        $sql = "SELECT * FROM users WHERE Role = 'Professor'";
         return $this->getdata($sql, []);
     }
 
     public function getAllOtherEmployees()
     {
-        $sql = "SELECT * FROM users WHERE Role NOT IN ('Student', 'Professor') AND Status = 'Active'";
+        $sql = "SELECT * FROM users WHERE Role != 'Student' ";
         return $this->getdata($sql, []);
     }
 
@@ -290,4 +290,5 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT * FROM `moreinfo`";
         return $this->getData($sql);
     }
+
 }

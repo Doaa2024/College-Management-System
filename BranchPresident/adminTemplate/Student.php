@@ -3,17 +3,18 @@
 require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
-?>
 
+?>
+<?php $branchId = isset($_GET['branchId']) ? intval($_GET['branchId']) : 1; ?>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="min-height:65vh">
     <div class="w-100">
         <form id="studentSearchForm" class="mx-auto" style="max-width: 400px;">
             <h2 class="mb-4 text-center">Enter Student ID</h2>
             <div class="form-group">
                 <input type="text" name="student_id" id="student_id" class="form-control" placeholder="Student ID" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <button type="submit" data-id="<?=$branchId?>" class="btn btn-primary btn-block submitbtn">Submit</button>
         </form>
         <!-- Results will be displayed here -->
         <div id="StudentShownhere" class="mt-4 w-100"></div>
@@ -55,15 +56,17 @@ require_once('components/navbar.php');
     $(document).ready(function() {
         $('#studentSearchForm').on('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
-
+            let branchId = $(".submitbtn").data('id');
+        
             // Get the student ID value
             var studentId = $('#student_id').val();
-
+            
             $.ajax({
                 url: 'actions/search_student.php', // URL to the PHP script
                 type: 'POST',
                 data: {
-                    student_id: studentId
+                    student_id: studentId,
+                    branch_id :branchId
                 },
                 dataType: 'json',
                 success: function(response) {

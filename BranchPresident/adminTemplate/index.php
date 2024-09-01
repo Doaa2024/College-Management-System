@@ -247,6 +247,7 @@ $availableRoomsCount = $availableRooms[0]['AvailableRoomCount'];
 <?php require_once("components/scripts.php"); ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <?php
 // Fetch the data
 $yearlyEnrollmentVsCoursesData = $dataRetrieval->getEnrollmentVsDemand();
@@ -342,6 +343,55 @@ $studentEnrollmentByDepartmentJson = json_encode($studentEnrollmentByDepartment)
             }
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    // Select the generate report button
+    const generatePDFBtn = document.getElementById('generate-pdf');
+
+    // Add click event to the button
+    generatePDFBtn.addEventListener('click', function () {
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'pt', 'a4');
+
+        // Capture text data from the cards at the top
+        const totalStudents = '<?php echo number_format($totalStudentsCount); ?>';
+        const coursesOffered = '<?php echo number_format($coursesCount); ?>';
+        const branchRevenue = '<?php echo number_format($branchRevenueTotal, 2); ?>';
+        const availableRooms = '<?php echo $availableRoomsCount; ?>';
+
+        // Add card data to the PDF
+        doc.setFontSize(16);
+        doc.text('Dashboard Report', 40, 40);
+        doc.setFontSize(12);
+        doc.text(`Students Enrolled: ${totalStudents}`, 40, 70);
+        doc.text(`Courses Offered In Current Semester: ${coursesOffered}`, 40, 90);
+        doc.text(`Revenue Generated in Branch: $${branchRevenue}`, 40, 110);
+        doc.text(`Rooms Available: ${availableRooms}`, 40, 130);
+
+        // Capture charts as images using html2canvas
+        const areaChart = document.getElementById('myAreaCharto');
+        const pieChart = document.getElementById('myPieCharto');
+
+        // Use html2canvas to capture area chart snapshot
+        html2canvas(areaChart).then(function (canvasArea) {
+            const imgDataArea = canvasArea.toDataURL('image/png');
+            doc.addImage(imgDataArea, 'PNG', 40, 160, 500, 300); // Add area chart image to PDF
+
+            // Use html2canvas to capture pie chart snapshot
+            html2canvas(pieChart).then(function (canvasPie) {
+                const imgDataPie = canvasPie.toDataURL('image/png');
+
+                // Create a new page for pie chart
+                doc.addPage();
+                doc.addImage(imgDataPie, 'PNG', 40, 40, 500, 300); // Add pie chart image to PDF
+
+                // Save the PDF
+                doc.save('dashboard-report.pdf');
+            });
+        });
+    });
+});
+
 </script>
 
 

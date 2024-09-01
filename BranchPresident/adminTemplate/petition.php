@@ -36,7 +36,20 @@
                                 <td><?php echo $petition['petition_date']; ?></td>
                                 <td><?php echo $petition['status']; ?></td>
                                 <td><?php echo $petition['description']; ?></td>
-                                <td><button class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
+                               
+                                <td>
+                                        <div style="display:flex; gap:10px">
+                                            <button class="btn btn-primary edit-btn"
+                                                data-id="<?php echo htmlspecialchars($petition['id']); ?>"
+                                                data-status="<?php echo htmlspecialchars($petition['status']); ?>">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger delete-btn"
+                                                data-id="<?php echo htmlspecialchars($petition['id']); ?>">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </diV>
+                                    </td>
                             </tr>
                         <?php
                         }
@@ -76,6 +89,96 @@
 </div>
 
 <?php require_once("components/scripts.php"); ?>
+<script> $(document).ready(function() {
+        // Click event for the edit button
+        $('#dataTable').on('click', '.edit-btn', function() {
+            var row = $(this).closest('tr');
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+
+            Swal.fire({
+                title: 'Update Status',
+                input: 'select',
+                inputOptions: {
+                    'Pending': 'Pending',
+                    'Approved': 'Approved',
+                    'Rejected': 'Rejected'
+                },
+                inputValue: status,
+                showCancelButton: true,
+                confirmButtonText: 'Update',
+                cancelButtonText: 'Cancel',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to select a status!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'actions/update_status_pet.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: id,
+                            newStatus: result.value
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Updated!', 'The status has been updated.', 'success');
+                                // Optionally, update the status on the page
+                                row.find('td').eq(3).text(result.value); // Update status cell
+                                window.location.reload();
+
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'An error occurred while updating the status.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+        $('#dataTable').on('click', '.delete-btn', function() {
+            var row = $(this).closest('tr');
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'actions/delete_pet.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('Deleted!', 'The record has been deleted.', 'success');
+                                row.remove(); // Remove the row from the table
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'An error occurred while deleting the record.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+    });</script>
 </body>
 
 </html>

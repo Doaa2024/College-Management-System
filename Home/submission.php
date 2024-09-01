@@ -1,9 +1,11 @@
+
 <?php
 if (isset($_GET['insertion'])) {
     $id = $_GET['insertion'];
     // Process $insertion here
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,7 +102,11 @@ if (isset($_GET['insertion'])) {
                     <i class="bi bi-check-circle-fill"></i> <!-- Updated icon -->
                 </div>
                 <h1 class="display-1">Apply Now</h1>
+
                 <h1 class="mb-4">You Application ID is <?= $id ?></h1>
+
+                <h1 class="mb-4">Form Submit</h1>
+
                 <p class="mb-4">Your form has been submitted successfuly! Thank You for you cooperation...</p>
                 <a class="btn btn-primary py-3 px-4" href="main.php">Go Back To Home</a>
             </div>
