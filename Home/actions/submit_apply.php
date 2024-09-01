@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Define the insertion value in JavaScript
             var insertionValue = ' . $insertionValue . ';
             // Redirect to the URL with the encoded parameter
-            window.location.href = "http://localhost/mosque-website-template/mosque-website-template/submission.php?insertion=" + encodeURIComponent(insertionValue);
+            window.location.href = "http://localhost/mosque-website-template/Home/submission.php?insertion=" + encodeURIComponent(insertionValue);
         </script>';
     } else {
         echo '<p>A technical error have been occured</p>';
