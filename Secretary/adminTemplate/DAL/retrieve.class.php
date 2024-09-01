@@ -76,7 +76,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
     }
     function getCampus()
     {
-        $sql = "SELECT BranchName  FROM branches ";
+        $sql = "SELECT *  FROM branches ";
 
         return $this->getdata($sql);
     }
@@ -90,7 +90,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
 
     function getFaculty()
     {
-        $sql = "SELECT FaculityName FROM faculties";
+        $sql = "SELECT * FROM faculties";
 
         return $this->getdata($sql);
     }
@@ -318,6 +318,24 @@ AND YEAR(application_date) = YEAR(CURDATE())
                 WHERE u.Role = 'Student'
                 GROUP BY b.BranchID, b.BranchName";
         return $this->getData($sql);
+    }
+    public function getEmployee()
+    {
+        $sql = "SELECT * FROM users 
+WHERE Role NOT IN ('Student', 'President')
+";
+
+
+        return $this->getData($sql, []);
+    }
+    public function getStudents()
+    {
+        $sql = "SELECT * FROM users 
+WHERE Role='Student'
+";
+
+
+        return $this->getData($sql, []);
     }
 
     public function getTotalRevenueByBranch()

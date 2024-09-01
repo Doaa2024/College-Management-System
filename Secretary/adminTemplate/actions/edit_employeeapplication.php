@@ -1,33 +1,52 @@
 <?php
-// Include necessary files or classes here if needed
 require_once('../DAL/edit.class.php');
-$response = array('success' => false, 'message' => '');
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve POST data
-    // Debugging output
 
+$response = array('success' => false, 'message' => '');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userManagement = new UserManagement();
     $reviewedBy = $_POST['reviewedBy'];
     $reviewedAt = $_POST['reviewedAt'];
     $status = $_POST['status'];
     $id = $_POST['record_id'];
 
-    // Create an instance of the data retrieval class
-    $dataFetch = new UserManagement();
+    if ($status === 'Approved') {
+        $chosen_school = $_POST['chosen_school'];
+        $campus = $_POST['campus'];
+        $role = $_POST['role'];
+        $username = $_POST['username'];
 
-    // Call the update function
-    $result = $dataFetch->updateProfessorApplication($reviewedBy, $reviewedAt, $status, $id);
+        $last_id = $userManagement->maxID();
+        $email = ($last_id[0]['last_id'] + 1) . "@gmail.dau.edu.employee.lb";
 
-    // Send JSON response
-    $result1 = $dataFetch->searchEmployeeApplicationByIDAgain($id);
+        function generateRandomPassword($length = 8)
+        {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomPassword = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomPassword .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomPassword;
+        }
+
+        $password = generateRandomPassword(8);
+        $result2 = $userManagement->register_employee($username, $email, $role, $campus, $chosen_school, $password);
+    }
+
+    $result = $userManagement->updateProfessorApplication($reviewedBy, $reviewedAt, $status, $id);
+    $result1 = $userManagement->searchEmployeeApplicationByIDAgain($id);
 
     if ($result) {
         $response['success'] = true;
-        $response['data'] = $result1[0]; // Assuming $result is an array of results
+        $response['data'] = $result1[0];
+        $response['message'] = 'Record Updated Successfully!';
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to update record.']);
+        $response['message'] = 'Failed to update record.';
     }
 } else {
-    // Not a POST request
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    $response['message'] = 'Invalid request method.';
 }
+
+header('Content-Type: application/json');
 echo json_encode($response);

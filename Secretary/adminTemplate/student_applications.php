@@ -28,7 +28,7 @@ require_once('components/navbar.php');
     }
 </style>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column justify-content-center" style="min-height: 60vh;">
+<div class="container-fluid d-flex flex-column justify-content-center" style="min-height: 85vh;">
     <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100">
         <div class="w-100">
             <form id="studentSearchForm" class="mx-auto" style="max-width: 400px;">
@@ -98,23 +98,25 @@ require_once('components/navbar.php');
                     if (response.success) {
                         // Generate HTML for student information
                         var student = response.data;
-                        // ?student_id=${student.UserID}
+                        var approveButtonHtml = student.Status === 'Approved' ?
+                            `<button type="button" class="btn btn-success icon-button" disabled style="background-color:white; color:blue;">Approved</button>` :
+                            `<button type="button" class="btn btn-warning icon-button" style="background-color:white; color:blue; border:2px solid blue"
+                               id="icon-button-${student.application_id}"
+                               data-id="${student.application_id}" 
+                               data-faculty="${student.chosen_school}" 
+                               data-department="${student.chosen_major}" 
+                               data-branch="${student.campus}" 
+                               data-username="${student.first_name} ${student.last_name}">
+                           Approve
+                           </button>`;
                         var studentInfoHtml = `
-                           <div class="card bg-primary text-white">
-                               <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                                    <h4>Student Application Information</h4>
-                                     <button type="button" class="btn btn-warning icon-button" 
-        data-id="${student.application_id}" 
-        data-faculty="${student.chosen_school}" 
-        data-department="${student.chosen_major}" 
-        data-branch="${student.school_branch}" 
-        data-username="${student.first_name} ${student.last_name}">
-    Approve
-</button>
-
-                                </div>
-                                <div class="card-body">
-                                <p><strong>ApplicationID:</strong> ${student.application_id}</p>
+                        <div class="card bg-primary text-white">
+                            <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                                <h4>Student Application Information</h4>
+                              ${approveButtonHtml}
+                            </div>
+                            <div class="card-body">
+                                                       <p><strong>ApplicationID:</strong> ${student.application_id}</p>
 <p><strong>Campus:</strong> ${student.campus}</p>
 <p><strong>Semester:</strong> ${student.semester}</p>
 <p><strong>Application Date:</strong> ${student.application_date}</p>
@@ -153,9 +155,7 @@ require_once('components/navbar.php');
 <p><strong>School From Date:</strong> ${student.school_from_date}</p>
 <p><strong>School To Date:</strong> ${student.school_to_date}</p>
 <p><strong>Diploma Type:</strong> ${student.diploma_type}</p>
-<p><strong>School Branch:</strong> ${student.school_branch}</p>
 <p><strong>School Year:</strong> ${student.school_year}</p>
-<p><strong>School Course:</strong> ${student.school_course}</p>
 <p><strong>Candidate Number:</strong> ${student.candidate_number}</p>
 <p><strong>Country of Study:</strong> ${student.country_of_study}</p>
 <p><strong>Certificate Source:</strong> ${student.certificate_source}</p>
@@ -166,37 +166,37 @@ require_once('components/navbar.php');
 <p><strong>Chosen School:</strong> ${student.chosen_school}</p>
 <p><strong>Chosen Major:</strong> ${student.chosen_major}</p>
 <p><strong>Application Source:</strong> ${student.application_source}</p>
-
-                                    <!-- Add more fields as needed -->
-                                </div>
+                                <!-- Add more fields as needed -->
                             </div>
-
-                        `;
+                        </div>
+                    `;
 
                         // Insert HTML into the div
                         $('#StudentShownhere').html(studentInfoHtml);
                     } else {
                         // Show error message in the div
                         $('#StudentShownhere').html(`
-                            <div class="alert alert-danger" role="alert">
-                                ${response.message}
-                            </div>
-                        `);
+                        <div class="alert alert-danger" role="alert">
+                            ${response.message}
+                        </div>
+                    `);
                     }
                 },
                 error: function() {
                     // Show error message in the div
                     $('#StudentShownhere').html(`
-                        <div class="alert alert-danger" role="alert">
-                            An error occurred while processing your request.
-                        </div>
-                    `);
+                    <div class="alert alert-danger" role="alert">
+                        An error occurred while processing your request.
+                    </div>
+                `);
                 }
             });
         });
-    });
-    $(document).ready(function() {
-        $('.icon-button').on('click', function() {
+
+        // Use event delegation to handle the click event on the dynamically generated button
+        $('#StudentShownhere').on('click', '.icon-button', function() {
+            console.log("Entered");
+
             var applicationId = $(this).data('id');
             var faculty = $(this).data('faculty');
             var department = $(this).data('department');
@@ -214,16 +214,28 @@ require_once('components/navbar.php');
                     username: username
                 },
                 success: function(response) {
-                    // Use SweetAlert to show a success message
-                    Swal.fire({
-                        title: 'Approved!',
-                        text: 'The application has been successfully approved.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
+                    if (response.status = 'success') {
+                        // Update the button text and disable it
+                        var button = $(`[data-id="${applicationId}"]`);
+                        button.text('Approved'); // Change text to "Approved"
+                        button.prop('disabled', true); // Disable the button
+
+                        Swal.fire({
+                            title: 'Approved!',
+                            text: 'Student is registered successfully',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to register student',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
-                    // Handle errors with SweetAlert
                     Swal.fire({
                         title: 'Error!',
                         text: 'There was an issue approving the application. Please try again.',

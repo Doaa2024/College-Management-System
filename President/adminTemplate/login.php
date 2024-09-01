@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("class/DAL.class.php");
+require("DAL/dal.class.php");
 $dal = new DAL();
 $error = '';
 $done = 'True';
@@ -12,19 +12,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST['password'];
 
         // Retrieve the hashed password from the database based on the username
-        $sql_user = "SELECT Role, Password FROM users WHERE Username = ?";
+        $sql_user = "SELECT Role, Password,UserID FROM users WHERE Username = ?";
         $params = array($username);
 
+
         // Check employee table first
-        $result = $dal->data($sql_user, $params);
+        $result = $dal->getdata($sql_user, $params);
         if ($result && count($result) > 0) {
             $storedPasswordHash = $result[0]['Password'];
             $user_type = $result[0]['Role'];
-
+            $userID = $result[0]['UserID'];
             // Verify the user-provided password against the stored hash
             if (password_verify($password, $storedPasswordHash) && $user_type == 'President') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
                 $_SESSION['login'] = true;
 
                 echo "<script>
@@ -39,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $storedPasswordHash) && $user_type == 'Secretary') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
                 $_SESSION['login'] = true;
 
                 echo "<script>

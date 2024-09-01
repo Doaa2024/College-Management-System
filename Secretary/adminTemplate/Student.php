@@ -4,8 +4,31 @@ require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
 ?>
+<style>
+    .icon-button {
+        background-color: white;
+        margin-right: 1%;
+        color: blue;
+        border-color: blue;
+        font-size: 1rem;
+        /* Base font size */
+        padding: 0.5rem 1rem;
+        /* Base padding */
+        border-radius: 40px;
+        /* Base border radius */
+        transition: all 0.3s ease;
+        /* Smooth transition */
+    }
+
+    /* Hover effect */
+    .icon-button:hover {
+        background-color: blue;
+        color: white;
+        border-color: blue;
+    }
+</style>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column justify-content-center" style="min-height: 60vh;">
+<div class="container-fluid d-flex flex-column justify-content-center" style="min-height: 85vh;">
     <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100">
         <div class="w-100">
             <form id="studentSearchForm" class="mx-auto" style="max-width: 400px;">
@@ -80,7 +103,7 @@ require_once('components/navbar.php');
                            <div class="card bg-primary text-white">
                                <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                                     <h4>Student Information</h4>
-                                    <a href="../../Student/dist/index.php?student_id=${student.UserID}" id="visitStudentPage" class="btn btn-light">Visit Student Page</a>
+                                    <a href="../../Student/dist/index.php?student_id=${student.UserID}" id="visitStudentPage" class="btn btn-light icon-button">Visit Student Page</a>
                                 </div>
                                 <div class="card-body">
                                     <p><strong>ID:</strong> ${student.UserID}</p>

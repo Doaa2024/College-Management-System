@@ -69,8 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($cv_file_name && $cover_letter_file_name && ($additional_files_name !== false || $additional_files_name === null)) {
         // Insert into the database if all files are successfully uploaded
         $insertion = $apply->insertApplicationJob($position, $comments, $cv_file_name, $additional_files_name, $cover_letter_file_name);
+
+
+        if ($insertion) {
+            $insertionValue = json_encode($insertion);
+
+            // Output the URL redirection with PHP variable correctly embedded
+            echo '<script>
+                // Define the insertion value in JavaScript
+                var insertionValue = ' . $insertionValue . ';
+                // Redirect to the URL with the encoded parameter
+                window.location.href = "http://localhost/mosque-website-template/Home/submission.php?insertion=" + encodeURIComponent(insertionValue);
+            </script>';
+
+
         if ($insertion) {
             echo '<script>window.location.href="http://localhost/collegeMS/mosque-website-template/mosque-website-template/submission.php"</script>';
+
         } else {
             echo '<p>Database insertion failed.</p>';
         }
