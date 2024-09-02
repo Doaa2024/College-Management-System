@@ -105,10 +105,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $application_source
     );
     if ($result) {
-        echo '<script>window.location.href="http://localhost/collegeMS/mosque-website-template/mosque-website-template/submission.php" </script>';
+        $insertionValue = json_encode($result);
+
+        // Output the URL redirection with PHP variable correctly embedded
+        echo '<script>
+            // Define the insertion value in JavaScript
+            var insertionValue = ' . $insertionValue . ';
+            // Redirect to the URL with the encoded parameter
+            window.location.href = "http://localhost/mosque-website-template/mosque-website-template/submission.php?insertion=" + encodeURIComponent(insertionValue);
+        </script>';
     } else {
-        echo '<p>An error have been occured</p>';
+        echo '<p>A technical error have been occured</p>';
     }
-} else {
-    echo '<p>A technical error have been occured</p>';
 }

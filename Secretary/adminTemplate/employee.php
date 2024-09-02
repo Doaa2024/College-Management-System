@@ -4,7 +4,7 @@ require_once('components/sidebar.php');
 require_once('components/navbar.php');
 ?>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column" style="min-height: 60vh;">
+<div class="container-fluid d-flex flex-column" style="min-height: 85vh;">
     <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100">
         <div class="w-100">
             <form id="employeeSearchForm" class="mx-auto" style="max-width: 400px;">

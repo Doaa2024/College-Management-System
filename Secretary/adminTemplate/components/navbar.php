@@ -1,6 +1,35 @@
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Modal for Password -->
+    <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="editPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPasswordLabel">Edit Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form id="editPasswordForm" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="password">New Password</label>
+                            <input class="form-control" id="password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input class="form-control" id="confirm_password" name="confirm_password">
+                        </div>
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Main Content -->
     <div id="content">
 
@@ -20,27 +49,19 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Secretary</span>
                         <img class="img-profile rounded-circle"
                             src="img/undraw_profile.svg">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editPassword">
+                            <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Change Password
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <a class="dropdown-item" href="http://localhost/mosque-website-template/President/adminTemplate/login.php">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
                         </a>
@@ -51,3 +72,72 @@
 
         </nav>
         <!-- End of Topbar -->
+        <script>
+            $(document).ready(function() {
+                $('#editPasswordForm').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var password = $('#password').val();
+                    var confirmPassword = $('#confirm_password').val();
+
+                    // Password match validation
+                    if (password !== confirmPassword) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Passwords do not match. Please try again.',
+                            showConfirmButton: true
+                        });
+                        return;
+                    }
+
+                    // Password pattern validation
+                    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                    if (!passwordPattern.test(password)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Password must be at least 8 characters long and include a mix of uppercase, lowercase, numbers, and special characters.',
+                            showConfirmButton: true
+                        });
+                        return;
+                    }
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: 'actions/update_secretary_password.php',
+                        type: 'POST', // This line ensures the method is POST
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: response.message || 'Password updated successfully.',
+                                    showConfirmButton: true
+                                }).then(function() {
+                                    $('#editPassword').modal('hide');
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.message || 'Failed to update password. Please try again.',
+                                    showConfirmButton: true
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'An error occurred. Please try again.',
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+
+                });
+            });
+        </script>

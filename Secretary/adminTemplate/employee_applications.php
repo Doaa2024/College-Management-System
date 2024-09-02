@@ -2,19 +2,27 @@
 require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
+require('DAL/retrieve.class.php');
+$universityData = new UniversityDataRetrieval();
+$allCampus = $universityData->getCampus();
+$allDepartment = $universityData->getDepartment();
+$allFaculty = $universityData->getFaculty();
 ?>
 <style>
     .review-btn {
-        background-color: white;
+        margin-right: 1%;
         color: blue;
         border-color: blue;
+        background-color: white;
         font-size: 1rem;
         /* Base font size */
         padding: 0.5rem 1rem;
         /* Base padding */
-        border-radius: 0.25rem;
+        border-radius: 40px;
         /* Base border radius */
         transition: all 0.3s ease;
+        border: 2px solid blue;
+        /* Smooth transition */
         /* Smooth transition */
     }
 
@@ -69,7 +77,7 @@ require_once('components/navbar.php');
     }
 </style>
 <!-- Begin Page Content -->
-<div class="container-fluid d-flex flex-column" style="min-height: 60vh;">
+<div class="container-fluid d-flex flex-column" style="min-height: 85vh;">
     <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100">
         <div class="w-100">
             <form id="employeeSearchForm" class="mx-auto" style="max-width: 400px;">
@@ -118,6 +126,10 @@ require_once('components/navbar.php');
 
 <?php require_once("components/scripts.php"); ?>
 
+<script>
+    var allCampus = <?= json_encode($allCampus) ?>;
+    var allFaculty = <?= json_encode($allFaculty) ?>;
+</script>
 
 <script>
     $(document).ready(function() {
@@ -138,7 +150,12 @@ require_once('components/navbar.php');
                 success: function(response) {
                     if (response.success) {
                         var employee = response.data;
-
+                        var approveButtonHtml = employee.Status === 'Approved' ?
+                            `<button type="button" class="btn btn-warning review-btn" data-employee-id="${employee.ApplicationID}" id="emp1" disabled style="background-color:white; color:blue;  border: 2px solid blue;">Approved</button>` :
+                            `<button id="emp1" type="button" class="btn btn-warning review-btn" data-employee-id="${employee.ApplicationID}">
+                           Review
+                           
+                           </button>`;
                         // Generate HTML for employee information
                         var cvLink = employee.CVPath ? `
                                 <a href="http://localhost/mosque-website-template/mosque-website-template/assets/img/${employee.CVPath}" target="_blank" rel="noopener noreferrer">
@@ -163,9 +180,8 @@ require_once('components/navbar.php');
                                 <div class="card bg-primary text-white">
                                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                                         <h4>Employee Information</h4>
-                                        <button type="button" class="btn btn-warning review-btn" data-employee-id="${employee.ApplicationID}">
-                                            Review Application
-                                        </button>
+                                     
+                                            ${approveButtonHtml}
                                     </div>
                                     <div class="card-body">
                                         <p><strong>Application ID:</strong> ${employee.ApplicationID}</p>
@@ -193,12 +209,11 @@ require_once('components/navbar.php');
                             createAndShowModal(employeeId, employee);
                         });
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.message || 'Something went wrong! Please try again.',
-                            showConfirmButton: true
-                        });
+                        $('#EmployeeShownhere').html(`
+                            <div class="alert alert-danger" role="alert">
+                                ${response.message}
+                            </div>
+                        `);
                     }
                 },
                 error: function() {
@@ -214,43 +229,72 @@ require_once('components/navbar.php');
 
         function createAndShowModal(employeeId, employee) {
             var modalHtml = `
-                    <!-- Review Application Modal -->
-                    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="reviewModalLabel">Review Application</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+        <!-- Review Application Modal -->
+        <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Review Application</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                            <div class="form-group">
+                                <label for="reviewedBy">Reviewed By</label>
+<input type="number" class="form-control" id="reviewedBy" name="reviewedBy" placeholder="Enter Your ID" value="${employee.ReviewedBy}" min="1" step="1" required>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewedAt">Reviewed At</label>
+                                <input type="date" class="form-control" id="reviewedAt" name="reviewedAt" value="${employee.ReviewedAt}" required>
+                                <input type="hidden" id="employee_id_hidden" name="record_id" value="${employee.ApplicationID}">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="Pending" ${employee.Status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Approved" ${employee.Status === 'Approved' ? 'selected' : ''}>Approved</option>
+                                    <option value="Rejected" ${employee.Status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                    <option value="Under Review" ${employee.Status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                                </select>
+                            </div>
+                             <!-- Container for additional fields, initially hidden -->
+                            <div id="additionalFields" style="display: none;">
+                                <div class="form-group">
+                                    <label for="approvalDate">User Name</label>
+                                  <input type="text" id="username" name="username" class="form-control" value=" " required>
                                 </div>
-                                <div class="modal-body">
-                                    <form id="editForm">
-                                        <div class="form-group">
-                                            <label for="reviewedBy">Reviewed By</label>
-                                            <input type="number" class="form-control" id="reviewedBy" name="reviewedBy" placeholder="Enter Your ID" value="${employee.ReviewedBy}" min="0" step="1" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="reviewedAt">Reviewed At</label>
-                                            <input type="date" class="form-control" id="reviewedAt" name="reviewedAt" value="${employee.ReviewedAt}" required>
-                                            <input type="hidden" id="employee_id_hidden" name="record_id" value="${employee.ApplicationID}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select class="form-control" id="status" name="status" required>
-                                                <option value="Pending" ${employee.Status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                                <option value="Approved" ${employee.Status === 'Approved' ? 'selected' : ''}>Approved</option>
-                                                <option value="Rejected" ${employee.Status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                                <option value="Under Review" ${employee.Status === 'Under Review' ? 'selected' : ''}>Under Review</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" id="saveBtn" class="btn btn-primary">Submit Review</button>
-                                    </form>
+                                <div class="form-group">
+                                    <label for="approvalDate">Campus</label>
+                                    <select class="form-control" id="campus_sel" name="campus" " required>
+                                        ${allCampus.map(campus => `<option value="${campus.BranchID}">${campus.BranchName}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="approvedBy">Faculty Name</label>
+                                    <select class="form-control" id="chosen_school_sel" name="chosen_school" required>
+                                        ${allFaculty.map(faculty => `<option value="${faculty.FacultyID}">${faculty.FaculityName}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comments">Role</label>
+                                    <select class="form-control" id="role" name="role"  required>
+                                        <option value="Professor">Professor</option>
+                                        <option value="Secretary">Secretary</option>
+                                        <option value="Dean">Dean</option>
+                                        <option value="Assistant Dean">Assistant Dean</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
+                            <button type="submit" id="saveBtn" class="btn btn-primary">Submit Review</button>
+                        </form>
                     </div>
-                `;
+                </div>
+            </div>
+        </div>
+    `;
 
             // Remove any existing modal before appending a new one
             $('#reviewModal').remove();
@@ -260,6 +304,24 @@ require_once('components/navbar.php');
 
             // Show the modal
             $('#reviewModal').modal('show');
+
+            // Handle the visibility of additional fields based on status
+            $('#status').on('change', function() {
+                var selectedStatus = $(this).val();
+                if (selectedStatus === 'Approved') {
+                    $('#additionalFields').show();
+                } else {
+                    $('#additionalFields').hide();
+                }
+            });
+
+            // Initialize the visibility of additional fields based on current status
+            if ($('#status').val() === 'Approved') {
+                $('#additionalFields').show();
+            } else {
+                $('#additionalFields').hide();
+            }
+
 
             // Handle the review form submission
             $('#editForm').on('submit', function(e) {
@@ -274,25 +336,31 @@ require_once('components/navbar.php');
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
+
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
                                 text: 'Review was submitted successfully',
                                 showConfirmButton: true
                             }).then(function() {
+                                var updatedEmployee = response.data;
                                 $('#reviewModal').modal('hide').on('hidden.bs.modal', function() {
                                     $(this).remove();
                                 });
 
-                                var updatedEmployee = response.data;
+
+                                var approveButtonHtml = updatedEmployee.Status === 'Approved' ?
+                                    `<button type="button" class="btn btn-warning review-btn" data-employee-id="${employee.ApplicationID}" id="emp1" disabled style="background-color:white; color:blue;  border: 2px solid blue;">Approved</button>` :
+                                    `<button id="emp1" type="button" class="btn btn-warning review-btn" data-employee-id="${employee.ApplicationID}">
+                           Review
+                           
+                           </button>`;
                                 var updatedInfoHtml = `
                                         <!-- Updated Employee Information Card -->
                                         <div class="card bg-primary text-white">
                                             <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                                                 <h4>Employee Information</h4>
-                                                <button type="button" class="btn btn-warning review-btn" data-employee-id="${updatedEmployee.ApplicationID}">
-                                                    Review Application
-                                                </button>
+                                               ${approveButtonHtml}
                                             </div>
                                             <div class="card-body">
                                                 <p><strong>Application ID:</strong> ${updatedEmployee.ApplicationID}</p>

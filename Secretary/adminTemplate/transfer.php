@@ -7,9 +7,9 @@ $dataFetch = new UniversityDataRetrieval();
 $transfer = $dataFetch->getAllTransfer();
 ?>
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid" style="min-height:100vh;">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Transfer</h1>
+    <h1 class=" h3 mb-2 text-gray-800">Transfer</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

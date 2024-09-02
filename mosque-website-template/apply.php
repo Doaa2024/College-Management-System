@@ -296,7 +296,7 @@ $allFaculty = $apply->getFaculty();
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="school_branch">School Branch <span style="color:red; font-size:large">*</span></label>
-                        <input type="text" class="form-control" id="school_branch" name="school_branch" required>
+                        <input type="text" class="form-control" id="school_branch" name="school_branch" disabled>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -311,7 +311,7 @@ $allFaculty = $apply->getFaculty();
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="school_course">School Course <span style="color:red; font-size:large">*</span></label>
-                        <input type="text" class="form-control" id="school_course" name="school_course" required>
+                        <input type="text" class="form-control" id="school_course" name="school_course" disabled>
                     </div>
                 </div>
                 <div class="col-md-4">

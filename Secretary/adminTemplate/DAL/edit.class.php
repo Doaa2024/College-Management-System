@@ -60,6 +60,7 @@ class UserManagement extends DAL
         $sql = "UPDATE professorjobapplications SET Status = ?,ReviewedBy=?, ReviewedAt=? WHERE ApplicationID = ?";
         return $this->execute($sql, [$status, $reviewedBy, $reviewedAt, $id]);
     }
+
     public function   searchEmployeeApplicationByIDAgain($applicationID)
     {
         $sql = "SELECT * FROM professorjobapplications
@@ -146,8 +147,55 @@ class UserManagement extends DAL
             $branchID,
             $facultyID,
             $departmentID,
-            $password
+            $password,
+
         ]);
+    }
+    public function register_employee($username, $email, $role, $branchID, $facultyID, $password)
+    {
+        $sql = "INSERT INTO users (UserName, Email,Role,BranchID,FacultyID, Password) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->execute($sql, [
+            $username,
+            $email,
+            $role,
+            $branchID,
+            $facultyID,
+
+            $password,
+
+        ]);
+    }
+    public function getFacultyByID($FacultyName)
+    {
+        $sql = "SELECT  FacultyID FROM faculties 
+                WHERE  FaculityName= ? 
+                ";
+
+        return $this->getData($sql, [$FacultyName]);
+    }
+    public function getDepartmentByID($departmentName)
+    {
+        $sql = "SELECT DepartmentID FROM departments 
+                WHERE  DepartmentName= ? 
+                ";
+
+        return $this->getData($sql, [$departmentName]);
+    }
+    public function getBranchByID($branchName)
+    {
+        $sql = "SELECT BranchID FROM branches
+                WHERE  BranchName= ? 
+                ";
+
+        return $this->getData($sql, [$branchName]);
+    }
+    public function updateStudentApplicationStatus($applicationID)
+    {
+        $sql = "Update studentapplications Set Status='Approved' where application_id=?
+                ";
+
+        return $this->execute($sql, [$applicationID]);
     }
     public function addjob($jobTitle, $facultyId, $jobDescription, $requiredQualifications, $applicationDeadline, $jobLocation, $jobType, $salaryRange, $jobStatus)
     {
@@ -165,12 +213,58 @@ class UserManagement extends DAL
             $jobStatus
         ]);
     }
+
+    public function   maxID()
+    {
+        $sql = "    SELECT MAX(UserID) AS last_id FROM users 
+               ";
+
+        return $this->getData($sql, []);
+    }
+    public function   maxApplicationID()
+    {
+        $sql = "    SELECT MAX(application_id) AS last_id FROM studentapplications
+               ";
+
+        return $this->getData($sql, []);
+    }
+
     public function edit_job($jobID, $jobTitle, $facultyId, $jobDescription, $requiredQualifications, $applicationDeadline, $jobLocation, $jobType, $salaryRange, $jobStatus)
     {
         $sql = "UPDATE available_jobs 
                 SET job_title = ?, faculty_id = ?, job_description = ?, required_qualifications = ?, application_deadline = ?, job_location = ?, job_type = ?, salary_range = ?, status = ?
                 WHERE job_id = ?";
         return $this->execute($sql, [$jobTitle, $facultyId, $jobDescription, $requiredQualifications, $applicationDeadline, $jobLocation, $jobType, $salaryRange, $jobStatus, $jobID]);
+    }
+    public function updateEmployeeInfo($id, $role, $status, $branchId, $facultyId)
+    {
+        // SQL query to update user information in the `users` table
+        $sql = "UPDATE users 
+                SET Role = ?, Status = ?, BranchID= ?, FacultyID= ?
+                WHERE UserID = ?";
+
+        // Execute the query with the provided parameters
+        return $this->execute($sql, [$role, $status, $branchId, $facultyId, $id]);
+    }
+    public function updateStudentInfo($id, $departmentID, $status, $branchId, $facultyId)
+    {
+        // SQL query to update user information in the `users` table
+        $sql = "UPDATE users 
+                SET DepartmentID = ?, Status = ?, BranchID= ?, FacultyID= ?
+                WHERE UserID = ?";
+
+        // Execute the query with the provided parameters
+        return $this->execute($sql, [$departmentID, $status, $branchId, $facultyId, $id]);
+    }
+    public function updateUserPassword($id, $hashedPassword)
+    {
+        // SQL query to update the user's password in the `users` table
+        $sql = "UPDATE users 
+                SET Password = ?
+                WHERE UserID = ?";
+
+        // Execute the query with the provided parameters
+        return $this->execute($sql, [$hashedPassword, $id]);
     }
 
     public function updateFacultyCreditFee($facultyID, $newCreditFee)
@@ -366,21 +460,5 @@ class UserManagement extends DAL
             )";
 
         return $this->execute($sql);
-    }
-    public function registerStudent($jobTitle, $facultyId, $jobDescription, $requiredQualifications, $applicationDeadline, $jobLocation, $jobType, $salaryRange, $jobStatus)
-    {
-        $sql = "INSERT INTO available_jobs (job_title, faculty_iD, job_description, required_qualifications, application_deadline, job_location, job_type, salary_range, status) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return $this->execute($sql, [
-            $jobTitle,
-            $facultyId,
-            $jobDescription,
-            $requiredQualifications,
-            $applicationDeadline,
-            $jobLocation,
-            $jobType,
-            $salaryRange,
-            $jobStatus
-        ]);
     }
 }
