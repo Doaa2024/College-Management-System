@@ -173,9 +173,9 @@
                             <i class="fas fa-user-graduate"></i>
                             </i> Apply for Student
                         </a>
+
                         <a class="collapse-item <?php if ($currentPage == 'student_applications.php') echo 'page_selected'; ?>" href="student_applications.php">
                             <i class="fas fa-file-alt"></i>
-
                             Student Applications
                         </a>
                         <a class="collapse-item <?php if ($currentPage == 'employee_applications.php') echo 'page_selected'; ?>" href="employee_applications.php">
@@ -209,7 +209,7 @@
                         <?php
                         $currentPage = basename($_SERVER['PHP_SELF']);
                         ?>
-                        <a class="collapse-item <?php if ($currentPage == 'student_registered.php') echo 'page_selected'; ?>" href="student_registered.php" target="_blank">
+                        <a class="collapse-item <?php if ($currentPage == 'student_registered.php') echo 'page_selected'; ?>" href="student_registered.php">
                             <i class="fas fa-user-check"></i>
 
                             </i> Registered Student
@@ -236,14 +236,28 @@
             <div class="sidebar-heading">
                 NewsLetter
             </div>
-            <li class="nav-item active">
-                <a class="nav-link" href="Student.php">
-                    <i class="fas fa-fw fa-paper-plane"></i>
-
-
-                    <span> NewsLetters</span>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages3"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-paper-plane" style="color:white;"></i>
+                    <span style="color:white;"> News Letter</span>
                 </a>
+                <div id="collapsePages3" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <?php
+                    $currentPage = basename($_SERVER['PHP_SELF']);
+                    ?>
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item <?php if ($currentPage == 'pnl.php') echo 'page_selected'; ?>" href="pnl.php">
+                            <i class="fas fa-share-square"></i> Publish News Letter</a>
+                        <a class="collapse-item <?php if ($currentPage == 'vnl.php') echo 'page_selected'; ?>" href="vnl.php?branchId">
+                            <i class="fas fa-eye"></i> View News Letters</a>
+                    </div>
+                </div>
             </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>

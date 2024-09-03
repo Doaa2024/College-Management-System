@@ -239,7 +239,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
     {
         $sql = "SELECT * FROM users 
                 WHERE UserID = ? 
-                AND Role = 'Student'";
+                AND Role IN ('Student','Freshman')";
 
         return $this->getData($sql, [$userID]);
     }
@@ -264,7 +264,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
     {
         $sql = "SELECT * FROM users 
                 WHERE UserID = ? 
-                AND Role != 'Student'";
+                AND Role not in ('Student','Freshman')";
 
         return $this->getData($sql, [$userID]);
     }
@@ -331,7 +331,7 @@ WHERE Role NOT IN ('Student', 'President')
     public function getStudents()
     {
         $sql = "SELECT * FROM users 
-WHERE Role='Student'
+WHERE Role IN ('Student','Freshman')
 ";
 
 
@@ -362,8 +362,8 @@ WHERE Role='Student'
     {
         $sql = "SELECT COUNT(*) AS OpenFacultyPositions
                 FROM available_jobs
-                WHERE status = 'Pending'";
-        return $this->getData($sql);
+                WHERE Status = 'Approved' ";
+        return $this->getData($sql, []);
     }
 
     // Function to get all information from the 'about' table
@@ -402,5 +402,46 @@ WHERE Role='Student'
     {
         $sql = "SELECT * FROM `moreinfo`";
         return $this->getData($sql);
+    }
+
+
+    public function getNewsletterSubscriptions($userId = null)
+    {
+        $sql = "SELECT ns.*, on.Title FROM newslettersubscriptions ns
+                JOIN optionalnewsletter on ON ns.OptionalNewsLetterID = on.OptionalNewsLetterID";
+        $params = [];
+        if ($userId) {
+            $sql .= " WHERE ns.UserID = ?";
+            $params[] = $userId;
+        }
+        return $this->getdata($sql, $params);
+    }
+
+    public function getObligatoryNewsletters($limit, $offset)
+    {
+        $sql = "SELECT * FROM obligatorynewsletter ORDER BY IssueDate DESC LIMIT ? OFFSET ?";
+        return $this->getdata($sql, [$limit, $offset]);
+    }
+
+    public function getOptionalNewsletters($limit, $offset)
+    {
+        $sql = "SELECT * FROM optionalnewsletter ORDER BY IssueDate DESC LIMIT ? OFFSET ?";
+        return $this->getdata($sql, [$limit, $offset]);
+    }
+
+
+
+    public function countObligatoryNewsletters()
+    {
+        $sql = "SELECT COUNT(*) AS count FROM obligatorynewsletter";
+        $result = $this->getdata($sql, []);
+        return $result[0]['count'];
+    }
+
+    public function countOptionalNewsletters()
+    {
+        $sql = "SELECT COUNT(*) AS count FROM optionalnewsletter";
+        $result = $this->getdata($sql, []);
+        return $result[0]['count'];
     }
 }

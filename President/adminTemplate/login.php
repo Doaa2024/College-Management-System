@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Retrieve the hashed password from the database based on the username
         $sql_user = "SELECT Role, Password,UserID FROM users WHERE Username = ?";
-        $params = array($username);
+
 
 
         // Check employee table first
-        $result = $dal->getdata($sql_user, $params);
+        $result = $dal->getdata($sql_user, [$username]);
         if ($result && count($result) > 0) {
             $storedPasswordHash = $result[0]['Password'];
             $user_type = $result[0]['Role'];

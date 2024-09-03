@@ -1,7 +1,8 @@
+<?php require_once("header.php"); ?>
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
     <!-- Begin Modal for Password -->
-    <div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="editPasswordLabel" aria-hidden="true">
+    <div class="modal fade" id="editPassword2" tabindex="-1" role="dialog" aria-labelledby="editPasswordLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -10,7 +11,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form id="editPasswordForm" method="post">
+                <form id="editPasswordForm2">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="password">New Password</label>
@@ -56,7 +57,7 @@
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editPassword">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editPassword2">
                             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
                             Change Password
                         </a>
@@ -72,14 +73,16 @@
 
         </nav>
         <!-- End of Topbar -->
+        <?php require_once("scripts.php"); ?>
         <script>
             $(document).ready(function() {
-                $('#editPasswordForm').on('submit', function(e) {
+                $('#editPasswordForm2').on('submit', function(e) {
                     e.preventDefault();
 
                     var password = $('#password').val();
                     var confirmPassword = $('#confirm_password').val();
 
+                  
                     // Password match validation
                     if (password !== confirmPassword) {
                         Swal.fire({
@@ -91,8 +94,10 @@
                         return;
                     }
 
-                    // Password pattern validation
+                    // Password validation pattern
                     var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
                     if (!passwordPattern.test(password)) {
                         Swal.fire({
                             icon: 'error',
@@ -106,10 +111,12 @@
                     // Send AJAX request
                     $.ajax({
                         url: 'actions/update_secretary_password.php',
-                        type: 'POST', // This line ensures the method is POST
+                        type: 'POST',
                         data: $(this).serialize(),
                         dataType: 'json',
+                        processData: false,
                         success: function(response) {
+                            console.log('Response:', response); // Debugging line
                             if (response.status === 'success') {
                                 Swal.fire({
                                     icon: 'success',
@@ -117,7 +124,7 @@
                                     text: response.message || 'Password updated successfully.',
                                     showConfirmButton: true
                                 }).then(function() {
-                                    $('#editPassword').modal('hide');
+                                    $('#editPassword2').modal('hide');
                                 });
                             } else {
                                 Swal.fire({
@@ -128,7 +135,8 @@
                                 });
                             }
                         },
-                        error: function() {
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('AJAX Error:', textStatus, errorThrown); // Debugging line
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',

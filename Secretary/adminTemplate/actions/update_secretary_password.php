@@ -6,6 +6,7 @@ require_once('../DAL/edit.class.php');
 header('Content-Type: application/json');
 
 // Check if the request method is POST and user is logged in
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['userID'])) {
     // Retrieve POST data
     $password = $_POST['password'];
