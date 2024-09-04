@@ -178,7 +178,7 @@ class UniversityDataRetrieval extends DAL
     {
         $sql = "SELECT * FROM users 
                 WHERE UserID = ? 
-                AND Role = 'Student'";
+                AND Role IN ('Student','Freshman')";
 
         return $this->getData($sql, [$userID]);
     }
@@ -186,7 +186,7 @@ class UniversityDataRetrieval extends DAL
     {
         $sql = "SELECT * FROM users 
                 WHERE UserID = ? 
-                AND Role != 'Student'";
+                AND Role Not IN ('Student','Freshman')";
 
         return $this->getData($sql, [$userID]);
     }

@@ -461,4 +461,54 @@ class UserManagement extends DAL
 
         return $this->execute($sql);
     }
+    public function insertOptionalNewsletter($title, $issueDate, $content, $createdBy)
+    {
+        $sql = "INSERT INTO optionalnewsletter (Title, IssueDate, Content, CreatedBy) VALUES (?, ?, ?, ?)";
+        $this->execute($sql, [$title, $issueDate, $content, $createdBy]);
+    }
+
+    public function insertObligatoryNewsletter($title, $issueDate, $content, $createdBy)
+    {
+        $sql = "INSERT INTO obligatorynewsletter (Title, IssueDate, Content, CreatedBy) VALUES (?, ?, ?, ?)";
+        $this->execute($sql, [$title, $issueDate, $content, $createdBy]);
+    }
+    public function getStudentByID($studentID)
+    {
+        $sql = "SELECT * FROM student_documents
+                WHERE  student_id= ? 
+                ";
+
+        return $this->getData($sql, [$studentID]);
+    }
+    public function insertOrUpdateDocument($studentID, $documentName) {
+        $sql = "INSERT INTO student_documents (student_id, document_name, is_present) 
+                VALUES (?, ?, 1)
+                ON DUPLICATE KEY UPDATE is_present = 1";
+        return $this->execute($sql, [$studentID, $documentName]);
+    }
+
+    // Method to update the document status to not present (0)
+    public function updateDocumentStatus($studentID, $documentName, $status) {
+        $sql = "UPDATE student_documents 
+                SET is_present = ? 
+                WHERE student_id = ? 
+                AND document_name = ?";
+        return $this->execute($sql, [$status, $studentID, $documentName]);
+    }
+
+    // Method to get existing documents for a student
+    public function getDocumentsByStudentID($studentID) {
+        $sql = "SELECT document_name, is_present FROM student_documents WHERE student_id = ?";
+        return $this->getData($sql, [$studentID]);
+    }
+
+    // Method to update documents that are not present
+    public function updateMissingDocuments($studentID, $documentNames) {
+        foreach ($documentNames as $documentName) {
+            $this->updateDocumentStatus($studentID, $documentName, 0); // Set as not present
+        }
+
+    // Method to insert or update document presence
+    }
+    
 }

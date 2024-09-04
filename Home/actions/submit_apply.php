@@ -118,12 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo '<p>A technical error have been occured</p>';
     }
-
-        echo '<script>window.location.href="http://localhost/collegeMS/mosque-website-template/mosque-website-template/submission.php" </script>';
-    } else {
-        echo '<p>An error have been occured</p>';
-    }
 } else {
     echo '<p>A technical error have been occured</p>';
-
 }

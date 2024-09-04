@@ -83,13 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </script>';
 
 
-        if ($insertion) {
-            echo '<script>window.location.href="http://localhost/collegeMS/mosque-website-template/mosque-website-template/submission.php"</script>';
-
-        } else {
-            echo '<p>Database insertion failed.</p>';
-        }
     } else {
         echo '<p>Upload not successful. Please check the file formats.</p>';
     }
+}
 }
