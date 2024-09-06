@@ -302,13 +302,13 @@ $totalRevenue = array_sum(array_column($topRevenueBranches, 'TotalRevenue'));
         // Add content to the first page
         const addContentToFirstPage = async () => {
             pdf.setFontSize(22);
-            pdf.text("President Dashboard Report", 14, 20);
+            pdf.text("Secretary Dashboard Report", 14, 20);
 
             pdf.setFontSize(16);
-            pdf.text("Average Earnings Per Semester: $<?php echo number_format($avgEarningsSemester[0]['AverageEarningsPerSemester'], 2); ?>", 14, 40);
-            pdf.text("Average Earnings Per Year: $<?php echo number_format($avgEarningsYear[0]['AverageEarningsPerYear'], 2); ?>", 14, 50);
-            pdf.text("Current Semester Enrollments: <?php echo number_format($currentEnrollments[0]['CurrentSemesterEnrollments']); ?>", 14, 60);
-            pdf.text("Open Faculty Positions: <?php echo number_format($openFacultyPositions[0]['OpenFacultyPositions']); ?>", 14, 70);
+            pdf.text("Current Semester Enrollment: <?php echo number_format($currentEnrollments[0]['CurrentSemesterEnrollments'], 2); ?>", 14, 40);
+            pdf.text("Under Review Job Applications: <?php echo number_format($under_reviewJobs[0]['applicationsNumber'], 2); ?>", 14, 50);
+            pdf.text("Current Student Application: <?php echo number_format($studentApplications[0]['currentApplications']); ?>", 14, 60);
+            pdf.text("Pending Faculty Positions: <?php echo number_format($pendingJobs[0]['applicationsNumber'] ); ?>", 14, 70);
 
             pdf.setFontSize(16);
             pdf.text("Top Revenue Branches:", 14, 90);

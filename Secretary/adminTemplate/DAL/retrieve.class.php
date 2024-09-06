@@ -322,7 +322,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
     public function getEmployee()
     {
         $sql = "SELECT * FROM users 
-WHERE Role NOT IN ('Student', 'President')
+WHERE Role NOT IN ('Student', 'President','Freshman')
 ";
 
 

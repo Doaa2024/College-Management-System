@@ -87,11 +87,11 @@ $allFaculty = $dataFetch->getFaculty();
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="password">New Password</label>
-                        <input class="form-control" id="password" name="password">
+                        <input class="form-control" id="passwordo" name="password">
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input class="form-control" id="confirm_password" name="confirm_password">
+                        <input class="form-control" id="confirm_passwordo" name="confirm_password">
                     </div>
                     <input type="hidden" id="record_id_password" name="record_id_password">
                 </div>
@@ -256,8 +256,8 @@ $allFaculty = $dataFetch->getFaculty();
         $('#editPasswordForm').on('submit', function(e) {
             e.preventDefault();
 
-            var password = $('#password').val();
-            var confirmPassword = $('#confirm_password').val();
+            var password = $('#passwordo').val();
+            var confirmPassword = $('#confirm_passwordo').val();
             if (password !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
