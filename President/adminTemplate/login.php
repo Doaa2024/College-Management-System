@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST['password'];
 
         // Retrieve the hashed password from the database based on the username
-        $sql_user = "SELECT Role, Password,UserID FROM users WHERE Username = ?";
+        $sql_user = "SELECT Role, Password,UserID,FacultyID FROM users WHERE Username = ?";
 
 
 
@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $storedPasswordHash = $result[0]['Password'];
             $user_type = $result[0]['Role'];
             $userID = $result[0]['UserID'];
+            $facultyID = $result[0]['FacultyID'];
             // Verify the user-provided password against the stored hash
             if (password_verify($password, $storedPasswordHash) && $user_type == 'President') {
                 $_SESSION['username'] = $username;
@@ -47,6 +48,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script>
               
                         window.location.href='http://localhost/mosque-website-template/Secretary/adminTemplate/index.php';
+                    
+            </script>";
+                exit; // Exit to prevent further execution
+
+
+            }
+            if (password_verify($password, $storedPasswordHash) && $user_type == 'Branch Head') {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
+                $_SESSION['login'] = true;
+
+                echo "<script>
+              
+                        window.location.href='http://localhost/mosque-website-template/BranchPresident/adminTemplate/index.php';
+                    
+            </script>";
+                exit; // Exit to prevent further execution
+
+
+            }
+            if (password_verify($password, $storedPasswordHash) && $user_type == 'Dean') {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
+                $_SESSION['facultyID'] = $facultyID;
+                $_SESSION['login'] = true;
+
+                echo "<script>
+              
+                        window.location.href='http://localhost/mosque-website-template/Dean/adminTemplate/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution

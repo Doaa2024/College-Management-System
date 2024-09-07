@@ -191,11 +191,11 @@ $allFreshman = $dataFetch->getAllFreshman();
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="password">New Password</label>
-                        <input class="form-control" id="password" name="password">
+                        <input class="form-control" id="passwordo" name="password">
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input class="form-control" id="confirm_password" name="confirm_password">
+                        <input class="form-control" id="confirm_passwordo" name="confirm_password">
                     </div>
                     <input type="hidden" id="record_id_password" name="record_id_password">
                 </div>
@@ -440,8 +440,18 @@ $allFreshman = $dataFetch->getAllFreshman();
         $('#editPasswordForm').on('submit', function(e) {
             e.preventDefault();
 
-            var password = $('#password').val();
-            var confirmPassword = $('#confirm_password').val();
+            // Get the values of the password and confirm password fields using vanilla JavaScript
+            var password = document.getElementById('passwordo').value;
+            var confirmPassword = document.getElementById('confirm_passwordo').value;
+
+            // Example usage
+            console.log('Password:', password);
+            console.log('Confirm Password:', confirmPassword);
+
+            alert(password);
+            alert(confirmPassword);
+
+
             if (password !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
