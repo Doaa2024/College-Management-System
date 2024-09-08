@@ -8,22 +8,7 @@
                             <img src="./demo/brand/tabler.svg" class="header-brand-img" alt="tabler logo">
                         </a>
                         <div class="d-flex order-lg-2 ml-auto">
-                            <div class="dropdown d-none d-md-flex">
-                                <a class="nav-link icon" data-toggle="dropdown">
-                                    <i class="fe fe-bell"></i>                                                                    
-                                    <span class="nav-unread"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                    <a href="#" class="dropdown-item d-flex">
-                                        <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
-                                        <div>
-                                            <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
-                                            <div class="small text-muted">10 minutes ago</div>
-                                        </div>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>
+
                             <div class="dropdown">
                                 <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                                     <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
@@ -60,26 +45,29 @@
                     <div class="row align-items-center">
                         <div class="col-lg order-lg-first">
                             <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active"><i class="fe fe-home"></i> Home</a>
-                                </li>
+                                <?php
+                                $current_page = basename($_SERVER['PHP_SELF']);
 
-                                <li class="nav-item dropdown">
-                                    <a href="./Courses.php" class="nav-link"><i class="fe fe-book"></i> Courses</a>
+                                ?>
+
+                                <li class="nav-item">
+                                    <a href="./index.php" class="nav-link  <?php echo $current_page == 'index.php' ? 'active' : ''; ?>"><i class="fe fe-home"></i> Home</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="./OA.php" class="nav-link"><i class="fe fe-check-square"></i> Office Hours</a>
+                                <li class="nav-item ">
+                                    <a href="./Courses.php" class="nav-link  <?php echo $current_page == 'Courses.php' ? 'active' : ''; ?>"><i class="fe fe-book"></i> Courses</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="./Schedule.php" class="nav-link"><i class="fe fe-check-square"></i> Schedule</a>
+                                <li class="nav-item ">
+                                    <a href="./OA.php" class="nav-link  <?php echo $current_page == 'OA.php' ? 'active' : ''; ?>"><i class="fe fe-check-square"></i> Office Hours</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="./RC.php" class="nav-link"><i class="fe fe-check-square"></i> Register Courses</a>
+                                <li class="nav-item">
+                                    <a href="./Schedule.php" class="nav-link  <?php echo $current_page == 'Schedule.php' ? 'active' : ''; ?>"><i class="fe fe-check-square"></i> Schedule</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="./Salary.php" class="nav-link"><i class="fe fe-check-square"></i> Salary</a>
+                                <li class="nav-item ">
+                                    <a href="./RC.php" class="nav-link  <?php echo $current_page == 'RC.php' ? 'active' : ''; ?>"><i class="fe fe-check-square"></i> Register Courses</a>
                                 </li>
-                              
+                               
+
+
 
                             </ul>
                         </div>
