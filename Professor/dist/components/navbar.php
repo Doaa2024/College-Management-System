@@ -46,7 +46,15 @@
                         <div class="col-lg order-lg-first">
                             <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                                 <?php
-                                $current_page = basename($_SERVER['PHP_SELF']);
+                                $current_page = basename($_SERVER['
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                ']);
 
                                 ?>
 
@@ -65,7 +73,7 @@
                                 <li class="nav-item ">
                                     <a href="./RC.php" class="nav-link  <?php echo $current_page == 'RC.php' ? 'active' : ''; ?>"><i class="fe fe-check-square"></i> Register Courses</a>
                                 </li>
-                               
+
 
 
 
