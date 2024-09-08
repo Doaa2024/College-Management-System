@@ -1,206 +1,179 @@
 <?php require_once('components/header.php') ?>
 <?php require_once('components/navbar.php') ?>
+<?php require_once('DAL/retrieve.class.php') ?>
+<?php
+$dataRetrieve = new UniversityDataRetrieval();
+$professorID = 6; // Example Professor ID, you can set this dynamically
 
-<div class="my-3 my-md-5">
-  <div class="container">
-  
+// Fetch data using the provided functions
+$totalStudents = $dataRetrieve->getTotalStudents($professorID);
+$avgGpa = $dataRetrieve->getAvgGpa($professorID);
+$gradeDistribution = $dataRetrieve->getGradeDistribution($professorID);
+$attendanceStatus = $dataRetrieve->getAttendanceStatus($professorID);
+$salary = $dataRetrieve->getProfessorSalary($professorID);
+
+$coursesTaught = $dataRetrieve->getCoursesTaught($professorID);
+$rating = $dataRetrieve->MyRating($professorID);
+
+?>
+
+<div class="my-3 my-md-5" style="min-height:60dvh">
+  <div class="container" >
     <div class="row row-cards">
 
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Grade Point Average for each semester </h3>
+      <!-- Total Students -->
+      <div class="col-lg-3">
+        <div class="card align-items-center"  style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header align-items-center" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;" >
+            <h3 class="card-title">Students Rating of Me</h3>
           </div>
-          <div class="card-body">
-            <div id="chart-area" style="height: 16rem"></div>
+          <div class="card-body font-weight-bold" style="font-size: 1.5rem;">
+            <p><?php echo $rating[0]['avg_rating']; ?>/5</p>
           </div>
         </div>
-        <script>
-          require(['c3', 'jquery'], function(c3, $) {
-            $(document).ready(function() {
-              var chart = c3.generate({
-                bindto: '#chart-area', // id of chart wrapper
-                data: {
-                  columns: [
-                    // each columns data
-                    ['data1', 11, 8, 15, 18, 19, 17]
-
-                  ],
-                  type: 'area', // default type of chart
-                  colors: {
-                    'data1': tabler.colors["blue"],
-
-                  },
-                  names: {
-                    // name of each serie
-                    'data1': 'GPA',
-
-                  }
-                },
-                axis: {
-                  x: {
-                    type: 'category',
-                    // name of each category
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-                  },
-                },
-                legend: {
-                  show: false, //hide legend
-                },
-                padding: {
-                  bottom: 0,
-                  top: 0
-                },
-              });
-            });
-          });
-        </script>
       </div>
+      <div class="col-lg-3">
+        <div class="card align-items-center" style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;">
+            <h3 class="card-title">Total Students @ My Courses</h3>
+          </div>
+          <div class="card-body font-weight-bold" style="font-size: 1.5rem;">
+            <p><?php echo $totalStudents[0]['total_students']; ?></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Average GPA -->
+      <div class="col-lg-3">
+        <div class="card align-items-center" style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;">
+            <h3 class="card-title">My Salary</h3>
+          </div>
+          <div class="card-body font-weight-bold" style="font-size: 1.5rem;">
+            <p><?php echo $salary[0]['Salary']; ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="card align-items-center" style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;">
+            <h3 class="card-title">Courses Taught</h3>
+          </div>
+          <div class="card-body font-weight-bold " style="font-size: 1.5rem;">
+            <p><?php echo $coursesTaught[0]['courses_taught']; ?></p>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-6">
-        <div class="alert alert-primary">Your Academic Profile? See Below!</a> </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Course Enrollment Status</h3>
-              </div>
-              <div class="card-body">
-                <div id="chart-donut" style="height: 12rem;"></div>
-              </div>
-            </div>
-            <script>
-              require(['c3', 'jquery'], function(c3, $) {
-                $(document).ready(function() {
-                  var chart = c3.generate({
-                    bindto: '#chart-donut', // id of chart wrapper
-                    data: {
-                      columns: [
-                        // each columns data
-                        ['data1', 63],
-                        ['data2', 37]
-                      ],
-                      type: 'donut', // default type of chart
-                      colors: {
-                        'data1': tabler.colors["green-light"],
-                        'data2': tabler.colors["green"]
-                      },
-                      names: {
-                        // name of each serie
-                        'data1': 'Courses Completed',
-                        'data2': 'Courses Remaining to Graduate'
-                      }
-                    },
-                    axis: {},
-                    legend: {
-                      show: false, //hide legend
-                    },
-                    padding: {
-                      bottom: 0,
-                      top: 0
-                    },
-                  });
-                });
-              });
-            </script>
+        <div class="card" style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;">
+            <h3 class="card-title">Grade Distribution</h3>
           </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Course Grades Distribution</h3>
-                <br>
-
-              </div>
-              <div class="card-body">
-                <div id="chart-pie" style="height: 12rem;"></div>
-              </div>
-            </div>
-            <script>
-              require(['c3', 'jquery'], function(c3, $) {
-                $(document).ready(function() {
-                  var chart = c3.generate({
-                    bindto: '#chart-pie', // id of chart wrapper
-                    data: {
-                      columns: [
-                        // each columns data
-                        ['data1', 63],
-                        ['data2', 44],
-                        ['data3', 12],
-                        ['data4', 14]
-                      ],
-                      type: 'pie', // default type of chart
-                      colors: {
-                        'data1': tabler.colors["blue-darker"],
-                        'data2': tabler.colors["blue"],
-                        'data3': tabler.colors["blue-light"],
-                        'data4': tabler.colors["blue-lighter"]
-                      },
-                      names: {
-                        // name of each serie
-                        'data1': 'A',
-                        'data2': 'B',
-                        'data3': 'C',
-                        'data4': 'D'
-                      }
-                    },
-                    axis: {},
-                    legend: {
-                      show: false, //hide legend
-                    },
-                    padding: {
-                      bottom: 0,
-                      top: 0
-                    },
-                  });
-                });
-              });
-            </script>
+          <div class="card-body" height="max-content">
+            <div id="chart-bar" style="height: 20rem;"></div>
           </div>
+        </div>
+      </div>
 
+      <div class="col-md-6">
+        <div class="card" style="box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2);">
+          <div class="card-header" style="background: linear-gradient(to bottom right, #007bff, #00c6ff); box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); width:100%; color:white;">
+            <h3 class="card-title">Average Attendance Status in All Courses</h3>
+          </div>
+          <div class="card-body" height="max-content">
+            <div id="chart-donut" style="height: 20rem;"></div>
+          </div>
         </div>
       </div>
 
 
 
-
-
-      <script src="logic.js"></script>
-
-      <div class="col-sm-6 col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title">Upcoming Assignments</h4>
-          </div>
-          <table class="table card-table">
-            <tr>
-              <td width="1"><i class="fa fa-tasks text-muted"></i></td>
-              <td>CSCI250 Assignment</td>
-              <td>Due Date:"18 Auguts"</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col-sm-6 col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Upcoming Exams</h2>
-          </div>
-          <table class="table card-table">
-            <tr>
-              <td width="1"><i class="fa fa-tasks text-muted"></i></td>
-              <td>CSCI250 Midterm</td>
-              <td>Date:"18 Auguts @ 3PM"</td>
-            </tr>
-
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Data for Grade Distribution
+    var gradeDistributionData = <?php echo json_encode($gradeDistribution); ?>;
+    var gradeLabels = gradeDistributionData.map(function(item) {
+      return item.Grade;
+    });
+    var gradeCounts = gradeDistributionData.map(function(item) {
+      return item.count;
+    });
+
+    // Bar Chart for Grade Distribution
+    c3.generate({
+      bindto: '#chart-bar',
+      data: {
+        columns: [
+          ['Grades'].concat(gradeCounts)
+        ],
+        type: 'bar',
+        colors: {
+          'Grades': '#66b3ff'
+        }
+      },
+      axis: {
+        x: {
+          type: 'category',
+          categories: gradeLabels,
+          label: 'Grades'
+        },
+        y: {
+          label: 'Number of Students'
+        }
+      },
+      bar: {
+        width: {
+          ratio: 0.5 // Adjust bar width
+        }
+      }
+    });
+
+
+    // Data for Attendance Status
+    var attendanceData = <?php echo json_encode($attendanceStatus); ?>;
+
+    // Prepare data arrays for each status type
+    var statusCounts = {
+      Present: 0,
+      Absent: 0,
+      Late: 0
+    };
+
+    // Map the attendance data to the correct status counts
+    attendanceData.forEach(function(item) {
+      if (statusCounts.hasOwnProperty(item.Status)) {
+        statusCounts[item.Status] = item.count;
+      }
+    });
+
+    // Donut Chart for Attendance Status
+    c3.generate({
+      bindto: '#chart-donut',
+      data: {
+        columns: [
+          ['Present', statusCounts.Present],
+          ['Absent', statusCounts.Absent],
+          ['Late', statusCounts.Late]
+        ],
+        type: 'donut',
+        colors: {
+          'Present': '#99ff99',
+          'Absent': '#ff9999',
+          'Late': '#ffcc99'
+        }
+      },
+
+    });
+  });
+</script>
 
 
 <?php require_once("components/footer.php") ?>
-</div>
+
 </body>
 
 </html>
