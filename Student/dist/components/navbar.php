@@ -63,60 +63,27 @@
                     <div class="row align-items-center">
                         <div class="col-lg order-lg-first">
                             <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link active"><i class="fe fe-home"></i> Home</a>
+                                <?php
+                                $current_page = basename($_SERVER['PHP_SELF']); // Get the current page filename
+                                ?>
+                                <li class="nav-item ">
+                                    <a href="./index.php" class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>"><i class="fe fe-home"></i> Home</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="./classes.php" class="nav-link <?php echo $current_page == 'classes.php' ? 'active' : ''; ?>"><i class="fe fe-box"></i> Classes</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="./payments.php " class="nav-link <?php echo $current_page == 'payments.php' ? 'active' : ''; ?>"><i class="fa fa-credit-card"></i> Payments</a>
+                                </li>
+                                <li class="nav-item dropdown ">
+                                    <a href="./pof.php" class="nav-link <?php echo $current_page == 'pof.php' ? 'active' : ''; ?>"><i class="fe fe-file-text"></i> Plan of Study</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i> Classes</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./cards.html" class="dropdown-item ">Cards design</a>
-                                        <a href="./charts.html" class="dropdown-item ">Charts</a>
-                                        <a href="docs/charts.html" class="dropdown-item ">Charts++</a>
-                                        <a href="docs/avatars.html" class="dropdown-item ">Avatars</a>
-
-                                    </div>
+                                    <a href="./registration.php " class="nav-link <?php echo $current_page == 'registration.php' ? 'active' : ''; ?>"><i class="fe fe-calendar"></i> Registration</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fa fa-credit-card"></i>
-                                    Payments</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                        <a href="./store.html" class="dropdown-item ">Store</a>
-                                        <a href="./blog.html" class="dropdown-item ">Blog</a>
-                                    </div>
+                                <li class="nav-item ">
+                                    <a href="./os.php" class="nav-link <?php echo $current_page == 'os.php' ? 'active' : ''; ?>"><i class="fe fe-file-text"></i> Online Services</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-file-text"></i> Plan of Study</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-calendar"></i>Registration</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./icons.html" class="dropdown-item ">Icons</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./docs/index.html" class="nav-link"><i class="fe fe-file-text"></i> Online Services</a>
-                                </li>
-
-                                <li class="nav-item dropdown">
-                                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-file"></i> Pages</a>
-                                    <div class="dropdown-menu dropdown-menu-arrow">
-                                        <a href="./profile.html" class="dropdown-item ">Profile</a>
-
-                                        <a href="./empty.html" class="dropdown-item ">Empty page</a>
-
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a href="./form-elements.html" class="nav-link"><i class="fe fe-check-square"></i> Forms</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./gallery.html" class="nav-link"><i class="fe fe-image"></i> Gallery</a>
-                                </li>
-                               
                             </ul>
                         </div>
                     </div>
