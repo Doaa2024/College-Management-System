@@ -119,7 +119,7 @@ $facultyCount = $dataRetrieval->getFacultyCountByYear($facultyID);
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary"> Student Registered Count</h6>
+                    <h6 class="m-0 font-weight-bold text-primary"> Student Registered Count IN Faculty</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -442,7 +442,7 @@ $facultyCount = $dataRetrieval->getFacultyCountByYear($facultyID);
             pdf.text("Major Count IN Faculty: <?php echo number_format($majorCount[0]['majorCount']); ?>", 14, 60);
             pdf.text("My Salary: <?php echo number_format($salary[0]['Salary'], 2); ?>", 14, 40);
             // Adding revenue branches information
-           
+
             let y = 100;
             // Add Area Chart to the first page
             pdf.setFontSize(16);

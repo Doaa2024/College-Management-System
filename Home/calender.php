@@ -17,7 +17,9 @@ foreach ($allCalendar as $event) {
     $eventsByMonth[$monthYear][] = [
         'date' => $eventDate->format('d/M'),
         'title' => $event["EventName"],
-        'location' => $event["StartTime"] // Assuming StartTime is used as location for demonstration
+        'location' => $event["BranchName"],
+        'time' => $event["StartTime"]
+        // Assuming StartTime is used as location for demonstration
     ];
 }
 
@@ -501,7 +503,7 @@ echo '</script>';
                     listItem.innerHTML = `<div class="event-date">${event.date}</div>
                                   <div class="event-details">
                                       <h4>${event.title}</h4>
-                                      <p>Start at ${event.location}</p>
+                                      <p>Start at ${event.time}-${event.location}</p>
                                   </div>`;
                     eventList.appendChild(listItem);
                 });

@@ -83,7 +83,7 @@ AND YEAR(application_date) = YEAR(CURDATE())
 
     function getDepartment()
     {
-        $sql = "SELECT DepartmentName FROM departments ";
+        $sql = "SELECT * FROM departments ";
 
         return $this->getdata($sql);
     }

@@ -1,4 +1,3 @@
-
 <?php require_once("header.php"); ?>
 
 <!-- Content Wrapper -->
@@ -33,7 +32,6 @@
             </div>
         </div>
     </div>
-    <!-- Main Content -->
     <div id="content">
 
         <!-- Topbar -->
@@ -54,8 +52,7 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>
                         </span>
-                        <img class="img-profile rounded-circle"
-                            src="img/undraw_profile.svg">
+                        <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -71,84 +68,89 @@
                         </a>
                     </div>
                 </li>
-
             </ul>
-
         </nav>
-        <!-- End of Topbar -->
-        <?php require_once("scripts.php"); ?>
-        <script>
-            $(document).ready(function() {
-                $('#editPasswordForm2').on('submit', function(e) {
-                    e.preventDefault();
+    </div>
 
-                    var password = $('#password').val();
-                    var confirmPassword = $('#confirm_password').val();
+    <!-- End of Topbar -->
+    <?php require_once("scripts.php"); ?>
+    <!-- jQuery -->
 
-                  
-                    // Password match validation
-                    if (password !== confirmPassword) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Passwords do not match. Please try again.',
-                            showConfirmButton: true
-                        });
-                        return;
-                    }
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#editPasswordForm2').on('submit', function(e) {
+                e.preventDefault();
 
-                    // Password validation pattern
-                    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm_password').val();
 
 
-                    if (!passwordPattern.test(password)) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Password must be at least 8 characters long and include a mix of uppercase, lowercase, numbers, and special characters.',
-                            showConfirmButton: true
-                        });
-                        return;
-                    }
+                // Password match validation
+                if (password !== confirmPassword) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Passwords do not match. Please try again.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
 
-                    // Send AJAX request
-                    $.ajax({
-                        url: 'actions/update_dean_password.php',
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        dataType: 'json',
-                        processData: false,
-                        success: function(response) {
-                            console.log('Response:', response); // Debugging line
-                            if (response.status === 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: response.message || 'Password updated successfully.',
-                                    showConfirmButton: true
-                                }).then(function() {
-                                    $('#editPassword2').modal('hide');
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: response.message || 'Failed to update password. Please try again.',
-                                    showConfirmButton: true
-                                });
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error('AJAX Error:', textStatus, errorThrown); // Debugging line
+                // Password validation pattern
+                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
+                if (!passwordPattern.test(password)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Password must be at least 8 characters long and include a mix of uppercase, lowercase, numbers, and special characters.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+
+                // Send AJAX request
+                $.ajax({
+                    url: 'actions/update_dean_password.php',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    processData: false,
+                    success: function(response) {
+                        console.log('Response:', response); // Debugging line
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: response.message || 'Password updated successfully.',
+                                showConfirmButton: true
+                            }).then(function() {
+                                $('#editPassword2').modal('hide');
+                                
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'An error occurred. Please try again.',
+                                text: response.message || 'Failed to update password. Please try again.',
                                 showConfirmButton: true
                             });
                         }
-                    });
-
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX Error:', textStatus, errorThrown); // Debugging line
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'An error occurred. Please try again.',
+                            showConfirmButton: true
+                        });
+                    }
                 });
+
             });
-        </script>
+        });
+    </script>

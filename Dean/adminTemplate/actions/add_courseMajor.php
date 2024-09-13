@@ -11,7 +11,7 @@ if (isset($_POST['CourseID']) && isset($_POST['departmentID'])) {
     $result1 = $userManagement->checkCourse($CourseID, $departmentID);
 
     if ($departmentID == 'Null') {
-        echo json_encode(['status' => 'error', 'message' => 'Select a course in a department to delete!']);
+        echo json_encode(['status' => 'error', 'message' => 'Select a department to add a course!']);
     } elseif ($result1) {
         echo json_encode(['status' => 'error', 'message' => 'This Course already exists in this department. Choose another one!']);
     } else {

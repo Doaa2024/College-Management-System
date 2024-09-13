@@ -227,9 +227,6 @@ if (isset($_GET['departmentID']) && !empty($_GET['departmentID'])) {
     <!-- Page level custom scripts -->
     <script>
         $(document).ready(function() {
-            // Initialize DataTables
-            $('#dataTable').DataTable();
-
             $('#addCourseForm').on('submit', function(event) {
                 event.preventDefault(); // Prevent the form from submitting the default way
                 console.log("Form submitted");

@@ -244,7 +244,17 @@ class UserManagement extends DAL
                 WHERE UserID = ?";
 
         // Execute the query with the provided parameters
-        return $this->execute($sql, [$role, $status, $branchId, $facultyId, $id]);
+        return $this->execute($sql, [$role, $status, $branchId, $facultyId,$id]);
+    }
+    public function updateAssistantDeanInfo($id, $role, $status, $branchId, $facultyId,$departmentID)
+    {
+        // SQL query to update user information in the `users` table
+        $sql = "UPDATE users 
+                SET Role = ?, Status = ?, BranchID= ?, FacultyID= ?, DepartmentID=?
+                WHERE UserID = ?";
+
+        // Execute the query with the provided parameters
+        return $this->execute($sql, [$role, $status, $branchId, $facultyId,$departmentID, $id]);
     }
     public function updateStudentInfo($id, $departmentID, $status, $branchId, $facultyId)
     {
@@ -266,6 +276,18 @@ class UserManagement extends DAL
         // Execute the query with the provided parameters
         return $this->execute($sql, [$hashedPassword, $id]);
     }
+    public function checkFaculty($branchId, $facultyId)
+    {
+        // Corrected query
+        $sql = "
+             SELECT *  FROM faculty_branches WHERE BranchID=? AND FacultyID = ?
+    ";
+
+        $result = $this->getdata($sql, [$branchId,$facultyId]);
+
+        return $result;
+    }
+   
 
     public function updateFacultyCreditFee($facultyID, $newCreditFee)
     {
