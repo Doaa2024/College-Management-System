@@ -100,7 +100,7 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT FacultyID, COUNT(*) AS majorCount
                 FROM departments 
                 WHERE FacultyID=? ";
-        return $this->getData($sql,[$facultyID]);
+        return $this->getData($sql, [$facultyID]);
     }
     public function getSalary()
     {
@@ -114,7 +114,7 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT FacultyID, COUNT(*) AS ProfessorCount
                 FROM users u
                 WHERE u.Role IN ('Professor') and FacultyID=? ";
-        return $this->getData($sql,[$facultyID]);
+        return $this->getData($sql, [$facultyID]);
     }
 
     public function getStudentCountByFaculty($facultyID)
@@ -122,7 +122,7 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT FacultyID, COUNT(*) AS StudentCount
                 FROM users u
                 WHERE u.Role IN ('Student','Freshman') and FacultyID=? ";
-        return $this->getData($sql,[$facultyID]);
+        return $this->getData($sql, [$facultyID]);
     }
 
     function getTopDepartmentEnrollmentsByFaculty($facultyId)
@@ -143,8 +143,8 @@ GROUP BY
 
         return $this->getdata($sql, [$facultyId]);
     }
-    
-    
+
+
     public function getfacultyPerBranch($facultyID)
     {
         $sql = "SELECT 
@@ -162,7 +162,7 @@ WHERE
 GROUP BY 
     b.BranchName;
  ";
-        return $this->getData($sql,[$facultyID]);
+        return $this->getData($sql, [$facultyID]);
     }
     public function getFacultyCountByYear($facultyID)
     {
@@ -182,7 +182,7 @@ ORDER BY
     Year;
 
  ";
-        return $this->getData($sql,[$facultyID]);
+        return $this->getData($sql, [$facultyID]);
     }
     public function getAllCourses()
     {
@@ -193,6 +193,76 @@ ORDER BY
                   ;";
         return $this->getData($sql);
     }
+    public function getAllCoursesOffset($offset = 0, $limit = 5)
+    {
+        $sql = "SELECT CourseID, CourseName, CourseCode, DepartmentID, Credits, CreatedAt, UpdatedAt 
+                FROM courses 
+                LIMIT ?, ?";
+
+        // Call getData with SQL and params for pagination
+        return $this->getData($sql, [$offset, $limit]);
+    }
+    public function getCourses($offset = 0, $limit = 5, $search_value = '', $order_column = 0, $order_dir = 'asc')
+    {
+        // Define the column names corresponding to the DataTables column index
+        $columns = ['CourseName', 'CourseCode', 'Credits', 'CreatedAt', 'UpdatedAt'];
+    
+        // Ensure the column index is valid
+        $order_column = isset($columns[$order_column]) ? $columns[$order_column] : 'CourseName';
+    
+        // SQL query with filtering, sorting, and pagination
+        $sql = "SELECT CourseID, CourseName, CourseCode, Credits, CreatedAt, UpdatedAt
+                FROM courses
+                WHERE CourseName LIKE ? OR CourseCode LIKE ? OR Credits LIKE ? OR CreatedAt LIKE ? OR UpdatedAt LIKE ?
+                ORDER BY $order_column $order_dir
+                LIMIT ?, ?";
+    
+        // Parameters for the query
+        $params = [
+            "%$search_value%",
+            "%$search_value%",
+            "%$search_value%",
+            "%$search_value%",
+            "%$search_value%",
+            $offset,
+            $limit
+        ];
+    
+        // Call getData with SQL and params
+        return $this->getData($sql, $params);
+    }
+    
+
+  
+
+    public function getTotalCoursesCount($search_value = '')
+    {
+        // SQL query to count the total number of courses with search filtering on all relevant columns
+        $sql = "SELECT COUNT(*) as total 
+                FROM courses 
+                WHERE CourseName LIKE ? 
+                   OR CourseCode LIKE ? 
+                   OR Credits LIKE ? 
+                   OR CreatedAt LIKE ? 
+                   OR UpdatedAt LIKE ?";
+    
+        // Parameters for the query, matching each placeholder in the SQL
+        $params = [
+            "%$search_value%", // Search for CourseName
+            "%$search_value%", // Search for CourseCode
+            "%$search_value%", // Search for Credits
+            "%$search_value%", // Search for CreatedAt
+            "%$search_value%"  // Search for UpdatedAt
+        ];
+    
+        // Fetch the count of filtered records from the database
+        $result = $this->getData($sql, $params);
+    
+        // Return the total count of the filtered records
+        return $result[0]['total'];
+    }
+    
+
     public function getAllCoursesINDepartments($departmentID)
     {
         // Using FIND_IN_SET with REPLACE to check for department IDs in a slash-separated string
@@ -202,10 +272,10 @@ ORDER BY
                     courses 
                 WHERE 
                     FIND_IN_SET(?, REPLACE(DepartmentID, '/', ',')) > 0;";
-                    
+
         return $this->getData($sql, [$departmentID]);
     }
-    
+
     public function getStudents()
     {
         $sql = "SELECT * FROM users 
@@ -215,7 +285,7 @@ WHERE Role IN ('Student','Freshman')
 
         return $this->getData($sql, []);
     }
-    
+
 
     public function getRecentNewsletters()
     {

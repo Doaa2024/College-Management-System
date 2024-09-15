@@ -17,118 +17,67 @@ $branches = $universityData->getAllBranchesLocation()
 
 
 ?>
-<!-- Begin Page Content -->
-<!-- Begin Page Content -->
-<div class="container-fluid">
+<style>
+    /* Hide specific pagination buttons */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.first,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.last {
+        display: none;
+    }
+</style>
 
+<body id="page-top">
 
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h3 class="m-0 font-weight-bold text-primary">Courses</h3>
-            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addBranchModal">
-                <i class="fas fa-plus"></i> Add Course
-            </button>
-        </div>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Course Name</th>
-                            <th>Course Code</th>
-                            <th>Credits</th>
-                            <th>Published At</th>
-                            <th>Updated At</th>
-                            <th>Actions</th>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($courses)) : ?>
-                            <?php foreach ($courses as $course) : ?>
+            <!-- DataTables Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">Courses</h3>
+                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addBranchModal">
+                        <i class="fas fa-plus"></i> Add Course
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered display" id="datatablesSimple" width="100%" cellspacing="0">
+                            <thead>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($course['CourseName']); ?></td>
-                                    <td><?php echo htmlspecialchars($course['CourseCode']) ?></td>
-                                    <td><?php echo htmlspecialchars($course['Credits']); ?></td>
-                                    <td><?php
-                                        echo htmlspecialchars(date('Y-m-d', strtotime($course['CreatedAt']))); // Output: YYYY-MM-DD
-                                        ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($course['UpdatedAt']))); ?></td>
-                                    <td>
-                                        <div style="display:flex; gap:10px">
-                                            <!-- Edit job Button -->
-                                            <!-- Edit Branch Button -->
-                                            <!-- Edit Branch Button -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
-                                                data-target="#editBranchModal"
-                                                data-name="<?php echo htmlspecialchars($course['CourseName']); ?>"
-                                                data-code="<?php echo htmlspecialchars($course['CourseCode']); ?>"
-                                                data-credits="<?php echo htmlspecialchars($course['Credits']); ?>"
-                                                data-course="<?php echo htmlspecialchars($course['CourseID']); ?>"
-                                                onclick="fillEditCourseForm(this)">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-
-
-
-                                            <!-- Delete Branch Button -->
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeleteCourse('<?= ($course['CourseID']) ?>')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-
-
-                                    </td>
-
-            </div>
-            </td>
-
-            </tr>
-        <?php endforeach; ?>
-    <?php else : ?>
-        <tr>
-            <td colspan="6">No branches found.</td>
-        </tr>
-    <?php endif; ?>
-    </tbody>
-    </table>
-        </div>
-    </div>
-</div>
-</div>
-
-
-
-<?php require_once("components/footer.php"); ?>
-
-
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                                    <th>Course Name</th>
+                                    <th>Course Code</th>
+                                    <th>Credits</th>
+                                    <th>Published At</th>
+                                    <th>Updated At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <!-- Assuming you'll add the table body here -->
+                        </table> <!-- Correctly closed the table tag -->
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+        <!-- End of Page Content -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+    </div> <!-- Closing the wrapper div -->
+
+    <!-- Footer -->
+    <?php require_once("components/footer.php"); ?> <!-- Placed footer outside and at the bottom -->
+
+
+
+
+
+
 <!-- Add Branch Modal -->
 <div class="modal fade" id="addBranchModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -199,10 +148,55 @@ $branches = $universityData->getAllBranchesLocation()
     </div>
 
 
+    <script src="js/sb-admin-2.min.js"></script>
 
     <?php require_once("components/scripts.php"); ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        $(document).ready(function() {
+            $('#datatablesSimple').DataTable({
+
+                "serverSide": true,
+                "ajax": {
+                    "url": "actions/data.php",
+                    "type": "POST",
+                    "data": function(d) {
+                        return $.extend({}, d, {
+                            // Additional data to send to the server if needed
+                        });
+                    }
+                },
+                "columns": [{
+                        "data": "CourseName"
+                    },
+                    {
+                        "data": "CourseCode"
+                    },
+                    {
+                        "data": "Credits"
+                    },
+                    {
+                        "data": "CreatedAt"
+                    },
+                    {
+                        "data": "UpdatedAt"
+                    },
+                    {
+                        "data": "Actions",
+                        "orderable": false
+                    }
+                ],
+                "pagingType": "full_numbers",
+                "language": {
+
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                },
+                "responsive": true
+            });
+        });
         $('#addCourseForm').on('submit', function(event) {
             event.preventDefault(); // Prevent the form from submitting the default way
             console.log("Form submitted");

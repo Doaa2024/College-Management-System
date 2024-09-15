@@ -61,6 +61,23 @@ $allFaculty = $dataFetch->getFaculty();
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <!-- Updated department container with id -->
+                    <div class="form-group" id="department-container">
+                        <label for="department">Department</label>
+                        <select class="form-control" id="department" name="department">
+                            <?php foreach ($allDepartment as $department): ?>
+                                <option value="<?= htmlspecialchars($department['DepartmentID']); ?>">
+                                    <?= htmlspecialchars($department['DepartmentName']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+
+
+
+
+
 
                     <input type="hidden" id="record_id" name="record_id">
                 </div>
@@ -143,7 +160,8 @@ $allFaculty = $dataFetch->getFaculty();
                                         data-status="<?= htmlspecialchars($row['Status']); ?>"
                                         data-role="<?= htmlspecialchars($row['Role']); ?>"
                                         data-branch="<?= htmlspecialchars($row['BranchID']); ?>"
-                                        data-faculty="<?= htmlspecialchars($row['FacultyID']); ?>">
+                                        data-faculty="<?= htmlspecialchars($row['FacultyID']); ?>"
+                                        data-department="<?= htmlspecialchars($row['DepartmentID']); ?>">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-danger btn-edit-password" data-toggle="modal" data-target="#editPassword"
@@ -199,12 +217,21 @@ $allFaculty = $dataFetch->getFaculty();
             var status = $(this).data('status');
             var branch = $(this).data('branch');
             var faculty = $(this).data('faculty');
+            var department = $(this).data('department');
 
             $('#editModal #record_id').val(id);
             $('#editModal #role').val(role);
             $('#editModal #status').val(status);
             $('#editModal #branch').val(branch);
             $('#editModal #faculty').val(faculty);
+            $('#editModal #department').val(department);
+
+            // Show or hide the department container based on role
+            if (role !== 'Assistant Dean') {
+                $('#department-container').hide(); // Hide if role is not 'Assistant Dean'
+            } else {
+                $('#department-container').show(); // Show if role is 'Assistant Dean'
+            }
         });
 
         // Open password edit modal and set user ID
@@ -278,8 +305,6 @@ $allFaculty = $dataFetch->getFaculty();
                 });
                 return;
             }
-
-
 
             $.ajax({
                 url: 'actions/update_password.php',

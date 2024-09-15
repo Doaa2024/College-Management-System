@@ -6,7 +6,18 @@ class Calender extends DAL
 
     function getCalender()
     {
-        $sql = "SELECT EventName, EventDate, StartTime FROM events ";
+        $sql = "SELECT 
+    EventName, 
+    EventDate, 
+    BranchName, 
+    StartTime 
+FROM 
+    events 
+JOIN 
+    branches 
+ON 
+    events.BranchID = branches.BranchID;
+ ";
 
         return $this->getdata($sql);
     }
