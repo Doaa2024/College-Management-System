@@ -106,8 +106,13 @@
             </li> -->
 
             <!-- Nav Item - Utilities Collapse Menu -->
-
-
+           
+            <li class="nav-item active">
+                <a class="nav-link" href=" indexGant.php">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span> Plans Of Studies</span>
+                </a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
             <div class="sidebar-heading">

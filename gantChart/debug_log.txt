@@ -1,0 +1,496 @@
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2021-06-30T21:00:00.000Z
+    [end_date] => 2021-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 2
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2021-06-30T21:00:00.000Z
+    [end_date] => 2021-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 2
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2019-12-31T22:00:00.000Z
+    [end_date] => 2020-07-02T21:00:00.000Z
+    [semester] => Fall
+    [year] => 1
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2020-06-30T21:00:00.000Z
+    [end_date] => 2020-12-29T22:00:00.000Z
+    [semester] => Spring
+    [year] => 1
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-12-31T22:00:00.000Z
+    [end_date] => 2024-06-30T21:00:00.000Z
+    [semester] => Fall
+    [year] => 5
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2020-12-31T22:00:00.000Z
+    [end_date] => 2021-06-30T21:00:00.000Z
+    [semester] => Fall
+    [year] => 2
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 106
+    [start_date] => 2020-06-30T21:00:00.000Z
+    [end_date] => 2020-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 1
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-06-30T21:00:00.000Z
+    [end_date] => 2023-12-29T22:00:00.000Z
+    [semester] => Spring
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-12-31T22:00:00.000Z
+    [end_date] => 2024-07-02T21:00:00.000Z
+    [semester] => Fall
+    [year] => 5
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-06-30T21:00:00.000Z
+    [end_date] => 2023-12-29T22:00:00.000Z
+    [semester] => Spring
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-12-31T22:00:00.000Z
+    [end_date] => 2024-07-02T21:00:00.000Z
+    [semester] => Fall
+    [year] => 5
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-06-30T21:00:00.000Z
+    [end_date] => 2023-12-29T22:00:00.000Z
+    [semester] => Spring
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-12-31T22:00:00.000Z
+    [end_date] => 2024-07-02T21:00:00.000Z
+    [semester] => Fall
+    [year] => 5
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-06-30T21:00:00.000Z
+    [end_date] => 2023-12-29T22:00:00.000Z
+    [semester] => Spring
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-12-31T22:00:00.000Z
+    [end_date] => 2023-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-12-31T22:00:00.000Z
+    [end_date] => 2023-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 4
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+    [prerequisites] => Array
+        (
+        )
+
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-12-31T22:00:00.000Z
+    [end_date] => 2023-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 4
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-12-31T22:00:00.000Z
+    [end_date] => 2023-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 4
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-12-31T22:00:00.000Z
+    [end_date] => 2023-06-30T21:00:00.000Z
+    [semester] => Fall
+    [year] => 4
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2024-06-30T21:00:00.000Z
+    [end_date] => 2024-12-28T22:00:00.000Z
+    [semester] => Spring
+    [year] => 5
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2022-06-30T21:00:00.000Z
+    [end_date] => 2022-12-31T22:00:00.000Z
+    [semester] => Spring
+    [year] => 3
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 109
+    [start_date] => 2023-06-30T21:00:00.000Z
+    [end_date] => 2023-12-31T22:00:00.000Z
+    [semester] => Spring
+    [year] => 4
+)
+
+Course updated successfully.
+Existing prerequisites removed.
+Incoming data:
+Array
+(
+    [id] => 108
+    [start_date] => 2021-12-31T22:00:00.000Z
+    [end_date] => 2022-07-03T21:00:00.000Z
+    [semester] => Fall
+    [year] => 3
+)
+
+Course updated successfully.
+Existing prerequisites removed.
