@@ -4,7 +4,7 @@ require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
 $dataRetrieval = new UniversityDataRetrieval();
-$facultyID = isset($_SESSION['facultyID']) ? $_SESSION['facultyID'] : '';
+$facultyID = isset($_SESSION['facultyID']) ? $_SESSION['facultyID'] : 6;
 $studentCountByFaculty = $dataRetrieval->getStudentCountByFaculty($facultyID);
 $professorCountByFaculty = $dataRetrieval->getProfessorCountByFaculty($facultyID);
 $majorCount = $dataRetrieval->getMajorCountByFaculty($facultyID);
