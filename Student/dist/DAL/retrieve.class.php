@@ -3,7 +3,7 @@ require('dal.class.php');
 
 class UniversityDataRetrieval extends DAL
 {
-   
+
 
     // Function 1: Get courses the student is enrolled in but hasn't completed
     public function getUncompletedCourses($userID)
@@ -200,7 +200,8 @@ class UniversityDataRetrieval extends DAL
 
         return $this->getdata($sql, $params);
     }
-    public function calculateTotalGrade($userID, $courseID) {
+    public function calculateTotalGrade($userID, $courseID)
+    {
         $sql = "SELECT 
                     SUM(sg.Grade * gs.Weight / 100) AS TotalGrade
                 FROM 
@@ -214,14 +215,14 @@ class UniversityDataRetrieval extends DAL
                 WHERE 
                     e.UserID = ? 
                     AND c.CourseID = ?";
-        
+
         $params = [$userID, $courseID];
-        
+
         return $this->getdata($sql, $params);
     }
     public function hasStudentSubmittedEvaluation($studentID, $professorID, $courseID)
-{
-    $sql = "
+    {
+        $sql = "
         SELECT 
             COUNT(*) AS EvaluationCount
         FROM 
@@ -231,13 +232,14 @@ class UniversityDataRetrieval extends DAL
             AND ProfessorID = ?
             AND CourseID = ?
     ";
-    
-    $result = $this->getdata($sql, [$studentID, $professorID, $courseID]);
-    
-    return $result[0]['EvaluationCount'] > 0;
-}
-public function getStudentGPA($userID) {
-    $sql = "
+
+        $result = $this->getdata($sql, [$studentID, $professorID, $courseID]);
+
+        return $result[0]['EvaluationCount'] > 0;
+    }
+    public function getStudentGPA($userID)
+    {
+        $sql = "
         SELECT 
             e.UserID,
             SUM(
@@ -250,7 +252,7 @@ public function getStudentGPA($userID) {
                 END
             ) / SUM(c.Credits) AS GPA
         FROM 
-            grades g
+           student_course_progress g
         JOIN 
             enrollments e ON g.EnrollmentID = e.EnrollmentID
         JOIN 
@@ -261,25 +263,26 @@ public function getStudentGPA($userID) {
             e.UserID
     ";
 
-    // Assuming $this->getdata() is used to execute queries
-    $result = $this->getdata($sql, [$userID]);
+        // Assuming $this->getdata() is used to execute queries
+        $result = $this->getdata($sql, [$userID]);
 
-    // Return the GPA result, or handle the case when no GPA is found
-    return !empty($result) ? $result[0]['GPA'] : null;
-}
+        // Return the GPA result, or handle the case when no GPA is found
+        return !empty($result) ? $result[0]['GPA'] : null;
+    }
 
-public function getUserInfo($userID) {
-    $sql = "SELECT * from users where UserID = ? ;
+    public function getUserInfo($userID)
+    {
+        $sql = "SELECT * from users where UserID = ? ;
              ";
-    
-    $params = [$userID];
-    
-    return $this->getdata($sql, $params);
-}
- // Function to get attestations for a specific student ID
- public function getAttestationsByStudentId($studentId)
- {
-     $sql = "SELECT 
+
+        $params = [$userID];
+
+        return $this->getdata($sql, $params);
+    }
+    // Function to get attestations for a specific student ID
+    public function getAttestationsByStudentId($studentId)
+    {
+        $sql = "SELECT 
                  id,
                  student_id,
                  faculty_id,
@@ -292,14 +295,14 @@ public function getUserInfo($userID) {
                  attestations
              WHERE 
                  student_id = ?";
-     
-     return $this->getdata($sql, [$studentId]);
- }
 
- // Function to get petitions for a specific student ID
- public function getPetitionsByStudentId($studentId)
- {
-     $sql = "SELECT 
+        return $this->getdata($sql, [$studentId]);
+    }
+
+    // Function to get petitions for a specific student ID
+    public function getPetitionsByStudentId($studentId)
+    {
+        $sql = "SELECT 
                  id,
                  student_id,
                  faculty_id,
@@ -312,14 +315,14 @@ public function getUserInfo($userID) {
                  petitions
              WHERE 
                  student_id = ?";
-     
-     return $this->getdata($sql, [$studentId]);
- }
 
- // Function to get financial aids for a specific student ID
- public function getFinancialAidsByStudentId($studentId)
- {
-     $sql = "SELECT 
+        return $this->getdata($sql, [$studentId]);
+    }
+
+    // Function to get financial aids for a specific student ID
+    public function getFinancialAidsByStudentId($studentId)
+    {
+        $sql = "SELECT 
                  id,
                  student_id,
                  aid_amount,
@@ -329,12 +332,12 @@ public function getUserInfo($userID) {
                  financial_aids
              WHERE 
                  student_id = ?";
-     
-     return $this->getdata($sql, [$studentId]);
- }
- public function getRequestsByStudentId($studentId)
-{
-    $sql = "SELECT 
+
+        return $this->getdata($sql, [$studentId]);
+    }
+    public function getRequestsByStudentId($studentId)
+    {
+        $sql = "SELECT 
                 id,
                 student_id,
                 request_type,
@@ -348,8 +351,161 @@ public function getUserInfo($userID) {
                 requests
             WHERE 
                 student_id = ?";
-    
-    return $this->getdata($sql, [$studentId]);
-}
 
+        return $this->getdata($sql, [$studentId]);
+    }
+
+    public function getStudentGPAPerSemester($studentId)
+    {
+        $sql = "WITH AllSemesters AS (
+    SELECT DISTINCT
+        e.Semester AS SemesterTaken,
+        e.Year AS YearTaken
+    FROM 
+        enrollments e
+    WHERE 
+        e.UserID = ?  
+),
+GPA_Calculations AS (
+    SELECT 
+        e.Semester AS SemesterTaken,
+        e.Year AS YearTaken,
+        SUM(
+            CASE 
+                WHEN g.Grade >= 90 THEN 4.0 * c.Credits
+                WHEN g.Grade >= 80 THEN 3.0 * c.Credits
+                WHEN g.Grade >= 70 THEN 2.0 * c.Credits
+                WHEN g.Grade >= 60 THEN 1.0 * c.Credits
+                ELSE 0.0 * c.Credits
+            END
+        ) / NULLIF(SUM(c.Credits), 0) AS GPA
+    FROM 
+        student_course_progress g
+    JOIN 
+        enrollments e ON g.EnrollmentID = e.EnrollmentID
+    JOIN 
+        courses c ON e.CourseID = c.CourseID
+    WHERE 
+        e.UserID = ? 
+    GROUP BY 
+        e.Semester, e.Year
+)
+SELECT
+    a.SemesterTaken,
+    a.YearTaken,
+    COALESCE(g.GPA, 0) AS GPA
+FROM
+    AllSemesters a
+LEFT JOIN
+    GPA_Calculations g
+ON
+    a.SemesterTaken = g.SemesterTaken AND a.YearTaken = g.YearTaken
+ORDER BY
+    a.YearTaken, a.SemesterTaken;";
+
+        return $this->getdata($sql, [$studentId, $studentId]);
+    }
+    public function getStudentCumulativeGPAPerSemester($studentId)
+    {
+        $sql = "WITH AllSemesters AS (
+    SELECT DISTINCT
+        e.Semester AS SemesterTaken,
+        e.Year AS YearTaken
+    FROM 
+        enrollments e
+    WHERE 
+        e.UserID = ?  
+),
+GPA_Calculations AS (
+    SELECT 
+        e.Semester AS SemesterTaken,
+        e.Year AS YearTaken,
+        SUM(
+            CASE 
+                WHEN g.Grade >= 90 THEN 4.0 * c.Credits
+                WHEN g.Grade >= 80 THEN 3.0 * c.Credits
+                WHEN g.Grade >= 70 THEN 2.0 * c.Credits
+                WHEN g.Grade >= 60 THEN 1.0 * c.Credits
+                ELSE 0.0 * c.Credits
+            END
+        ) AS TotalGradePoints,
+        SUM(c.Credits) AS TotalCredits
+    FROM 
+        student_course_progress g
+    JOIN 
+        enrollments e ON g.EnrollmentID = e.EnrollmentID
+    JOIN 
+        courses c ON e.CourseID = c.CourseID
+    WHERE 
+        e.UserID = ? 
+    GROUP BY 
+        e.Semester, e.Year
+),
+CumulativeGPA AS (
+    SELECT
+        a.SemesterTaken,
+        a.YearTaken,
+        COALESCE(SUM(g.TotalGradePoints) OVER (ORDER BY a.YearTaken, a.SemesterTaken ROWS UNBOUNDED PRECEDING), 0) AS CumulativeGradePoints,
+        COALESCE(SUM(g.TotalCredits) OVER (ORDER BY a.YearTaken, a.SemesterTaken ROWS UNBOUNDED PRECEDING), 0) AS CumulativeCredits
+    FROM
+        AllSemesters a
+    LEFT JOIN
+        GPA_Calculations g
+    ON
+        a.SemesterTaken = g.SemesterTaken AND a.YearTaken = g.YearTaken
+)
+SELECT
+    SemesterTaken,
+    YearTaken,
+    CASE 
+        WHEN CumulativeCredits = 0 THEN 4
+        ELSE CumulativeGradePoints / CumulativeCredits
+    END AS CumulativeGPA
+FROM
+    CumulativeGPA
+ORDER BY
+    YearTaken, SemesterTaken;
+";
+
+        return $this->getdata($sql, [$studentId, $studentId]);
+    }
+
+    public function getGradesCount($studentId)
+    {
+        $sql = "SELECT SUM(CASE WHEN Grade BETWEEN 90 AND 100 THEN 1 ELSE 0 END) AS A, SUM(CASE WHEN Grade BETWEEN 85 AND 89 THEN 1 ELSE 0 END) AS B_Plus, SUM(CASE WHEN Grade BETWEEN 80 AND 84 THEN 1 ELSE 0 END) AS B, SUM(CASE WHEN Grade BETWEEN 75 AND 79 THEN 1 ELSE 0 END) AS C_Plus, SUM(CASE WHEN Grade BETWEEN 70 AND 74 THEN 1 ELSE 0 END) AS C, SUM(CASE WHEN Grade BETWEEN 65 AND 69 THEN 1 ELSE 0 END) AS D_Plus, SUM(CASE WHEN Grade BETWEEN 60 AND 64 THEN 1 ELSE 0 END) AS D, SUM(CASE WHEN Grade < 60 THEN 1 ELSE 0 END) AS F FROM student_course_progress AS scp JOIN enrollments AS e ON scp.EnrollmentID = e.EnrollmentID WHERE e.UserID = ?;";
+
+        return $this->getdata($sql, [$studentId]);
+    }
+
+    public function getCreditsCount($studentId)
+    {
+        $sql = "
+WITH TotalCredits AS (
+   
+    SELECT SUM(c.Credits) AS total_credits
+    FROM courses c
+    JOIN users u ON FIND_IN_SET(u.DepartmentID, REPLACE(c.DepartmentID, '/', ',')) > 0
+    WHERE u.UserID = ?
+),
+CompletedCredits AS (
+ 
+    SELECT SUM(c.Credits) AS completed_credits
+    FROM student_course_progress scp
+    JOIN enrollments e ON scp.EnrollmentID = e.EnrollmentID
+    JOIN courses c ON e.CourseID = c.CourseID
+    JOIN users u ON e.UserID = u.UserID
+    WHERE u.UserID = ?
+      AND FIND_IN_SET(u.DepartmentID, REPLACE(c.DepartmentID, '/', ',')) > 0
+      AND scp.Status = 'Completed'
+)
+
+SELECT 
+    tc.total_credits,
+    cc.completed_credits,
+    (tc.total_credits - COALESCE(cc.completed_credits, 0)) AS remaining_credits
+FROM TotalCredits tc
+LEFT JOIN CompletedCredits cc ON 1=1;";
+
+        return $this->getdata($sql, [$studentId, $studentId]);
+    }
 }
