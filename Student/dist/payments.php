@@ -16,9 +16,10 @@ $selectedYear = isset($_POST['year']) ? intval($_POST['year']) : 2024;
 $payments = $universityData->getTotalCreditsAndFees($userID, $selectedSemester, $selectedYear);
 
 // Function to divide the total fee across the months for the selected semester
-function generatePaymentSchedule($totalFees, $semester) {
+function generatePaymentSchedule($totalFees, $semester)
+{
     $schedule = [];
-    
+
     switch ($semester) {
         case 'Fall':
             // Fall has 4 months (Oct, Nov, Dec, Jan)
@@ -56,7 +57,7 @@ $totalFees = !empty($payments) ? $payments[0]['TotalFees'] : 0;
 $paymentSchedule = generatePaymentSchedule($totalFees, $selectedSemester);
 ?>
 
-<div class="my-3 my-md-5" >
+<div class="my-3 my-md-5">
     <div class="container">
         <!-- Form for selecting semester and year -->
         <form method="POST" class="form-inline mb-4 shadow-sm p-3 bg-white rounded" style="box-shadow: 0 1px 4px rgba(0, 0, 255, 0.2);">
@@ -68,7 +69,7 @@ $paymentSchedule = generatePaymentSchedule($totalFees, $selectedSemester);
                     <option value="Summer" <?php echo $selectedSemester == 'Summer' ? 'selected' : ''; ?>>Summer</option>
                 </select>
             </div>
-            <div class="form-group mr-3" >
+            <div class="form-group mr-3">
                 <label for="year" class="mr-2">Select Year:</label>
                 <select class="form-control" id="year" name="year">
                     <?php for ($year = 2020; $year <= 2025; $year++) { ?>
@@ -124,4 +125,5 @@ $paymentSchedule = generatePaymentSchedule($totalFees, $selectedSemester);
 <script src="logic.js"></script>
 <?php require_once("components/footer.php") ?>
 </body>
+
 </html>
