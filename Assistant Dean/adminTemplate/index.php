@@ -109,10 +109,10 @@ $salary = $dataRetrieval->getSalary();
 
     <!-- Content Row -->
 
-    <div class="row">
+    <div class="row" >
 
         <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-8 col-lg-7" style="min-height:40dvh;">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -129,7 +129,7 @@ $salary = $dataRetrieval->getSalary();
         </div>
 
         <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-4 col-lg-5" > 
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -166,7 +166,7 @@ $salary = $dataRetrieval->getSalary();
     <!-- Content Row -->
 
 
-    <div class="col-lg-7 d-flex align-items-stretch">
+    <div class="col-lg-12 d-flex align-items-stretch mb-5 w-100">
         <div class="card shadow w-100">
             <div class="card-header py-3 text-primary">
                 <strong> NewsLetter</strong>
