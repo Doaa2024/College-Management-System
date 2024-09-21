@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST['password'];
 
         // Retrieve the hashed password from the database based on the username
-        $sql_user = "SELECT Role, Password FROM users WHERE Username = ?";
+        $sql_user = "SELECT Role, Password,UserID,FacultyID,DepartmentID FROM users WHERE Username = ?";
         $params = array($username);
 
         // Check employee table first
@@ -22,14 +22,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_type = $result[0]['Role'];
 
             // Verify the user-provided password against the stored hash
-            if (password_verify($password, $storedPasswordHash) && $user_type = 'Student' || $user_type = 'Professor') {
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash) && ($user_type == 'Student' || $user_type == 'Freshman')) {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
+                $_SESSION['facultyID'] = $facultyID;
                 $_SESSION['login'] = true;
 
                 echo "<script>
               
-                        window.location.href='main.php';
+                        window.location.href='../Student/dist/index.php';
+                    
+            </script>";
+                exit; // Exit to prevent further execution
+
+            }
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash) && $user_type == 'Professor') {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_type'] = $user_type;
+                $_SESSION['userID'] = $userID;
+                $_SESSION['login'] = true;
+
+                echo "<script>
+              
+                        window.location.href='../Professor/dist/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution

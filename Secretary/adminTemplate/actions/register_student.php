@@ -6,20 +6,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $faculty = $_POST['faculty'];
     $department = $_POST['department'];
     $branch = $_POST['branch'];
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $userManagement = new UserManagement();
+
     $facultyID  = $userManagement->getFacultyByID($faculty);
     $departmentID  = $userManagement->getDepartmentByID($department);
     $branchID  = $userManagement->getBranchByID($branch);
 
     $last_id  = $userManagement->maxID();
-    // Concatenate and convert to lowercase
     $email = ($last_id[0]['last_id'] + 1) . "@gmail.dau.edu.student.lb";
-
-    echo $email; // Output will be: john.doe@gmail.dau.edu.lb
-
-
-
 
     function generateRandomPassword($length = 8)
     {
@@ -32,13 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         return $randomPassword;
     }
 
-    // Generate an 8-character random password
     $password = generateRandomPassword(8);
-
-    echo $password;
     $role = "Student";
-
     $status = "Approved";
+
+    // Check for unique username
+    $checkResult = $userManagement->checkUserName($username);
+    if (!empty($checkResult)) {
+        // Username exists, generate a new unique username
+        $baseUsername = $username;
+        $counter = 1;
+        do {
+            $newUsername = $baseUsername . $counter;
+            $checkResult = $userManagement->checkUserName($newUsername);
+            $counter++;
+        } while (!empty($checkResult));
+
+        $username = $newUsername; // Use the unique username
+    }
+
+    // Now proceed with registration
     $result = $userManagement->register_student($username, $email, $role, $branchID[0]['BranchID'], $facultyID[0]['FacultyID'], $departmentID[0]['DepartmentID'], $password);
     if ($result) {
         $result = $userManagement->updateStudentApplicationStatus($applicationId);

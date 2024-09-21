@@ -228,13 +228,14 @@ require_once('components/navbar.php');
                         });
                     } else {
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Failed to register student',
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            title: 'Oops...',
+                            text: 'UserName Already Exists',
+                            showConfirmButton: true
                         });
                     }
                 },
+
                 error: function(xhr, status, error) {
                     Swal.fire({
                         title: 'Error!',

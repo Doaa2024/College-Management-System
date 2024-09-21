@@ -287,6 +287,17 @@ class UserManagement extends DAL
 
         return $result;
     }
+    public function checkUserName($username)
+    {
+        // Corrected query
+        $sql = "
+           SELECT * FROM `users` WHERE TRIM(`Username`) = ?
+    ";
+
+        $result = $this->getdata($sql, [$username]);
+
+        return $result;
+    }
    
 
     public function updateFacultyCreditFee($facultyID, $newCreditFee)
