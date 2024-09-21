@@ -5,7 +5,7 @@ require_once('DAL/retrieve.class.php');
 ?>
 <?php // Instantiate the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
-$facultyID = isset($_SESSION['facultyID']) ? $_SESSION['facultyID'] : '';
+$facultyID = isset($_SESSION['facultyID']) ? $_SESSION['facultyID'] : 9;
 // Retrieve all branches
 $courses = $universityData->getAllCourses();
 $departments = $universityData->getAllDepartmentsInFaculty($facultyID);

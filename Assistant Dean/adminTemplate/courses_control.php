@@ -5,7 +5,8 @@ require_once('DAL/retrieve.class.php');
 ?>
 <?php // Instantiate the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
-$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : '';
+$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : 9;
+// echo var_dump($departmentID);
 // Retrieve all branches
 $semesters = $universityData->getAllSemesters();
 // Check if 'departmentID' is set in the URL query parameters and is not empty

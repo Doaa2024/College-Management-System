@@ -1,3 +1,7 @@
+<?php
+
+$userID = $_SESSION['userID']; // Assuming userID is stored in session
+?>
 <body class="">
     <div class="page">
         <div class="page-main">
@@ -66,23 +70,35 @@
                                 <?php
                                 $current_page = basename($_SERVER['PHP_SELF']); // Get the current page filename
                                 ?>
-                                <li class="nav-item ">
-                                    <a href="./index.php" class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>"><i class="fe fe-home"></i> Home</a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="./classes.php" class="nav-link <?php echo $current_page == 'classes.php' ? 'active' : ''; ?>"><i class="fe fe-box"></i> Classes</a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="./payments.php " class="nav-link <?php echo $current_page == 'payments.php' ? 'active' : ''; ?>"><i class="fa fa-credit-card"></i> Payments</a>
-                                </li>
-                                <li class="nav-item dropdown ">
-                                    <a href="./pof.php" class="nav-link <?php echo $current_page == 'pof.php' ? 'active' : ''; ?>"><i class="fe fe-file-text"></i> Plan of Study</a>
+                                <li class="nav-item">
+                                    <a href="./index.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'index.php' ? 'active' : ''; ?>">
+                                        <i class="fe fe-home"></i> Home
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./registration.php " class="nav-link <?php echo $current_page == 'registration.php' ? 'active' : ''; ?>"><i class="fe fe-calendar"></i> Registration</a>
+                                    <a href="./classes.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'classes.php' ? 'active' : ''; ?>">
+                                        <i class="fe fe-box"></i> Classes
+                                    </a>
                                 </li>
-                                <li class="nav-item ">
-                                    <a href="./os.php" class="nav-link <?php echo $current_page == 'os.php' ? 'active' : ''; ?>"><i class="fe fe-file-text"></i> Online Services</a>
+                                <li class="nav-item">
+                                    <a href="./payments.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'payments.php' ? 'active' : ''; ?>">
+                                        <i class="fa fa-credit-card"></i> Payments
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a href="./pof.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'pof.php' ? 'active' : ''; ?>">
+                                        <i class="fe fe-file-text"></i> Study Plan
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./registration.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'registration.php' ? 'active' : ''; ?>">
+                                        <i class="fe fe-calendar"></i> Registration
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./os.php?userID=<?php echo $userID; ?>" class="nav-link <?php echo $current_page == 'os.php' ? 'active' : ''; ?>">
+                                        <i class="fe fe-file-text"></i> Online Services
+                                    </a>
                                 </li>
                             </ul>
                         </div>

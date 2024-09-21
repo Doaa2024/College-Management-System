@@ -6,13 +6,15 @@ $dataRetrieval = new UniversityDataRetrieval();
 
 $userID = isset($_GET['userID']) ? intval($_GET['userID']) : 5;
 $userInfo = $dataRetrieval->getUserInfo($userID);
+// echo var_dump($userInfo);
 ?>
 
 
 <div class="container shadow-lg mb-4 col-lg-11">
+    <h2><?= $userInfo[0]['DepartmentName']?></h2>
     <div class="container pb-5 mt-4">
         <!-- Gantt Chart -->
-        <div id="gantt_here" class="mb-4 shadow-lg col-lg-12" style="width:100%; min-height:68.5dvh; "></div>
+        <div id="gantt_here" class="mb-4 shadow-lg " style="width:100%; min-height:68.5dvh; "></div>
     </div>
 
 
