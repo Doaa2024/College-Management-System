@@ -6,7 +6,7 @@ $host = 'localhost';
 $db = 'university_db';
 $user = 'root';
 $pass = '';
-$departmentID = ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dept_id'])) ? $_GET['dept_id'] : 0;
+$departmentID = ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['dept_id'])) ? $_GET['dept_id'] : 9;
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
