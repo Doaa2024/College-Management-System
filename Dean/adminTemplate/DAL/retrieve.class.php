@@ -206,17 +206,17 @@ ORDER BY
     {
         // Define the column names corresponding to the DataTables column index
         $columns = ['CourseName', 'CourseCode', 'Credits', 'CreatedAt', 'UpdatedAt'];
-    
+
         // Ensure the column index is valid
         $order_column = isset($columns[$order_column]) ? $columns[$order_column] : 'CourseName';
-    
+
         // SQL query with filtering, sorting, and pagination
         $sql = "SELECT CourseID, CourseName, CourseCode, Credits, CreatedAt, UpdatedAt
                 FROM courses
                 WHERE CourseName LIKE ? OR CourseCode LIKE ? OR Credits LIKE ? OR CreatedAt LIKE ? OR UpdatedAt LIKE ?
                 ORDER BY $order_column $order_dir
                 LIMIT ?, ?";
-    
+
         // Parameters for the query
         $params = [
             "%$search_value%",
@@ -227,13 +227,13 @@ ORDER BY
             $offset,
             $limit
         ];
-    
+
         // Call getData with SQL and params
         return $this->getData($sql, $params);
     }
-    
 
-  
+
+
 
     public function getTotalCoursesCount($search_value = '')
     {
@@ -245,7 +245,7 @@ ORDER BY
                    OR Credits LIKE ? 
                    OR CreatedAt LIKE ? 
                    OR UpdatedAt LIKE ?";
-    
+
         // Parameters for the query, matching each placeholder in the SQL
         $params = [
             "%$search_value%", // Search for CourseName
@@ -254,14 +254,14 @@ ORDER BY
             "%$search_value%", // Search for CreatedAt
             "%$search_value%"  // Search for UpdatedAt
         ];
-    
+
         // Fetch the count of filtered records from the database
         $result = $this->getData($sql, $params);
-    
+
         // Return the total count of the filtered records
         return $result[0]['total'];
     }
-    
+
 
     public function getAllCoursesINDepartments($departmentID)
     {
@@ -274,6 +274,13 @@ ORDER BY
                     FIND_IN_SET(?, REPLACE(DepartmentID, '/', ',')) > 0;";
 
         return $this->getData($sql, [$departmentID]);
+    }
+    public function getGradeStructures($courseId)
+    {
+        $sql = "SELECT AssessmentType, Weight
+                FROM gradestructures
+                WHERE CourseID = ?";
+        return $this->getdata($sql, [$courseId]);
     }
 
     public function getStudents()

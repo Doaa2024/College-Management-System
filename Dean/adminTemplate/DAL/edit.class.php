@@ -67,10 +67,10 @@ class UserManagement extends DAL
                 WHERE 
                     CourseID = ? 
                     AND FIND_IN_SET(?, REPLACE(DepartmentID, '/', ',')) > 0;";
-                    
+
         return $this->getData($sql, [$courseID, $departmentID]);
     }
-    
+
 
     public function add_course($name, $code, $credits)
     {
@@ -96,6 +96,52 @@ WHERE (CourseName = ? OR CourseCode = ?)
   AND CourseID != ?
 ";
         return $this->getdata($sql, [$coursename, $coursecode, $id]);
+    }
+    public function checkAssessmentTypeAndWeight($CourseCode, $AssessmentType)
+    {
+        // Query to get the total weight of all assessment types for the course
+        // and check if the specific assessment type exists.
+        $sql = "
+        SELECT 
+            (SELECT SUM(gs.Weight) 
+             FROM gradestructures gs
+             WHERE gs.CourseID = (SELECT CourseID FROM courses WHERE CourseCode = ?)) AS TotalWeight,
+            COUNT(gs.AssessmentType) AS AssessmentExists
+        FROM gradestructures gs
+        WHERE gs.CourseID = (SELECT CourseID FROM courses WHERE CourseCode = ?)
+          AND gs.AssessmentType = ?
+        GROUP BY gs.CourseID";
+
+        return $this->getdata($sql, [$CourseCode, $CourseCode, $AssessmentType]);
+    }
+    public function checkAssessmentTypeExists($CourseCode, $AssessmentType)
+    {
+        $sql = "SELECT COUNT(*) AS AssessmentExists
+                FROM gradestructures gs
+                WHERE gs.CourseID = (SELECT CourseID FROM courses WHERE CourseCode = ?)
+                  AND gs.AssessmentType = ?";
+
+        return $this->getdata($sql, [$CourseCode, $AssessmentType]);
+    }
+    public function deleteGradeStructureByCourseCode($CourseID)
+    {
+        $sql = "DELETE FROM gradestructures WHERE CourseID =?";
+        return $this->execute($sql, [$CourseID]);
+    }
+
+    public function addGradeStructure($CourseCode, $AssessmentType, $Weight)
+    {
+        $sql = "INSERT INTO gradestructures (CourseID, AssessmentType, Weight, CreatedAt)
+            VALUES ((SELECT CourseID FROM courses WHERE CourseCode = ?), ?, ?, NOW())";
+
+        return $this->execute($sql, [$CourseCode, $AssessmentType, $Weight]);
+    }
+    public function addNewGradeStructure($CourseID, $AssessmentType, $Weight)
+    {
+        $sql = "INSERT INTO gradestructures (CourseID, AssessmentType, Weight, CreatedAt)
+            VALUES (?, ?, ?, NOW())";
+
+        return $this->execute($sql, [$CourseID, $AssessmentType, $Weight]);
     }
     public function  getCourseNameCodeAdd($coursename, $coursecode)
     {

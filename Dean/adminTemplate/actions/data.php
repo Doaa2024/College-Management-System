@@ -32,7 +32,9 @@ try {
             'Credits' => htmlspecialchars($row['Credits']),
             'CreatedAt' => htmlspecialchars(date('Y-m-d', strtotime($row['CreatedAt']))),
             'UpdatedAt' => htmlspecialchars(date('Y-m-d', strtotime($row['UpdatedAt']))),
-            'Actions' => '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editBranchModal" data-name="' . htmlspecialchars($row['CourseName']) . '" data-code="' . htmlspecialchars($row['CourseCode']) . '" data-credits="' . htmlspecialchars($row['Credits']) . '" data-course="' . htmlspecialchars($row['CourseID']) . '" onclick="fillEditCourseForm(this)"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger btn-sm text-white" onclick="confirmDeleteCourse(\'' . htmlspecialchars($row['CourseID']) . '\')"><i class="fas fa-trash-alt" style="color:white !important"></i></button>'
+            'Actions' => '<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editBranchModal" data-name="' . htmlspecialchars($row['CourseName']) . '" data-code="' . htmlspecialchars($row['CourseCode']) . '" data-credits="' . htmlspecialchars($row['Credits']) . '" data-course="' . htmlspecialchars($row['CourseID']) . '" onclick="fillEditCourseForm(this)"><i class="fas fa-edit"></i></button> <button type="button" class="btn btn-danger btn-sm text-white" onclick="confirmDeleteCourse(\'' . htmlspecialchars($row['CourseID']) . '\')"><i class="fas fa-trash-alt" style="color:white !important"></i></button> <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewGradeModal" data-course="' . htmlspecialchars($row['CourseID']) . '"><i class="fas fa-list-ol"></i> Grades</button>'
+
+
         ];
     }
 

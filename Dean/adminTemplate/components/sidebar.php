@@ -37,7 +37,7 @@
             </div>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages4"
-                    aria-expanded="true" aria-controls="collapsePages">
+                    aria-expanded="true" aria-controls="collapsePages4">
                     <i class="fas fa-chalkboard-teacher" style="color:white"></i>
                     <span style="color:white;"> Courses Control</span>
                 </a>
@@ -106,7 +106,7 @@
             </li> -->
 
             <!-- Nav Item - Utilities Collapse Menu -->
-           
+
             <li class="nav-item active">
                 <a class="nav-link" href=" indexGant.php">
                     <i class="fas fa-fw fa-book"></i>
@@ -148,12 +148,12 @@
                 NewsLetter
             </div>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages3"
-                    aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages5"
+                    aria-expanded="true" aria-controls="collapsePages5">
                     <i class="fas fa-fw fa-paper-plane" style="color:white;"></i>
                     <span style="color:white;"> News Letter</span>
                 </a>
-                <div id="collapsePages3" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages5" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <?php
                     $currentPage = basename($_SERVER['PHP_SELF']);
                     ?>
@@ -174,7 +174,9 @@
             </div>
         </ul>
         <!-- End of Sidebar -->
-         <script>    document.getElementById('sidebarToggle').addEventListener('click', function () {
-            document.getElementById('accordionSidebar').classList.toggle('toggled');
-        });</script>
+        <script>
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.getElementById('accordionSidebar').classList.toggle('toggled');
+            });
+        </script>
         <!-- End of Sidebar -->
