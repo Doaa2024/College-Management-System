@@ -508,4 +508,15 @@ LEFT JOIN CompletedCredits cc ON 1=1;";
 
         return $this->getdata($sql, [$studentId, $studentId]);
     }
+    public function getAllDepartments()
+    {
+        $sql = "SELECT * FROM departments";
+        return $this->getdata($sql, []);
+    }
+    public function getAllDepartmentsInFaculty($facultyID)
+    {
+        $sql = "SELECT * FROM departments where FacultyID=?";
+        return $this->getdata($sql, [$facultyID]);
+    }
+  
 }

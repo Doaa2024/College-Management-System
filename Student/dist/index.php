@@ -67,95 +67,112 @@ $jsonCredits = json_encode($credits[0]);
           <div class="card-header">
             <h3 class="card-title">Grade Point Average for the current semester </h3>
           </div>
-          <div class="card-body" id="card-body" style="width:100%; ">
-
+          <div class="card-body" id="card-body">
+            <div id="gpa" class="gpa" style="width:100%!important; height:auto"></div>
           </div>
-
-
         </div>
-        <!-- Include jQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-        <!-- Include jqPlot JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js"></script>
-
-        <!-- Include MeterGaugeRenderer Plugin -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.meterGaugeRenderer.min.js"></script>
-
-        <script>
-          $(document).ready(function() {
-            // Example GPA value
-            var gpaValue = <?php echo json_encode($gpa) ?>;
-
-            // GPA Meter with range from 0 to 4, with 0.5 steps
-            var s1 = [gpaValue];
-
-            var plot3 = $.jqplot('card-body', [s1], {
-              seriesDefaults: {
-                renderer: $.jqplot.MeterGaugeRenderer,
-                rendererOptions: {
-                  min: 0,
-                  max: 4, // Maximum GPA
-                  intervals: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], // 0.5 step intervals
-                  intervalColors: [
-                    '#ff0000', '#ff3333', '#ff6666', '#ff9999', // Red shades
-                    '#b3ffb3', '#80ff80', '#4dff4d', '#00ff00' // Brighter green shades
-                  ],
-                  ticks: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], // Tick marks
-                  label: 'GPA: <?php echo json_encode(number_format($gpa, 2)); ?>', // Label under the meter
-                  labelHeightAdjust: 135,
-                  padding: 25,
-                  style: {
-                    border: 0
-                  },
-                  gaugeStyle: 'half', // Render half-circle gauge
-                }
-              }
-            });
-          });
-        </script>
-        <script>
-          require(['c3', 'jquery'], function(c3, $) {
-            $(document).ready(function() {
-              var chart = c3.generate({
-                bindto: '', // id of chart wrapper
-                data: {
-                  columns: [
-                    // each columns data
-                    ['data1', 11, 8, 15, 18, 19, 17]
-
-                  ],
-                  type: 'area', // default type of chart
-                  colors: {
-                    'data1': tabler.colors["blue"],
-
-                  },
-                  names: {
-                    // name of each serie
-                    'data1': 'GPA',
-
-                  }
-                },
-                axis: {
-                  x: {
-                    type: 'category',
-                    // name of each category
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-                  },
-                },
-                legend: {
-                  show: false, //hide legend
-                },
-                padding: {
-                  bottom: 0,
-                  top: 0
-                },
-              });
-            });
-          });
-        </script>
-
       </div>
+      <style>
+        /* Ensure the card-body and gpa containers adjust with the screen size */
+       
+        /* #gpa {
+          width: 100% !important;
+          
+          height: auto !important;
+        } */
+
+        /* Optional: adjust the height for mobile responsiveness */
+        /* @media screen and (max-width: 600px) {
+          #gpa {
+            width:10%!important;
+            height:auto!important;
+            
+          }
+        } */
+      </style>
+      <!-- Include jQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+      <!-- Include jqPlot JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js"></script>
+
+      <!-- Include MeterGaugeRenderer Plugin -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.meterGaugeRenderer.min.js"></script>
+
+      <script>
+        $(document).ready(function() {
+          // Example GPA value
+          var gpaValue = <?php echo json_encode($gpa) ?>;
+
+          // GPA Meter with range from 0 to 4, with 0.5 steps
+          var s1 = [gpaValue];
+
+          var plot3 = $.jqplot('gpa', [s1], {
+            seriesDefaults: {
+              renderer: $.jqplot.MeterGaugeRenderer,
+              rendererOptions: {
+                min: 0,
+                max: 4, // Maximum GPA
+                intervals: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], // 0.5 step intervals
+                intervalColors: [
+                  '#ff0000', '#ff3333', '#ff6666', '#ff9999', // Red shades
+                  '#b3ffb3', '#80ff80', '#4dff4d', '#00ff00' // Brighter green shades
+                ],
+                ticks: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], // Tick marks
+                label: 'GPA: <?php echo json_encode(number_format($gpa, 2)); ?>', // Label under the meter
+                labelHeightAdjust: 135,
+                padding: 25,
+                style: {
+                  border: 0
+                },
+                gaugeStyle: 'half', // Render half-circle gauge
+              }
+            }
+          });
+        });
+      </script>
+      <script>
+        require(['c3', 'jquery'], function(c3, $) {
+          $(document).ready(function() {
+            var chart = c3.generate({
+              bindto: '', // id of chart wrapper
+              data: {
+                columns: [
+                  // each columns data
+                  ['data1', 11, 8, 15, 18, 19, 17]
+
+                ],
+                type: 'area', // default type of chart
+                colors: {
+                  'data1': tabler.colors["blue"],
+
+                },
+                names: {
+                  // name of each serie
+                  'data1': 'GPA',
+
+                }
+              },
+              axis: {
+                x: {
+                  type: 'category',
+                  // name of each category
+                  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+                },
+              },
+              legend: {
+                show: false, //hide legend
+              },
+              padding: {
+                bottom: 0,
+                top: 0
+              },
+            });
+          });
+        });
+      </script>
+
+
       <div class="col-md-6">
         <div class="alert alert-primary">Your Academic Profile? See Below!</a> </div>
         <div class="row">
@@ -292,9 +309,9 @@ $jsonCredits = json_encode($credits[0]);
 
       <script src="logic.js"></script>
 
-      
+
       <div class="col-sm-6 col-lg-6">
-        
+
       </div>
     </div>
     <div class="chart-container">
@@ -434,104 +451,6 @@ $jsonCredits = json_encode($credits[0]);
 <?php require_once("components/footer.php") ?>
 </div>
 
-<script>
-  function handleCredentialResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
-    // Extract the access token from the response
-    const accessToken = response.credential;
-    fetchGoogleClassroomData(accessToken);
-  }
-
-  async function fetchGoogleClassroomData(accessToken) {
-    const endpoint = 'https://classroom.googleapis.com/v1/courses'; // Correct endpoint
-
-    console.log("Fetching Google Classroom data from endpoint:", endpoint);
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Accept': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        console.error('Error fetching data:', response.statusText);
-        const errorData = await response.json();
-        console.error('Error details:', errorData);
-        return;
-      }
-
-      const data = await response.json();
-      console.log('Fetched data:', data);
-
-      listAnnouncements(data);
-    } catch (error) {
-      console.error('Error in fetchGoogleClassroomData:', error);
-    }
-  }
-
-  function listAnnouncements(data) {
-    console.log('Listing announcements from data:', data);
-
-    const announcementsTable = document.getElementById('announcements-table');
-
-    if (!data.courses || !Array.isArray(data.courses)) {
-      console.error('No courses data found or invalid data format.');
-      return;
-    }
-
-    data.courses.forEach(course => {
-      console.log('Fetching announcements for course:', course.id);
-
-      fetch(`https://classroom.googleapis.com/v1/courses/${course.id}/announcements`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Accept': 'application/json'
-          }
-        })
-        .then(response => {
-          if (!response.ok) {
-            console.error('Error fetching announcements:', response.statusText);
-            return;
-          }
-          return response.json();
-        })
-        .then(announcementsData => {
-          console.log('Fetched announcements data:', announcementsData);
-
-          if (!announcementsData.announcements || !Array.isArray(announcementsData.announcements)) {
-            console.error('No announcements data found or invalid data format.');
-            return;
-          }
-
-          announcementsData.announcements.forEach(announcement => {
-            displayAnnouncement(announcement);
-          });
-        })
-        .catch(error => {
-          console.error('Error in fetching announcements:', error);
-        });
-    });
-  }
-
-  function displayAnnouncement(announcement) {
-    console.log('Displaying announcement:', announcement);
-
-    const announcementsTable = document.getElementById('announcements-table');
-    if (!announcementsTable) {
-      console.error('Announcements table element not found.');
-      return;
-    }
-
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${announcement.title}</td>
-                       <td>Date: ${announcement.dueDate ? announcement.dueDate : 'No date'}</td>`;
-    announcementsTable.appendChild(row);
-  }
-</script>
 </body>
 
 </html>
