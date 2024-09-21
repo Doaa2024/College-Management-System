@@ -4,14 +4,18 @@
 
 // Create an instance of the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
-$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : '';
-$userID = isset($_GET['student_id']) ? intval($_GET['student_id']) : (isset($_SESSION['userID']) ? $_SESSION['userID'] : 5);
+$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : 9;
+echo var_dump($departmentID);
+$userID = isset($_GET['student_id']) ? intval($_GET['student_id']) : (isset($_SESSION['userID']) ? $_SESSION['userID'] : 3);
 // Fetch the total credits and fees for the student based on the selected semester and year
 $gpa = $universityData->getStudentGPA($userID);
 $grades = $universityData->getGradesCount($userID);
 $jsonGrades = json_encode($grades[0]);
 $credits = $universityData->getCreditsCount($userID);
 $jsonCredits = json_encode($credits[0]);
+
+$semester_gpa = $universityData->getStudentGPAPerSemester($userID);
+$cumulative_semester_gpa = $universityData->getStudentCumulativeGPAPerSemester($userID);
 
 
 ?>
@@ -316,8 +320,6 @@ $jsonCredits = json_encode($credits[0]);
     </div>
   </div>
   <?php
-  $semester_gpa = $universityData->getStudentGPAPerSemester($userID);
-  $cumulative_semester_gpa = $universityData->getStudentCumulativeGPAPerSemester($userID);
 
   // Encode the PHP array to JSON format
   $jsonCumulativeSemesterGPA = json_encode($cumulative_semester_gpa);

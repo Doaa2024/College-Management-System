@@ -103,10 +103,6 @@ $universityData = new UniversityDataRetrieval();
         </div>
     </div>
 
-
-
-
-
     <!-- Add Branch Modal -->
     <div class="modal fade" id="addBranchModal" tabindex="-1" role="dialog" aria-labelledby="addBranchModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

@@ -6,34 +6,40 @@ class UniversityDataRetrieval extends DAL
 
 
     // Function 1: Get courses the student is enrolled in but hasn't completed
-    public function getUncompletedCourses($userID)
+    public function getUncompletedCourses($userID, $Semester, $Year)
     {
         $sql = "
         SELECT DISTINCT
-            e.*, 
-            t.*, 
-            c.*, 
-            u.*, 
-            r.*,
-             GROUP_CONCAT(DISTINCT pe.previousExamPath SEPARATOR ', ') AS PreviousExams
-        FROM 
-            enrollments e
-        LEFT JOIN 
-            timetables t ON e.CourseID = t.CourseID
-       
-        LEFT JOIN 
-            courses c ON c.CourseID = t.CourseID
-        LEFT JOIN 
-            previousexams pe ON c.CourseID = pe.courseID
-        LEFT JOIN 
-            users u ON u.UserID = e.UserID 
-        LEFT JOIN 
-            rooms r ON t.RoomID = r.RoomID
-        WHERE 
-            u.UserID = ? 
-            AND u.Role = 'Student'
+        e.*, 
+        t.*, 
+        c.*, 
+        u.*, 
+        r.*,
+        COALESCE(GROUP_CONCAT(DISTINCT pe.previousExamPath SEPARATOR ', '), 'No exams available') AS PreviousExams
+    FROM 
+        enrollments e
+    LEFT JOIN 
+        timetables t ON e.CourseID = t.CourseID
+    LEFT JOIN 
+        courses c ON c.CourseID = t.CourseID
+    LEFT JOIN 
+        previousexams pe ON c.CourseID = pe.courseID
+    LEFT JOIN 
+        users u ON u.UserID = e.UserID 
+    LEFT JOIN 
+        rooms r ON t.RoomID = r.RoomID
+    WHERE 
+        u.UserID = ?
+        AND u.Role = 'Student'
+        AND t.Semester = ?
+        AND t.Year =?
+    GROUP BY
+        e.CourseID
+    HAVING 
+        COUNT(e.CourseID) > 0
+
     ";
-        return $this->getdata($sql, [$userID]);
+        return $this->getdata($sql, [$userID, $Semester, $Year]);
     }
     public function getCourseAttendance($userID, $courseID)
     {
@@ -272,7 +278,7 @@ class UniversityDataRetrieval extends DAL
 
     public function getUserInfo($userID)
     {
-        $sql = "SELECT * from users where UserID = ? ;
+        $sql = "SELECT * from users u left join departments d on u.DepartmentID= d.DepartmentID where UserID = ? ;
              ";
 
         $params = [$userID];
@@ -481,7 +487,7 @@ ORDER BY
     {
         $sql = "
 WITH TotalCredits AS (
-   
+
     SELECT SUM(c.Credits) AS total_credits
     FROM courses c
     JOIN users u ON FIND_IN_SET(u.DepartmentID, REPLACE(c.DepartmentID, '/', ',')) > 0
@@ -518,5 +524,56 @@ LEFT JOIN CompletedCredits cc ON 1=1;";
         $sql = "SELECT * FROM departments where FacultyID=?";
         return $this->getdata($sql, [$facultyID]);
     }
-  
+
+    function getAvailableCourses($userId, $departmentId, $semester, $Year)
+    {
+
+        $sql = "
+            SELECT c.*,t.*,r.RoomName
+            FROM courses c
+            LEFT JOIN courseprerequisites cp ON c.CourseID = cp.CourseID
+           
+            JOIN timetables t ON c.CourseID = t.CourseID
+             left Join rooms r on r.RoomID = t.RoomID
+            WHERE 
+                -- Filter by DepartmentID
+                FIND_IN_SET(?, REPLACE(c.DepartmentID, '/', ',')) > 0
+    
+                -- Check that all prerequisites are completed by the student
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM courseprerequisites cp2
+                    WHERE cp2.CourseID = c.CourseID 
+                    AND cp2.PrerequisiteCourseID NOT IN (
+                        SELECT e.CourseID
+                        FROM student_course_progress scp
+                        JOIN enrollments e ON scp.EnrollmentID = e.EnrollmentID
+                        WHERE e.UserID = ? AND scp.Status = 'Completed'
+                    )
+                )
+                -- Exclude courses that the student is currently enrolled in
+                AND c.CourseID NOT IN (
+                    SELECT e.CourseID 
+                    FROM enrollments e
+                    WHERE e.UserID = ? AND e.Role = 'Student'
+                )
+                -- Include failed courses but allow new ones
+                AND (c.CourseID IN (
+                    SELECT e.CourseID
+                    FROM enrollments e
+                    JOIN student_course_progress scp ON e.EnrollmentID = scp.EnrollmentID
+                    WHERE e.UserID = ? AND scp.Status = 'Failed'
+                ) OR NOT EXISTS (
+                    SELECT 1
+                    FROM enrollments e2
+                    JOIN student_course_progress scp2 ON e2.EnrollmentID = scp2.EnrollmentID
+                    WHERE e2.CourseID = c.CourseID AND e2.UserID = ?
+                ))
+                -- Include only courses that are open in the current year and future years in the timetables
+                AND t.Semester=?
+                AND t.Year = ?;  -- Check if the year is greater than or equal to the current year
+        ";
+
+        return $this->getdata($sql, [$departmentId, $userId, $userId, $userId, $userId, $semester, $Year]);
+    }
 }

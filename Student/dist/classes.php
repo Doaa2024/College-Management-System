@@ -9,15 +9,44 @@ $universityData = new UniversityDataRetrieval();
 // Retrieve userID from GET, with a default value of 3 if not provided
 $userID = isset($_GET['userID']) ? intval($_GET['userID']) : 3;
 
-// Fetch the uncompleted courses for the student
-$courses = $universityData->getUncompletedCourses($userID);
+// Get semester and year from GET parameters, with default values
+$selectedSemester = isset($_GET['semester']) ? $_GET['semester'] : 'Fall';
+$selectedYear = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+
+// Fetch the uncompleted courses for the student based on semester and year
+$courses = $universityData->getUncompletedCourses($userID, $selectedSemester, $selectedYear);
 ?>
 <div class="my-3 my-md-5" style="min-height: 65vh;">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="text-primary mb-4">Registered Courses</h2>
-                <table id="coursesTable" class="table table-striped table-bordered">
+                <form method="GET" action="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="semester">Select Semester:</label>
+                            <select id="semester" name="semester" class="form-control" onchange="updateFilters()">
+                                <option value="Fall" <?php echo $selectedSemester == 'Fall' ? 'selected' : ''; ?>>Fall</option>
+                                <option value="Spring" <?php echo $selectedSemester == 'Spring' ? 'selected' : ''; ?>>Spring</option>
+                                <option value="Summer" <?php echo $selectedSemester == 'Summer' ? 'selected' : ''; ?>>Summer</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="year">Select Year:</label>
+                            <select id="year" name="year" class="form-control" onchange="updateFilters()">
+                                <?php
+                                $currentYear = date('Y');
+                                for ($i = $currentYear - 3; $i <= $currentYear + 3; $i++) {
+                                    echo '<option value="' . $i . '" ' . ($i == $selectedYear ? 'selected' : '') . '>' . $i . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="userID" value="<?php echo $userID; ?>">
+
+                </form>
+                <table id="coursesTable" class="table table-striped table-bordered mt-4">
                     <thead>
                         <tr>
                             <th>Course</th>
@@ -35,8 +64,8 @@ $courses = $universityData->getUncompletedCourses($userID);
                                 $attendance = $universityData->getCourseAttendance($userID, $course['CourseID']);
                             ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($course['CourseCode']);?> || <?php echo htmlspecialchars($course['CourseName']);  ?></td>
-                                    <td><?php echo htmlspecialchars($course['RoomName']);?></td>
+                                    <td><?php echo htmlspecialchars($course['CourseCode']); ?> || <?php echo htmlspecialchars($course['CourseName']);  ?></td>
+                                    <td><?php echo htmlspecialchars($course['RoomName']); ?></td>
                                     <td>
                                         <a href="<?php echo htmlspecialchars($course['GCRLink']); ?>" target="_blank">
                                             Google Classroom
@@ -45,10 +74,7 @@ $courses = $universityData->getUncompletedCourses($userID);
                                     <td>
                                         <?php
                                         if (isset($course['PreviousExams']) && !empty($course['PreviousExams'])) {
-                                            // Split the PreviousExams string into an array of links
                                             $examLinks = explode(', ', $course['PreviousExams']);
-
-                                            // Generate HTML for each link
                                             foreach ($examLinks as $link) {
                                                 echo '<a href="../../Professor/dist/dataClient/PreviousExams/' . htmlspecialchars($link) . '" target="_blank">' . htmlspecialchars($link) . '</a><br>';
                                             }
@@ -79,7 +105,6 @@ $courses = $universityData->getUncompletedCourses($userID);
 
                                     <td>
                                         <?php
-                                        // Assume $hasSubmittedEvaluation is a boolean value returned from the function hasStudentSubmittedEvaluation
                                         $hasSubmittedEvaluation = $universityData->hasStudentSubmittedEvaluation($userID, $course['ProfessorID'], $course['CourseID']);
                                         ?>
                                         <button
@@ -92,7 +117,6 @@ $courses = $universityData->getUncompletedCourses($userID);
                                             <?php echo $hasSubmittedEvaluation ? 'Already Evaluated' : 'Evaluate Professor'; ?>
                                         </button>
                                     </td>
-
 
                                 </tr>
                             <?php endforeach; ?>
@@ -108,135 +132,15 @@ $courses = $universityData->getUncompletedCourses($userID);
     </div>
 </div>
 
-<!-- Ensure SweetAlert and jQuery are loaded correctly -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Include SweetAlert and jQuery functionality here -->
 <script>
-    // Attach event listener to the "View Attendance" buttons
-
-    document.querySelectorAll('.btn-primary[data-action="view-grades"]').forEach(button => {
-        button.addEventListener('click', function() {
-            const courseID = this.getAttribute('data-course-id');
-            const studentID = this.getAttribute('data-student-id');
-
-            fetch('actions/get_grades.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({
-                        userID: studentID,
-                        courseID: courseID
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.grades && data.grades.length > 0) {
-                        let gradesHtml = '<div>';
-                        data.grades.forEach(item => {
-                            gradesHtml += `
-                            <p>${item.AssessmentType}: ${item.Grade} </p>
-                        `;
-                        });
-                        gradesHtml += '</div>';
-
-                        Swal.fire({
-                            title: 'Grades for Course',
-                            html: gradesHtml,
-                            icon: 'info',
-                            confirmButtonText: 'Close'
-                        });
-                    } else {
-                        Swal.fire('No grades found for this course.', '', 'info');
-                    }
-                });
-        });
-    });
-
-    document.querySelectorAll('.btn-primary[data-action="evaluate"]').forEach(button => {
-        button.addEventListener('click', function() {
-            const courseID = this.getAttribute('data-course-id');
-            const studentID = this.getAttribute('data-student-id');
-            const professorID = this.getAttribute('data-professor-id');
-
-            Swal.fire({
-                title: 'Evaluate Professor',
-                html: `
-                    <input type="hidden" id="courseID" value="${courseID}">
-                    <input type="hidden" id="studentID" value="${studentID}">
-                    <input type="hidden" id="professorID" value="${professorID}">
-                    <input type="number" max=5 id="rating" class="swal2-input" placeholder="Rating (1-5)" min="1" max="5">
-                    <textarea id="comments" class="swal2-textarea" placeholder="Comments"></textarea>
-                `,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Submit',
-                cancelButtonText: 'Cancel',
-                preConfirm: () => {
-                    const rating = Swal.getPopup().querySelector('#rating').value;
-                    const comments = Swal.getPopup().querySelector('#comments').value;
-                    const courseID = Swal.getPopup().querySelector('#courseID').value;
-                    const studentID = Swal.getPopup().querySelector('#studentID').value;
-                    const professorID = Swal.getPopup().querySelector('#professorID').value;
-                    if (!rating || !comments) {
-                        Swal.showValidationMessage(`Please enter a rating and comments.`);
-                    }
-                    return {
-                        courseID,
-                        studentID,
-                        professorID,
-                        rating,
-                        comments
-                    };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('actions/evaluate_professor.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: new URLSearchParams(result.value)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            Swal.fire(data.message, '', data.status === 'success' ? 'success' : 'error');
-                        });
-                }
-            });
-        });
-    });
-
-    document.querySelectorAll('.view-attendance').forEach(button => {
-        button.addEventListener('click', function() {
-            const courseName = this.getAttribute('data-course-name') || 'N/A';
-            const totalClasses = this.getAttribute('data-total-classes') || 'N/A';
-            const presentCount = this.getAttribute('data-present-count') || 'N/A';
-            const absentCount = this.getAttribute('data-absent-count') || 'N/A';
-            const lateCount = this.getAttribute('data-late-count') || 'N/A';
-            const attendancePercentage = this.getAttribute('data-attendance-percentage') ?
-                parseFloat(this.getAttribute('data-attendance-percentage')).toFixed(2) :
-                'N/A';
-
-            Swal.fire({
-                title: 'Attendance for ' + courseName,
-                html: `
-                    <strong>Total Classes:</strong> ${totalClasses} <br>
-                    <strong>Present:</strong> ${presentCount} <br>
-                    <strong>Absent:</strong> ${absentCount} <br>
-                    <strong>Late:</strong> ${lateCount} <br>
-                    <strong>Attendance Percentage:</strong> ${attendancePercentage}%`,
-                icon: 'info',
-                confirmButtonText: 'Close'
-            });
-        });
-    });
+     function updateFilters() {
+        var semester = document.getElementById('semester').value;
+        var year = document.getElementById('year').value;
+        var userID = <?php echo $userID; ?>;
+        window.location.href = window.location.pathname + '?userID=' + userID + '&semester=' + semester + '&year=' + year;
+    }
 </script>
-
-
-
-
 <?php require_once("components/footer.php"); ?>
 </body>
 
