@@ -9,8 +9,8 @@ class UniversityDataRetrieval extends DAL
     public function getUncompletedCourses($userID, $Semester, $Year)
     {
         $sql = "
-        SELECT DISTINCT
-        e.*, 
+       SELECT DISTINCT
+     
         t.*, 
         c.*, 
         u.*, 
@@ -18,8 +18,8 @@ class UniversityDataRetrieval extends DAL
         COALESCE(GROUP_CONCAT(DISTINCT pe.previousExamPath SEPARATOR ', '), 'No exams available') AS PreviousExams
     FROM 
         enrollments e
-    LEFT JOIN 
-        timetables t ON e.CourseID = t.CourseID
+    JOIN 
+        timetables t ON e.TimeTableID = t.TimetableID
     LEFT JOIN 
         courses c ON c.CourseID = t.CourseID
     LEFT JOIN 
@@ -36,7 +36,7 @@ class UniversityDataRetrieval extends DAL
     GROUP BY
         e.CourseID
     HAVING 
-        COUNT(e.CourseID) > 0
+        COUNT(e.CourseID) > 0;
 
     ";
         return $this->getdata($sql, [$userID, $Semester, $Year]);
@@ -122,7 +122,7 @@ class UniversityDataRetrieval extends DAL
         LEFT JOIN 
             student_course_progress scp ON e.EnrollmentID = scp.EnrollmentID
         LEFT JOIN 
-            timetables t ON c.CourseID = t.CourseID
+            timetables t ON  e.TimeTableID = t.TimetableID
         WHERE 
             u.Role = 'Student' 
             AND u.UserID = ? 
@@ -365,17 +365,18 @@ class UniversityDataRetrieval extends DAL
     {
         $sql = "WITH AllSemesters AS (
     SELECT DISTINCT
-        e.Semester AS SemesterTaken,
-        e.Year AS YearTaken
+        t.Semester AS SemesterTaken,
+        t.Year AS YearTaken
     FROM 
         enrollments e
+    JOIN timetables t ON t.TimetableID = e.TimeTableID
     WHERE 
-        e.UserID = ?  
+        e.UserID = ?
 ),
 GPA_Calculations AS (
     SELECT 
-        e.Semester AS SemesterTaken,
-        e.Year AS YearTaken,
+        t.Semester AS SemesterTaken,
+        t.Year AS YearTaken,
         SUM(
             CASE 
                 WHEN g.Grade >= 90 THEN 4.0 * c.Credits
@@ -387,14 +388,13 @@ GPA_Calculations AS (
         ) / NULLIF(SUM(c.Credits), 0) AS GPA
     FROM 
         student_course_progress g
-    JOIN 
-        enrollments e ON g.EnrollmentID = e.EnrollmentID
-    JOIN 
-        courses c ON e.CourseID = c.CourseID
+    JOIN enrollments e ON g.EnrollmentID = e.EnrollmentID
+    JOIN courses c ON e.CourseID = c.CourseID
+    JOIN timetables t ON t.TimetableID = e.TimeTableID -- Add this join
     WHERE 
         e.UserID = ? 
     GROUP BY 
-        e.Semester, e.Year
+        t.Semester, t.Year
 )
 SELECT
     a.SemesterTaken,
@@ -407,7 +407,8 @@ LEFT JOIN
 ON
     a.SemesterTaken = g.SemesterTaken AND a.YearTaken = g.YearTaken
 ORDER BY
-    a.YearTaken, a.SemesterTaken;";
+    a.YearTaken, a.SemesterTaken;
+";
 
         return $this->getdata($sql, [$studentId, $studentId]);
     }
@@ -415,17 +416,18 @@ ORDER BY
     {
         $sql = "WITH AllSemesters AS (
     SELECT DISTINCT
-        e.Semester AS SemesterTaken,
-        e.Year AS YearTaken
+        t.Semester AS SemesterTaken,
+        t.Year AS YearTaken
     FROM 
         enrollments e
+        JOIN timetables t ON t.TimetableID = e.TimeTableID
     WHERE 
         e.UserID = ?  
 ),
 GPA_Calculations AS (
     SELECT 
-        e.Semester AS SemesterTaken,
-        e.Year AS YearTaken,
+        t.Semester AS SemesterTaken,
+        t.Year AS YearTaken,
         SUM(
             CASE 
                 WHEN g.Grade >= 90 THEN 4.0 * c.Credits
@@ -442,10 +444,11 @@ GPA_Calculations AS (
         enrollments e ON g.EnrollmentID = e.EnrollmentID
     JOIN 
         courses c ON e.CourseID = c.CourseID
+         JOIN timetables t ON t.TimetableID = e.TimeTableID -- Add this join
     WHERE 
         e.UserID = ? 
     GROUP BY 
-        e.Semester, e.Year
+        t.Semester, t.Year
 ),
 CumulativeGPA AS (
     SELECT

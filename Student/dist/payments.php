@@ -72,7 +72,7 @@ $paymentSchedule = generatePaymentSchedule($totalFees, $selectedSemester);
             <div class="form-group mr-3">
                 <label for="year" class="mr-2">Select Year:</label>
                 <select class="form-control" id="year" name="year">
-                    <?php for ($year = 2020; $year <= 2025; $year++) { ?>
+                    <?php for ($year = 2017; $year <= 2025; $year++) { ?>
                         <option value="<?php echo $year; ?>" <?php echo $selectedYear == $year ? 'selected' : ''; ?>>
                             <?php echo $year; ?>
                         </option>

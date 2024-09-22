@@ -10,9 +10,9 @@ $userID = isset($_GET['userID']) ? intval($_GET['userID']) : 3;
 $userInfo = $universityData->getUserInfo($userID);
 
 ?>
-<div class="container my-5  shadow-sm" style="min-height:67dvh">
+<div class="container my-5  shadow-lg px-5" style="min-height:70dvh">
     <!-- Page Title -->
-    <div class="text-center mb-4">
+    <div class="text-center mb-4 pt-2">
         <h1 class="display-4">Manage Your Requests</h1>
     </div>
     <style>
