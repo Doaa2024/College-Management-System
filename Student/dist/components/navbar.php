@@ -1,6 +1,6 @@
 <?php
 
-$userID = $_SESSION['userID']; // Assuming userID is stored in session
+$userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : 3; // Assuming userID is stored in session
 ?>
 <body class="">
     <div class="page">

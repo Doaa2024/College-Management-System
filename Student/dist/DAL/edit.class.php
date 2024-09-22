@@ -23,4 +23,11 @@ class UserManagement extends DAL
         return $this->execute($sql, $params); 
         
     }
+    function registerCourse($userID, $courseID, $timeTableID) {
+        $sql = "INSERT INTO enrollments (UserID, CourseID, TimeTableID, Role) VALUES (?, ?, ?, 'Student')";
+        $params = [$userID, $courseID, $timeTableID];
+
+           return $this->execute($sql, $params);
+    }
+    
 }

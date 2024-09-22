@@ -5,8 +5,9 @@
 // Create an instance of the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
 $departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : 9;
-echo var_dump($departmentID);
+// echo var_dump($departmentID);
 $userID = isset($_GET['student_id']) ? intval($_GET['student_id']) : (isset($_SESSION['userID']) ? $_SESSION['userID'] : 3);
+// echo var_dump($userID);
 // Fetch the total credits and fees for the student based on the selected semester and year
 $gpa = $universityData->getStudentGPA($userID);
 $grades = $universityData->getGradesCount($userID);

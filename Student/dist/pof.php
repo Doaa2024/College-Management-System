@@ -9,15 +9,21 @@ $userInfo = $dataRetrieval->getUserInfo($userID);
 // echo var_dump($userInfo);
 ?>
 
+<div class="container col-lg-12 mb-4 mt-4">
+    <!-- Department Card -->
+    <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+            <!-- Department Header -->
+            <h2 class="text-primary mb-3">
+                Department: <?= $userInfo[0]['DepartmentName'] ?>
+            </h2>
 
-<div class="container shadow-lg mb-4 col-lg-11">
-    <h2><?= $userInfo[0]['DepartmentName']?></h2>
-    <div class="container pb-5 mt-4">
-        <!-- Gantt Chart -->
-        <div id="gantt_here" class="mb-4 shadow-lg " style="width:100%; min-height:68.5dvh; "></div>
+            <!-- Gantt Chart Section -->
+            <div class="gantt-container">
+                <div id="gantt_here" class="gantt-chart shadow-sm rounded mb-4" style="width:100%; min-height:68.5vh;"></div>
+            </div>
+        </div>
     </div>
-
-
 </div>
 <style>
     /* Customizing Gantt chart to use Bootstrap primary color */

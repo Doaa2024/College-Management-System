@@ -61,7 +61,7 @@ $Courses = $dataRetrieval->getAvailableCourses($userID, $userInfo[0]['Department
             ?>
                 <div class="card shadow-sm text-primary">
                     <div class="card-header d-flex justify-content-between align-items-center" id="heading-<?php echo $firstCourseID; ?>">
-                        <h5 class="mb-0" >
+                        <h5 class="mb-0">
                             <?php echo $key; ?>
                         </h5>
                         <a href="#collapse-<?php echo $firstCourseID; ?>" class="btn btn-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<?php echo $firstCourseID; ?>">
@@ -75,15 +75,18 @@ $Courses = $dataRetrieval->getAvailableCourses($userID, $userInfo[0]['Department
                                 <?php foreach ($courseOfferings as $offering) { ?>
                                     <li class="list-group-item shadow-lg">
                                         <strong>Offering: </strong> <?php echo $offering['time']; ?> || <?php echo $offering['DayOfWeek']; ?> <br>
-                                       
                                         <strong>Room:</strong> <?php echo $offering['RoomName']; ?> <br>
-                                      
+
+                                        <!-- Hidden field for TimeTableID -->
+                                        <input type="hidden" name="timeTableID" id="timeTableID" value="<?php echo $offering['TimetableID']; ?>">
+
                                         <!-- Register Button -->
                                         <button class="btn btn-primary float-right mt-2" onclick="registerCourse(<?php echo $offering['CourseID']; ?>, <?php echo $userID; ?>)">
                                             Register
                                         </button>
                                     </li>
                                 <?php } ?>
+
                             </ul>
                         </div>
                     </div>
@@ -104,26 +107,54 @@ $Courses = $dataRetrieval->getAvailableCourses($userID, $userInfo[0]['Department
     }
 
     function registerCourse(courseID, userID) {
-        // Example of an AJAX request to register the course
-        fetch('register-course.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    courseID: courseID,
-                    userID: userID
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Successfully registered for the course!');
-                } else {
-                    alert('Failed to register for the course.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        Swal.fire({
+            title: 'Confirm Registration',
+            text: "Are you sure you want to register for this course?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, register!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get the timetable ID for this course (You may need to pass this as a parameter or set it based on the course data)
+                var timeTableID = document.getElementById('timeTableID').value; // You might need to adjust this to get the timetable ID
+
+                // Perform the AJAX request
+                $.ajax({
+                    url: 'actions/register_course.php',
+                    type: 'POST',
+                    data: {
+                        userID: userID,
+                        courseID: courseID,
+                        timeTableID: timeTableID
+                    },
+                    success: function(response) {
+                        var result = JSON.parse(response);
+                        if (result.status === 'success') {
+                            Swal.fire(
+                                'Registered!',
+                                result.message,
+                                'success'
+                            );
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                result.message,
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error!',
+                            'Failed to send the registration request.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
     }
 </script>
 
