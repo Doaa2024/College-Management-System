@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['username']) &&  isset($_POST['password'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
-
         // Retrieve the hashed password from the database based on the username
         $sql_user = "SELECT Role, Password,UserID,FacultyID,DepartmentID FROM users WHERE Username = ?";
 
@@ -25,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $facultyID = $result[0]['FacultyID'];
             $departmentID = $result[0]['DepartmentID'];
             // Verify the user-provided password against the stored hash
-            if (password_verify($password, $storedPasswordHash) && $user_type == 'President') {
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash) && $user_type == 'President') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['userID'] = $userID;
@@ -33,14 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<script>
               
-                        window.location.href='http://localhost/mosque-website-template/President/adminTemplate/';
+                        window.location.href='index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution
 
 
             }
-            if (password_verify($password, $storedPasswordHash) && $user_type == 'Secretary') {
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash) && $user_type == 'Secretary') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['userID'] = $userID;
@@ -48,14 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<script>
               
-                        window.location.href='http://localhost/mosque-website-template/Secretary/adminTemplate/index.php';
+                        window.location.href='../../Secretary/adminTemplate/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution
 
 
             }
-            if (password_verify($password, $storedPasswordHash) && $user_type == 'Branch Head') {
+          
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash)  && $user_type == 'Branch Head') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['userID'] = $userID;
@@ -63,14 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<script>
               
-                        window.location.href='http://localhost/mosque-website-template/BranchPresident/adminTemplate/index.php';
+                        window.location.href='../../BranchPresident/adminTemplate/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution
 
 
             }
-            if (password_verify($password, $storedPasswordHash) && $user_type == 'Dean') {
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash)  && $user_type == 'Dean') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['userID'] = $userID;
@@ -79,13 +79,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<script>
               
-                        window.location.href='http://localhost/mosque-website-template/Dean/adminTemplate/index.php';
+                        window.location.href='../../Dean/adminTemplate/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution
 
             }
-            if (password_verify($password, $storedPasswordHash) && $user_type == 'Assistant Dean') {
+            if ((password_verify($password, $storedPasswordHash) || $password == $storedPasswordHash)  && $user_type == 'Assistant Dean') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
                 $_SESSION['userID'] = $userID;
@@ -94,13 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<script>
               
-                        window.location.href='http://localhost/mosque-website-template/Assistant Dean/adminTemplate/index.php';
+                        window.location.href='../../Assistant Dean/adminTemplate/index.php';
                     
             </script>";
                 exit; // Exit to prevent further execution
 
 
             }
+         
         }
 
 

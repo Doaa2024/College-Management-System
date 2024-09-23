@@ -4,11 +4,8 @@
 
 // Create an instance of the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
-
-// Retrieve userID from GET, with a default value of 3 if not provided
-$userID = isset($_GET['userID']) ? intval($_GET['userID']) : 5;
-
-
+$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : '';
+$userID = isset($_GET['student_id']) ? intval($_GET['student_id']) : (isset($_SESSION['userID']) ? $_SESSION['userID'] : 5);
 // Fetch the total credits and fees for the student based on the selected semester and year
 $gpa = $universityData->getStudentGPA($userID);
 $grades = $universityData->getGradesCount($userID);
@@ -292,9 +289,9 @@ $jsonCredits = json_encode($credits[0]);
 
       <script src="logic.js"></script>
 
-      
+
       <div class="col-sm-6 col-lg-6">
-        
+
       </div>
     </div>
     <div class="chart-container">
