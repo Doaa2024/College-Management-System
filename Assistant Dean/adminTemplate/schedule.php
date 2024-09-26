@@ -6,7 +6,7 @@ require_once('DAL/retrieve.class.php');
 
 // Instantiate the UniversityDataRetrieval class
 $universityData = new UniversityDataRetrieval();
-$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : '';
+$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : 9;
 // Get current month and year
 $currentMonth = date('n'); // Current month (1-12)
 $currentYear = date('Y');  // Current year (e.g., 2024)

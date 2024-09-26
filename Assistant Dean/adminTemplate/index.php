@@ -4,14 +4,14 @@ require_once('components/header.php');
 require_once('components/sidebar.php');
 require_once('components/navbar.php');
 $dataRetrieval = new UniversityDataRetrieval();
-$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : '';
+$departmentID = isset($_SESSION['departmentID']) ? $_SESSION['departmentID'] : 9;
 $studentCountByExactDepartment = $dataRetrieval->studentCountByDepartment($departmentID);
 $branchesCountByDepartment = $dataRetrieval->getDepartmentCountByBranch($departmentID);
 $coursesCount = $dataRetrieval->getCoursesCountINCertainDepartment($departmentID);
 $departmentCount = $dataRetrieval->getRegisteredStudentCountByDepartment($departmentID);
 $studentCountBranch = $dataRetrieval->studentCountByDepartmentINBranch($departmentID);
 $recentNewsletters = $dataRetrieval->getRecentNewsletters();
-$salary = $dataRetrieval->getSalary();
+// $salary = $dataRetrieval->getSalary();
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -94,7 +94,7 @@ $salary = $dataRetrieval->getSalary();
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 My Salary </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?= $salary[0]['Salary'] ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?= 0 ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>

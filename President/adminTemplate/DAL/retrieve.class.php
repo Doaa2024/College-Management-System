@@ -211,8 +211,8 @@ class UniversityDataRetrieval extends DAL
     public function getCurrentSemesterEnrollments()
     {
         $sql = "SELECT COUNT(*) AS CurrentSemesterEnrollments
-                FROM enrollments
-                WHERE Semester = 'Fall' AND Year = YEAR(CURDATE())";
+                FROM enrollments e left join timetables t on t.TimetableId = e.TimeTableID
+                WHERE t.Semester = 'Fall' AND t.Year = YEAR(CURDATE())";
         return $this->getData($sql);
     }
     public function getMonthlyEnrollments()
@@ -222,13 +222,14 @@ class UniversityDataRetrieval extends DAL
                         COUNT(*) AS EnrollmentCount,
                         SUM(COUNT(*)) OVER (ORDER BY Year) AS CumulativeEnrollment
                     FROM 
-                        enrollments
+                        enrollments e 
+                        left join timetables t on t.TimetableId = e.TimeTableID
                     WHERE 
                         Role = 'Student'
                     GROUP BY 
-                        Year
+                        t.Year
                     ORDER BY 
-                        Year;";
+                        t.Year;";
         return $this->getData($sql);
     }
 

@@ -199,7 +199,8 @@ class UniversityDataRetrieval extends DAL
         $sql = "SELECT DISTINCT c.CourseID, c.CourseName, c.CourseCode
                 FROM courses c
                 JOIN enrollments e ON c.CourseID = e.CourseID
-                WHERE e.Year = ? AND e.Semester = ?";
+                left join timetables t on t.CourseId = e.CourseID
+                WHERE t.Year = ? AND t.Semester = ?";
 
         // Return data using the modified getdata method
         return $this->getdata($sql, [$currentYear, $semester]);
@@ -234,14 +235,15 @@ class UniversityDataRetrieval extends DAL
     public function getEnrollmentVsDemand()
     {
         $sql = "SELECT 
-                e.Year AS Year,
+                t.Year AS Year,
                 COUNT(DISTINCT e.UserID) AS TotalEnrollments,
                 (SELECT COUNT(DISTINCT c.CourseID) 
                  FROM courses c
-                 WHERE YEAR(c.CreatedAt) = e.Year) AS TotalCourses
+                 WHERE YEAR(c.CreatedAt) = t.Year) AS TotalCourses
             FROM enrollments e
-            GROUP BY e.Year
-            ORDER BY e.Year";
+            left join timetables t on t.CourseId = e.CourseID
+            GROUP BY t.Year
+            ORDER BY t.Year";
 
 
         return $this->getdata($sql, []);
@@ -270,7 +272,7 @@ class UniversityDataRetrieval extends DAL
                         JOIN faculty_branches fb ON f.FacultyID = fb.FacultyID
                         WHERE fb.BranchID = ?
                         AND t.DayOfWeek = DAYNAME(CURDATE())
-                        AND CURTIME() BETWEEN t.StartTime AND t.EndTime
+                        
                     );
 ";
 
