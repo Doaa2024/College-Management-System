@@ -17,7 +17,7 @@ $newsletterType = isset($_POST['newsletterType']) ? trim($_POST['newsletterType'
 $title = isset($_POST['title']) ? trim($_POST['title']) : null;
 $issueDate = isset($_POST['issueDate']) ? trim($_POST['issueDate']) : null;
 $content = isset($_POST['content']) ? trim($_POST['content']) : null;
-$createdBy = isset($_SESSION['userID']) ? $_SESSION['userID'] : '';
+$createdBy = isset($_SESSION['userID']) ? $_SESSION['userID'] : 3;
 
 
 

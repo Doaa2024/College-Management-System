@@ -7,6 +7,7 @@ require_once('DAL/retrieve.class.php');
 $dataRetrieval = new UniversityDataRetrieval();
 $facultyID = isset($_SESSION['facultyID']) ? $_SESSION['facultyID'] : 9;
 $DepInFac = $dataRetrieval->getAllDepartmentsInFaculty($facultyID);
+
 ?>
 
 <!DOCTYPE html>

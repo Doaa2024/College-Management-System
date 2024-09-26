@@ -82,13 +82,13 @@ class UniversityDataRetrieval extends DAL
         return $this->getData($sql, [$userID]);
     }
 
-    public function getSalary()
-    {
-        $sql = "SELECT FacultyID  AS Salary
-                FROM users 
-                WHERE Role='Dean' ";
-        return $this->getData($sql);
-    }
+    // public function getSalary()
+    // {
+    //     $sql = "SELECT FacultyID  AS Salary
+    //             FROM users 
+    //             WHERE Role='Dean' ";
+    //     return $this->getData($sql);
+    // }
 
     public function  getDepartmentCountByBranch($departmentID)
     {

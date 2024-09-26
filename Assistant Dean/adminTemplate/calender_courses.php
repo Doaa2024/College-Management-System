@@ -8,6 +8,7 @@ require_once('DAL/retrieve.class.php');
 $universityData = new UniversityDataRetrieval();
 $events = $universityData->getAllEvents();
 $branches = $universityData->getAllBranches();
+
 // Function to get a random description
 function getRandomDescription($descriptions)
 {
@@ -21,7 +22,7 @@ function getRandomColor()
 }
 
 // Assume $events is already defined and contains your event data
-$formattedEvents = array_map(function ($event) {
+$formattedEvents = array_map( function ($event) {
     $start = $event['EventDate'] . 'T' . $event['StartTime'];
     $end = $event['EventDate'] . 'T' . $event['EndTime'];
     $description = $event['Description']; // Fetch description from event data
